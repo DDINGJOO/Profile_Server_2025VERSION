@@ -16,6 +16,7 @@ import lombok.*;
 @Builder
 public class GenreNameTable {
     @Id
+    @Column(name = "genre_id")
     private int genreId;
 
     @Column(name = "genre_name")

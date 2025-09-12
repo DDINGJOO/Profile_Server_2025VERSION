@@ -16,11 +16,9 @@ import java.util.List;
 @Builder
 public class UserInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="user_id")
-    private Long userId;
-    @Column(name ="id", nullable = false, unique = true)
-    private String id;
+    private String userId;
+
 
     @Column(name="profile_image_url")
     private String profileImageUrl;

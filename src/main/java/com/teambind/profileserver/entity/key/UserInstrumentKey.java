@@ -1,8 +1,6 @@
 package com.teambind.profileserver.entity.key;
 
-
-import com.teambind.profileserver.entity.UserInfo;
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -13,11 +11,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class UserInstrumentKey implements Serializable  {
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserInfo user;
-
-
+    private String userId;
     private int instrumentId;
 
 }

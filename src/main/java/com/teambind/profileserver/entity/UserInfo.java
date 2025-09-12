@@ -26,7 +26,7 @@ public class UserInfo {
     private String profileImageUrl;
 
     @Column(name="sex")
-    private Boolean sex;
+    private Character sex;
 
     @Column(name="nickname", unique = true, nullable = false)
     private String nickname;

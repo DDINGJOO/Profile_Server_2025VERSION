@@ -18,6 +18,8 @@ public class UserGenres
     @EmbeddedId
     private UserGenreKey id;
 
-    @Column(name = "genre_id")
-    private int genreId;
+    @Version
+    @Column(name="version")
+    private int version;
+
 }

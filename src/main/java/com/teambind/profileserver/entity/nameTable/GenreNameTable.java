@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.util.Map;
+
 @Entity
 @Table(name = "genre_name")
 @Getter

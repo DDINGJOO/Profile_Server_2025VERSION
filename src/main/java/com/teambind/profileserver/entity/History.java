@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
+// 서비스 기반 버전 정보 하면 역전 현상 막을 수 있음.
 @Getter
 @Setter
 @NoArgsConstructor

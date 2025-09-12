@@ -27,9 +27,12 @@ public class History {
     @Column(name ="field_name")
     private String fieldName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserInfo user;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private UserInfo userInfo;
+
 
     @Version
     @Column(name="version")

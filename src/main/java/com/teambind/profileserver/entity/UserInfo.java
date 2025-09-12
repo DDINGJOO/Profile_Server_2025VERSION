@@ -16,6 +16,9 @@ import java.util.List;
 @Builder
 public class UserInfo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="user_id")
+    private Long userId;
     @Column(name ="id", nullable = false, unique = true)
     private String id;
 
@@ -53,5 +56,6 @@ public class UserInfo {
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<History> userHistory;
+
 
 }

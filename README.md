@@ -27,7 +27,7 @@
 ---
 
 ### ERD
-![erd1.png](readMe_images/erd1.png)
+![erd3.png](readMe_images/erd3.png)
 - 장르와 , 선호악기는 프로필과 M:N 매핑 관계
 - 조회 및 필터 기능에서 성능 최적화가 수준 높게 요구됨
 ---

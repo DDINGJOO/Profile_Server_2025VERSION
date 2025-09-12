@@ -1,10 +1,10 @@
 package com.teambind.profileserver.repository;
 
 
-import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserInfoRepository extends JpaRepository<UserInfo, String>, UserInfoDslRepository {
+public interface InstrumentNameTableRepository extends JpaRepository<InstrumentNameTable, Integer> {
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "instruments")
+@Table(name = "user_instruments")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,6 +15,10 @@ import lombok.*;
 public class UserInstruments {
 
     @EmbeddedId
+    @AttributeOverrides({
+            @AttributeOverride(name = "userId", column = @Column(name = "user_id")),
+            @AttributeOverride(name = "instrumentId", column = @Column(name = "instrument_id"))
+    })
     private UserInstrumentKey userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,7 +30,7 @@ public class UserInstruments {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("instrumentId")
-    @JoinColumn(name = "instrumentId")
+    @JoinColumn(name = "instrument_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private InstrumentNameTable instrument;

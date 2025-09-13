@@ -23,4 +23,5 @@ public class GenreNameTable {
 
     @Column(name = "genre_name")
     private String genreName;
+
 }

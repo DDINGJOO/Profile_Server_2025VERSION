@@ -7,6 +7,7 @@ import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class NamingMapper {
 //TODO: When server starts, initialize GenreName And InstrumentName Tables
@@ -43,6 +45,11 @@ public class NamingMapper {
         instrumentNameTables.forEach(instrumentNameTable -> {
             NamingMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
         });
+
+
+
+
+
 
 
     }

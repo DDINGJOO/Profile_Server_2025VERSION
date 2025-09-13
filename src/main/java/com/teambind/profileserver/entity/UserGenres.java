@@ -26,7 +26,7 @@ public class UserGenres {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("genreId")
-    @JoinColumn(name = "genre_Id")
+    @JoinColumn(name = "genre_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private GenreNameTable genre;

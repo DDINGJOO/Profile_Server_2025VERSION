@@ -85,10 +85,11 @@ public class UserInfoFactory {
     /**
      * 약 10만 명의 유저와 연관 정보(장르/악기)를 생성합니다.
      */
-    @Transactional
-    public void generate100kUsers() {
-        generateUsers(100_000, 1000);
-    }
+//    @Transactional
+//    public void generate100kUsers() {
+//        generateUsers(100_000, 1000);
+//    }
+    //쓰래드 성능 저하때문에
 
     /**
      * 대량 유저 생성 (배치 저장)

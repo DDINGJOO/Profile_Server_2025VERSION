@@ -261,4 +261,84 @@ class ProfileSearchServiceTest {
         assertTrue(ids.contains("user_ins_909"));
         assertFalse(ids.contains("user_ins_910"));
     }
+
+
+    @Test
+    @DisplayName("유저 정보 찾기 : 다중 필터 , nickname, genres, instruments")
+    void searchProfilesByMultipleFilters() {
+        // given
+        ensureNameTables(new int[]{911, 912}, new int[]{911, 912});
+        // 조건: nickname에 "mix" 포함, 장르 중 911 포함, 악기 중 912 포함
+        createUser("user_mix_ok", "mix_alpha", 'M', new Integer[]{911}, new Integer[]{912}); // 매칭 O
+        createUser("user_mix_bad_nick", "other", 'M', new Integer[]{911}, new Integer[]{912}); // 닉네임 불일치
+        createUser("user_mix_bad_genre", "mix_beta", 'M', new Integer[]{912}, new Integer[]{912}); // 장르 불일치
+        createUser("user_mix_bad_instr", "mix_gamma", 'M', new Integer[]{911}, new Integer[]{911}); // 악기 불일치
+
+        var criteria = ProfileSearchCriteria.builder()
+                .nickName("mix")
+                .genres(List.of(911))
+                .instruments(List.of(912))
+                .build();
+
+        // when
+        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        log.info("[검증 로그] 다중필터 결과 수: {}", page.getTotalElements());
+
+        // then
+        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        assertTrue(ids.contains("user_mix_ok"));
+        assertFalse(ids.contains("user_mix_bad_nick"));
+        assertFalse(ids.contains("user_mix_bad_genre"));
+        assertFalse(ids.contains("user_mix_bad_instr"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 찾기 커서 기반 : userId 내림차순, 중복 없이 다음 페이지 조회")
+    void searchProfilesByCursor() {
+        // given: userId가 사전순 내림차순으로 정렬될 수 있도록 생성
+        ensureNameTables(new int[]{920}, new int[]{920});
+        createUser("user_cursor_001", "c001", 'M', new Integer[]{920}, new Integer[]{920});
+        createUser("user_cursor_002", "c002", 'M', new Integer[]{920}, new Integer[]{920});
+        createUser("user_cursor_003", "c003", 'M', new Integer[]{920}, new Integer[]{920});
+        createUser("user_cursor_004", "c004", 'M', new Integer[]{920}, new Integer[]{920});
+        createUser("user_cursor_005", "c005", 'M', new Integer[]{920}, new Integer[]{920});
+
+        // 아무 필터 없이 커서 기반 조회 (size=2)
+        var criteria = ProfileSearchCriteria.builder().build();
+
+        // 1페이지
+        var slice1 = profileSearchService.searchProfilesByCursor(criteria, null, 2);
+        List<UserInfo> page1 = slice1.getContent();
+        log.info("[커서1] size={}, hasNext={}, ids={}", page1.size(), slice1.hasNext(),
+                page1.stream().map(UserInfo::getUserId).toList());
+        assertTrue(page1.size() <= 2);
+        assertTrue(slice1.hasNext());
+
+        String nextCursor = page1.get(page1.size() - 1).getUserId();
+
+        // 2페이지 (nextCursor 기준으로 이어받기)
+        var slice2 = profileSearchService.searchProfilesByCursor(criteria, nextCursor, 2);
+        List<UserInfo> page2 = slice2.getContent();
+        log.info("[커서2] size={}, hasNext={}, ids={}", page2.size(), slice2.hasNext(),
+                page2.stream().map(UserInfo::getUserId).toList());
+
+        // 중복 없음 확인
+        List<String> ids1 = page1.stream().map(UserInfo::getUserId).toList();
+        List<String> ids2 = page2.stream().map(UserInfo::getUserId).toList();
+        for (String id : ids1) {
+            assertFalse(ids2.contains(id), "커서 페이지 간 중복이 없어야 합니다");
+        }
+
+        // 내림차순 정렬 확인 (각 페이지 내)
+        assertTrue(isDescByUserId(ids1));
+        assertTrue(isDescByUserId(ids2));
+    }
+
+    // 유틸: 문자열 비교로 내림차순인지 확인
+    private static boolean isDescByUserId(List<String> ids) {
+        for (int i = 1; i < ids.size(); i++) {
+            if (ids.get(i - 1).compareTo(ids.get(i)) < 0) return false;
+        }
+        return true;
+    }
 }

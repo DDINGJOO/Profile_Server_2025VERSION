@@ -12,7 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProfileUpdateRequest {
+    private String nickname;
     private City city;
-    private List<String> genres;
-    private List<String> instruments;
+    private List<Integer> genres;
+    private List<Integer> instruments;
 }

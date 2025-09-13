@@ -2,7 +2,6 @@ package com.teambind.profileserver.service.create;
 
 
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.events.consumer.InitUserProfile;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.utils.NicknameGenerator;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +32,4 @@ public class CreateUserProfile {
         userInfoRepository.save(userInfo);
         return userInfo.getUserId();
     };
-
 }

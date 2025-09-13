@@ -1,9 +1,7 @@
 package com.teambind.profileserver.service.create;
 
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.repository.UserInfoDslRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

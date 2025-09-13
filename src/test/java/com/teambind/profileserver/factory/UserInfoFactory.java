@@ -97,6 +97,10 @@ public class UserInfoFactory {
      */
     @Transactional
     public void generateUsers(int total, int batchSize) {
+        if(userInfoRepository.count() >= 100) {
+            log.info("Skip generation. Already have {} users (> 100).", userInfoRepository.count());
+            return;
+        }
         generateUsersRange(1, total, batchSize);
     }
 

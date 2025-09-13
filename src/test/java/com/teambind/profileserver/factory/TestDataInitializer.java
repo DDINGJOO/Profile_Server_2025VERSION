@@ -3,9 +3,7 @@ package com.teambind.profileserver.factory;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 /**
  * 테스트 실행 전에(테스트 ApplicationContext 기동 시) 한 번만 대량 데이터를 준비하는 초기화 컴포넌트.
@@ -17,7 +15,7 @@ import org.springframework.stereotype.Component;
  * - profile.test.seed-batch: 배치 사이즈 (기본 1000)
  * 예) ./gradlew test -Dprofile.test.seed-users=20000 -Dprofile.test.seed-batch=2000
  */
-@Component
+//@Component
 public class TestDataInitializer {
 
     private static final Logger log = LoggerFactory.getLogger(TestDataInitializer.class);
@@ -25,7 +23,7 @@ public class TestDataInitializer {
     private final UserInfoFactory userInfoFactory;
     private final Environment env;
 
-    @Autowired
+//    @Autowired
     public TestDataInitializer(UserInfoFactory userInfoFactory, Environment env) {
         this.userInfoFactory = userInfoFactory;
         this.env = env;

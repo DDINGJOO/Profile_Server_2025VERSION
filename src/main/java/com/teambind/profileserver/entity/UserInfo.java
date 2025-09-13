@@ -20,7 +20,6 @@ public class UserInfo {
     @Column(name ="user_id")
     private String userId;
 
-
     @Column(name="profile_image_url")
     private String profileImageUrl;
 

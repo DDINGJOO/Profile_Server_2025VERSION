@@ -36,21 +36,12 @@ public class NamingMapper {
         List<GenreNameTable> genreNameTables = genreNameTableRepository.findAll();
         List<InstrumentNameTable> instrumentNameTables = instrumentNameTableRepository.findAll();
 
-
-
-
         genreNameTables.forEach(genreNameTable -> {
             NamingMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable.getGenreName());
         });
         instrumentNameTables.forEach(instrumentNameTable -> {
             NamingMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
         });
-
-
-
-
-
-
 
     }
 

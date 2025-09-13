@@ -12,9 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProfileUpdateRequest {
-    private String userId;
     private City city;
     private List<String> genres;
     private List<String> instruments;
-
 }

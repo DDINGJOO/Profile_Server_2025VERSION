@@ -11,7 +11,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class UserInstrumentKey implements Serializable  {
 
+
     private String userId;
     private int instrumentId;
+
 
 }

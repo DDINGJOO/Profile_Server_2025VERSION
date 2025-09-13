@@ -100,4 +100,47 @@ public class ProfileUpdateService {
         return userInfo;
     }
 
+    @Transactional
+    public UserInfo updateProfileAll(String userId, String nickname, List<Integer> instruments, List<Integer> genres) {
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
+
+        // 1) 닉네임은 전체 데이터 갱신 요구사항에 따라 전달된 값으로 그대로 반영
+        //    (null 허용 정책이 별도로 없다면 null이면 기존 값 유지로 처리)
+        if (nickname != null) {
+            userInfo.setNickname(nickname);
+        }
+
+        // 2) 악기/장르 모두 전체 갱신: 기존 것을 모두 삭제하고, 전달된 전체 목록을 넣는다
+        //    repositories에 있는 bulk delete를 사용해 효율적으로 삭제
+        userInstrumentsRepository.deleteByUserId(userId);
+        userGenresRepository.deleteByUserId(userId);
+
+        // 3) 전달된 전체 목록을 일괄 저장 (null은 빈 목록으로 간주)
+        if (instruments != null && !instruments.isEmpty()) {
+            List<UserInstruments> uiBatch = new ArrayList<>(instruments.size());
+            for (Integer instId : instruments) {
+                uiBatch.add(UserInstruments.builder()
+                        .userId(new UserInstrumentKey(userId, instId))
+                        .build());
+            }
+            userInstrumentsRepository.saveAll(uiBatch);
+        }
+
+        if (genres != null && !genres.isEmpty()) {
+            List<UserGenres> ugBatch = new ArrayList<>(genres.size());
+            for (Integer genreId : genres) {
+                ugBatch.add(UserGenres.builder()
+                        .userId(new UserGenreKey(userId, genreId))
+                        .build());
+            }
+            userGenresRepository.saveAll(ugBatch);
+        }
+
+        // 4) 사용자 정보 저장 (엔티티는 영속 상태이지만 명시적으로 저장하여 의도를 드러냄)
+        userInfoRepository.save(userInfo);
+
+        // 5) 영속 엔티티 반환
+        return userInfo;
+    }
+
 }

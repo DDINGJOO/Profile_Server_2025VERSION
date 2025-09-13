@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS user_info (
     profile_image_url VARCHAR(255),
     sex VARCHAR(1),
     nickname VARCHAR(100) NOT NULL UNIQUE,
-    location INT,
+    city enum('ETC','강원','경기','경남','경북','광주','대구','대전','부산','서울','울산','인천','전남','전북','제주','충남','충북') DEFAULT NULL,
     version INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP,
     last_updated_at TIMESTAMP,

@@ -1,6 +1,7 @@
 package com.teambind.profileserver.entity;
 
 
+import com.teambind.profileserver.enums.City;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +30,9 @@ public class UserInfo {
     @Column(name="nickname", unique = true, nullable = false)
     private String nickname;
 
-    @Column(name="location")
-    private int location;
+    @Column(name="city")
+    @Enumerated(EnumType.STRING)
+    private City city;
     @Version
     @Column(name="version")
     private int version;

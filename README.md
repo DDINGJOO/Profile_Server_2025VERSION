@@ -42,11 +42,55 @@
 - 이메일 인증이 되지 않은 유저는 프로필을 가질 수 없다. 
 
 
-### 예시 프로필 등록 사진
-![UserProfile.png](readMe_images/UserProfile.png)
+
+---
+- 장르 목록
+  ROCK,
+  POP,
+  JAZZ,
+  CLASSICAL,
+  HIP_HOP,
+  ELECTRONIC,
+  FOLK,
+  BLUES,
+  REGGAE,
+  METAL,
+  COUNTRY,
+  LATIN,
+  RNB,
+  SOUL,
+  FUNK,
+  PUNK,
+  ALTERNATIVE,
+  INDIE,
+  GOSPEL,
+  OPERA,
+  SOUNDTRACK,
+  WORLD_MUSIC,
+  OTHER // 기타
+
+- 지역 목록  
+  서울,
+  부산,
+  대구,
+  인천,
+  광주,
+  대전,
+  울산,
+  경기,
+  강원,
+  충북,
+  충남,
+  전북,
+  전남,
+  경북,
+  경남,
+  제주,
+  ETC
+
+- 
 
 
 ---
-
-
-
+### 예시 프로필 등록 사진
+![UserProfile.png](readMe_images/UserProfile.png)

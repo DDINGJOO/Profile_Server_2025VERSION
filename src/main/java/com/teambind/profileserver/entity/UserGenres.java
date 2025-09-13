@@ -34,4 +34,5 @@ public class UserGenres {
     @Version
     @Column(name = "version")
     private int version;
+
 }

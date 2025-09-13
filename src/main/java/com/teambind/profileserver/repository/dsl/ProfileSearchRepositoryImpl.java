@@ -3,10 +3,10 @@ package com.teambind.profileserver.repository.dsl;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.entity.QUserInfo;
 import com.teambind.profileserver.entity.QUserGenres;
+import com.teambind.profileserver.entity.QUserInfo;
 import com.teambind.profileserver.entity.QUserInstruments;
+import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.repository.ProfileSearchRepository;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import jakarta.persistence.EntityManager;
@@ -34,7 +34,7 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
     public Page<UserInfo> search(ProfileSearchCriteria criteria, Pageable pageable) {
         BooleanBuilder where = buildWhere(criteria);
 
-        // Base paged query (without fetching collections to avoid cartesian product)
+        // 기본 페이징 조회 (카테시안 곱을 피하기 위해 컬렉션 fetch 조인을 생략)
         List<UserInfo> content = queryFactory
                 .selectFrom(ui)
                 .where(where)
@@ -62,7 +62,7 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
     public Slice<UserInfo> searchByCursor(ProfileSearchCriteria criteria, String cursor, int size) {
         BooleanBuilder where = buildWhere(criteria);
         if (cursor != null && !cursor.isBlank()) {
-            // We order by userId desc, so for next page we need userId < cursor
+            // userId 내림차순 정렬이므로 다음 페이지를 위해 userId < cursor 조건을 적용
             where.and(ui.userId.lt(cursor));
         }
 
@@ -119,7 +119,7 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
 
     private void batchInitializeCollections(List<UserInfo> content) {
         List<String> userIds = content.stream().map(UserInfo::getUserId).collect(Collectors.toList());
-        // Initialize genres
+        // 장르 컬렉션 초기화
         queryFactory
                 .selectFrom(ui)
                 .leftJoin(ui.userGenres, ug).fetchJoin()
@@ -127,7 +127,7 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
                 .where(ui.userId.in(userIds))
                 .fetch();
 
-        // Initialize instruments
+        // 악기 컬렉션 초기화
         queryFactory
                 .selectFrom(ui)
                 .leftJoin(ui.userInstruments, uins).fetchJoin()

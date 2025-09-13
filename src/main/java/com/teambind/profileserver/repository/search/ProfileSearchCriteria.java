@@ -12,7 +12,7 @@ import java.util.List;
 public class ProfileSearchCriteria {
     private final City city;
     private final String nickName;
-    private final List<Integer> genres;       // genre ids
-    private final List<Integer> instruments;  // instrument ids
+    private final List<Integer> genres;       // 장르 ID 목록
+    private final List<Integer> instruments;  // 악기 ID 목록
     private final Character sex;
 }

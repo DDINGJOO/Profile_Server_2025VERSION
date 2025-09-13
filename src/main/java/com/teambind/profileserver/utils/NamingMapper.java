@@ -8,9 +8,9 @@ import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class NamingMapper {
-//TODO: When server starts, initialize GenreName And InstrumentName Tables
+
 
     private final GenreNameTableRepository genreNameTableRepository;
     private final InstrumentNameTableRepository instrumentNameTableRepository;
@@ -45,13 +45,25 @@ public class NamingMapper {
         instrumentNameTables.forEach(instrumentNameTable -> {
             NamingMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
         });
+    }
 
 
+    public List<GenreNameTable> convertGenreNameTable(List<Integer> names) {
+        List<GenreNameTable> convertedNames = new ArrayList<>();
+        names.forEach(name -> {
+            if( !NamingMapper.genreNameTable.containsKey(name)){
+                convertedNames.add(genreNameTableRepository.findById(name).get());}
+        });
+        return convertedNames;
+    }
 
-
-
-
-
+    public List<InstrumentNameTable> convertInstrumentNameTable(List<Integer> names) {
+        List<InstrumentNameTable> convertedNames = new ArrayList<>();
+        names.forEach(name -> {
+            if( !NamingMapper.instrumentNameTable.containsKey(name)){
+                convertedNames.add(instrumentNameTableRepository.findById(name).get());}
+        });
+        return convertedNames;
     }
 
 

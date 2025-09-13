@@ -13,4 +13,9 @@ public class UserGenreKey implements Serializable {
 
     private String userId;
     private int genreId;
+
+    public UserGenreKey(String userId, int genreId) {
+        this.userId = userId;
+        this.genreId = genreId;
+    }
 }

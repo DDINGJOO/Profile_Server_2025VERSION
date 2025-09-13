@@ -1,0 +1,41 @@
+package com.teambind.profileserver.service.create;
+
+import com.teambind.profileserver.repository.UserInfoDslRepository;
+import com.teambind.profileserver.repository.UserInfoRepository;
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+@SpringBootTest
+@ActiveProfiles("dev")
+class CreateUserProfileTest {
+    @Autowired
+    private CreateUserProfile createUserProfile;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+
+
+    @AfterEach
+    void tearDown() {
+        userInfoRepository.deleteAll();
+    }
+    @Test
+    @DisplayName("유저 초기 생성 테스트 ")
+    void createUserProfile() {
+        String userId = "testUserId";
+        String provider = "facebook";
+        String nickname = createUserProfile.createUserProfile(userId, provider);
+        assertNotNull(nickname);
+        assertEquals(nickname, provider+"_"+userId);
+
+
+    }
+}

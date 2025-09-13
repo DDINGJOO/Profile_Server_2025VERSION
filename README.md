@@ -88,7 +88,21 @@
   제주,
   ETC
 
-- 
+- 악기 목록 
+    VOCAL,
+  GUITAR,
+  BASS,
+  DRUM,
+  KEYBOARD,
+  PERCUSSION,
+  SAXOPHONE,
+  VIOLIN,
+  CELLO,
+  TRUMPET,
+  FLUTE,
+  DJ,
+  PRODUCER,
+  ETC // 기타
 
 
 ---

@@ -25,7 +25,6 @@ def querydslDir = "$buildDir/generated/querydsl"
 sourceSets {
     main {
         java {
-            srcDirs += [querydslDir]
         }
     }
 }
@@ -47,14 +46,13 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    runtimeOnly 'com.h2database:h2' // 테스트시 임베디드 DB 사용 가능
 
 
     //DSL
     implementation "com.querydsl:querydsl-jpa:${querydslVersion}:jakarta"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
     //QueryDsl
-    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }

@@ -49,7 +49,7 @@ public class UserInfo {
     private Boolean isChatable;
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UserGenres> userChats;
+    private List<UserGenres> userGenres;
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserInstruments> userInstments;

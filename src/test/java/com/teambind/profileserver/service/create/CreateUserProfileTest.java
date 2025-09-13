@@ -1,5 +1,6 @@
 package com.teambind.profileserver.service.create;
 
+import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.repository.UserInfoDslRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import org.aspectj.lang.annotation.After;
@@ -8,13 +9,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@SpringBootTest
-@ActiveProfiles("dev")
+@SpringBootTest(classes = com.teambind.profileserver.ProfileServerApplication.class)
 class CreateUserProfileTest {
     @Autowired
     private CreateUserProfile createUserProfile;
@@ -34,8 +33,10 @@ class CreateUserProfileTest {
         String provider = "facebook";
         String nickname = createUserProfile.createUserProfile(userId, provider);
         assertNotNull(nickname);
-        assertEquals(nickname, provider+"_"+userId);
 
-
+        UserInfo userInfo = userInfoRepository.findById(userId).orElse(null);
+        assertNotNull(userInfo);
+        assertEquals(userId, userInfo.getUserId());
+        assertTrue(userInfo.getNickname().startsWith("FACEBOOK_"));
     }
 }

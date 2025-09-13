@@ -10,10 +10,11 @@ spring:
       ack-mode: record
 
   datasource:
-    url: jdbc:mariadb://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?useSSL=false&serverTimezone=UTC
-    username: ${DATABASE_USER_NAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:mariadb://${DATABASE_HOST:localhost}:${DATABASE_PORT:4000}/${DATABASE_NAME:profiles}
+    username: ${DATABASE_USER_NAME:root}
+    password: ${DATABASE_PASSWORD:pass123#}
     driver-class-name: org.mariadb.jdbc.Driver
+
 
 
   jpa:

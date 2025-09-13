@@ -35,38 +35,40 @@ CREATE TABLE IF NOT EXISTS instrument_name (
 );
 
 -- 사용자-악기 매핑 (EmbeddedId: user_id + instrumentId) + 낙관적 락 version
-CREATE TABLE IF NOT EXISTS instruments (
-    user_id VARCHAR(255) NOT NULL,
-    instrumentId INT NOT NULL,
-    version INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (user_id, instrumentId),
-    CONSTRAINT fk_instruments_user FOREIGN KEY (user_id)
-        REFERENCES user_info(user_id)
-        ON DELETE CASCADE,
-    CONSTRAINT fk_instruments_instrument FOREIGN KEY (instrumentId)
-        REFERENCES instrument_name(instrument_id)
+CREATE TABLE IF NOT EXISTS user_instruments (
+                                                user_id VARCHAR(255) NOT NULL,
+                                                instrument_id INT NOT NULL,
+                                                version INT NOT NULL DEFAULT 0,
+                                                PRIMARY KEY (user_id, instrument_id),
+                                                CONSTRAINT fk_instruments_user FOREIGN KEY (user_id)
+                                                    REFERENCES user_info(user_id)
+                                                    ON DELETE CASCADE,
+                                                CONSTRAINT fk_instruments_instrument FOREIGN KEY (instrument_id)
+                                                    REFERENCES instrument_name(instrument_id)
 );
 
 -- 장르 명칭 테이블 (주의: 엔티티 컬럼명이 genreId)
 CREATE TABLE IF NOT EXISTS genre_name (
-    genre_Id INT PRIMARY KEY,
-    genre_name VARCHAR(255) NOT NULL,
-    version INT NOT NULL DEFAULT 0
+                                          genre_id INT PRIMARY KEY,
+                                          genre_name VARCHAR(255) NOT NULL,
+                                          version INT NOT NULL DEFAULT 0
 );
+
 
 -- 사용자-장르 매핑 (EmbeddedId: user_id + genreId)
 -- 엔티티에 별도 컬럼 genre_id 도 존재하므로 함께 생성
 CREATE TABLE IF NOT EXISTS user_genres (
-    user_id VARCHAR(255) NOT NULL,
-    genre_id INT NOT NULL,
-    version INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (user_id, genre_Id),
-    CONSTRAINT fk_user_genres_user FOREIGN KEY (user_id)
-        REFERENCES user_info(user_id)
-        ON DELETE CASCADE,
-    CONSTRAINT fk_user_genres_genre FOREIGN KEY (genre_Id)
-        REFERENCES genre_name(genre_Id)
+                                           user_id VARCHAR(255) NOT NULL,
+                                           genre_id INT NOT NULL,
+                                           version INT NOT NULL DEFAULT 0,
+                                           PRIMARY KEY (user_id, genre_id),
+                                           CONSTRAINT fk_user_genres_user FOREIGN KEY (user_id)
+                                               REFERENCES user_info(user_id)
+                                               ON DELETE CASCADE,
+                                           CONSTRAINT fk_user_genres_genre FOREIGN KEY (genre_id)
+                                               REFERENCES genre_name(genre_id)
 );
+
 
 -- auth.shedlock definition
 

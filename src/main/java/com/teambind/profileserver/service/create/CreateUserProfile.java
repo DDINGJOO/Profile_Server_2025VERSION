@@ -19,10 +19,9 @@ public class CreateUserProfile {
 
 
     public String createUserProfile(String userId, String provider) {
-        String nickname = NicknameGenerator.generateNickname(provider);
         UserInfo userInfo = UserInfo.builder()
                 .userId(userId)
-                .nickname(nickname)
+                .nickname(NicknameGenerator.generateNickname(provider))
                 .city(null)
                 .isChatable(false)
                 .isPublic(false)

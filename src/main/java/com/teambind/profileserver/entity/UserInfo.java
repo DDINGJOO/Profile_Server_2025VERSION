@@ -52,7 +52,7 @@ public class UserInfo {
     private List<UserGenres> userGenres;
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UserInstruments> userInstments;
+    private List<UserInstruments> userInstruments;
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<History> userHistory;

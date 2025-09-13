@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @SpringBootTest(classes = com.teambind.profileserver.ProfileServerApplication.class)
 class ProfileSearchServiceTest {
@@ -24,6 +22,7 @@ class ProfileSearchServiceTest {
     @Test
     @DisplayName("페이징 기반 유저 정보 찾기 : 단일 필터 : 닉네임 ")
     void searchProfilesByNickname() {
+
 
     }
 

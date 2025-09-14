@@ -16,8 +16,8 @@ public class ProfileSearchController {
 
     private final ProfileSearchService profileSearchService;
     @GetMapping("")
-    public String getProfiles(@RequestParam ProfileSearchCriteria criteria) {
-        return "Profiles : " + profileSearchService.searchProfiles(criteria, null);
+    public String getProfiles(@RequestParam String id) {
+        return "Profiles : " + id;
     }
 
     @GetMapping("/search-by-filter")

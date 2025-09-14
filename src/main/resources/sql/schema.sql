@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS user_info (
 
 -- 프로필 변경 이력
 CREATE TABLE IF NOT EXISTS profile_update_history (
-    history_id BIGINT PRIMARY KEY,
+    history_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     updated_at TIMESTAMP NOT NULL,
     old_val VARCHAR(255),
     new_val VARCHAR(255),

@@ -143,4 +143,14 @@ public class ProfileUpdateService {
         return userInfo;
     }
 
+
+
+
+    @Transactional
+    public UserInfo updateProfileImage(String userId, String imageUrl) {
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
+        userInfo.setProfileImageUrl(imageUrl);
+        userInfoRepository.save(userInfo);
+        return userInfo;
+    }
 }

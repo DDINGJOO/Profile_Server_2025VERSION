@@ -15,13 +15,13 @@ public class ProfileUpdateController {
 
 
     @PutMapping("/ver1")
-    public ResponseEntity<Boolean> updateProfile(@RequestParam String userId, @RequestBody ProfileUpdateRequest request) {
+    public ResponseEntity<Boolean> updateProfile(@RequestParam String userId, @RequestBody ProfileUpdateRequest request) throws Exception {
         profileUpdateService.updateProfile(userId, request.getNickname(),request.getInstruments(),request.getGenres());
         return ResponseEntity.ok(true);
     }
 
     @PutMapping("/ver2")
-    public ResponseEntity<Boolean> updateProfileAll(@RequestParam String userId, @RequestBody ProfileUpdateRequest request) {
+    public ResponseEntity<Boolean> updateProfileAll(@RequestParam String userId, @RequestBody ProfileUpdateRequest request) throws Exception {
         profileUpdateService.updateProfileAll(userId, request.getNickname(),request.getInstruments(),request.getGenres());
         return ResponseEntity.ok(true);
     }

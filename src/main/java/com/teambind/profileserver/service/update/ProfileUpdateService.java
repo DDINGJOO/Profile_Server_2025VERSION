@@ -1,6 +1,7 @@
 package com.teambind.profileserver.service.update;
 
 
+import com.teambind.profileserver.dto.request.HistoryUpdateRequest;
 import com.teambind.profileserver.entity.UserGenres;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.entity.UserInstruments;
@@ -9,6 +10,7 @@ import com.teambind.profileserver.entity.key.UserInstrumentKey;
 import com.teambind.profileserver.repository.UserGenresRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.repository.UserInstrumentsRepository;
+import com.teambind.profileserver.service.history.UserProfileHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +26,10 @@ public class ProfileUpdateService {
     private final UserInfoRepository userInfoRepository;
     private final UserGenresRepository userGenresRepository;
     private final UserInstrumentsRepository userInstrumentsRepository;
+    private final UserProfileHistoryService historyService;
 
     @Transactional
-    public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres) {
+    public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres) throws Exception {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
 
         // 닉네임이 null이 아니고 변경된 경우에만 업데이트
@@ -61,6 +64,7 @@ public class ProfileUpdateService {
                 }
                 userInstrumentsRepository.saveAll(uiBatch);
             }
+
         }
 
         // 장르 목록이 제공된 경우에만 업데이트 (null이면 변경 없음, 빈 리스트면 전체 삭제)
@@ -94,6 +98,13 @@ public class ProfileUpdateService {
 
         // 사용자 정보 변경사항 저장(닉네임)
         // 엔티티는 영속 상태이므로 save가 없어도 되지만, 가독성을 위해 명시적으로 호출
+        historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
+                HistoryUpdateRequest.builder()
+                        .columnName("nickname")
+                        .oldValue(userInfo.getNickname())
+                        .newValue(nickname)
+                        .build()
+        });
         userInfoRepository.save(userInfo);
 
         // 추가 조회와 불필요한 지연 로딩을 피하기 위해 영속 엔티티 반환
@@ -101,13 +112,20 @@ public class ProfileUpdateService {
     }
 
     @Transactional
-    public UserInfo updateProfileAll(String userId, String nickname, List<Integer> instruments, List<Integer> genres) {
+    public UserInfo updateProfileAll(String userId, String nickname, List<Integer> instruments, List<Integer> genres) throws Exception {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
 
         // 1) 닉네임은 전체 데이터 갱신 요구사항에 따라 전달된 값으로 그대로 반영
         //    (null 허용 정책이 별도로 없다면 null이면 기존 값 유지로 처리)
         if (nickname != null) {
             userInfo.setNickname(nickname);
+            historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
+                    HistoryUpdateRequest.builder()
+                            .columnName("nickname")
+                            .oldValue(userInfo.getNickname())
+                            .newValue(nickname)
+                            .build()
+            });
         }
 
         // 2) 악기/장르 모두 전체 갱신: 기존 것을 모두 삭제하고, 전달된 전체 목록을 넣는다
@@ -123,6 +141,12 @@ public class ProfileUpdateService {
                         .userId(new UserInstrumentKey(userId, instId))
                         .build());
             }
+            historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
+                    HistoryUpdateRequest.builder()
+                            .columnName("instruments")
+                            .newValue(instruments.toString())
+                            .build()
+            });
             userInstrumentsRepository.saveAll(uiBatch);
         }
 
@@ -133,6 +157,12 @@ public class ProfileUpdateService {
                         .userId(new UserGenreKey(userId, genreId))
                         .build());
             }
+            historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
+                    HistoryUpdateRequest.builder()
+                            .columnName("genres")
+                            .newValue(genres.toString())
+                            .build()
+            });
             userGenresRepository.saveAll(ugBatch);
         }
 
@@ -147,10 +177,18 @@ public class ProfileUpdateService {
 
 
     @Transactional
-    public UserInfo updateProfileImage(String userId, String imageUrl) {
+    public UserInfo updateProfileImage(String userId, String imageUrl) throws Exception {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
         userInfo.setProfileImageUrl(imageUrl);
         userInfoRepository.save(userInfo);
+        historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
+                HistoryUpdateRequest.builder()
+                        .columnName("profileImageUrl")
+                        .oldValue(userInfo.getProfileImageUrl())
+                        .newValue(imageUrl)
+                        .build()
+        });
+
         return userInfo;
     }
 }

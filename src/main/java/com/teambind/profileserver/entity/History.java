@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class History {
     @Id
     @Column(name ="history_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long historyId;
 
     @Column(name = "updated_at", nullable = false)

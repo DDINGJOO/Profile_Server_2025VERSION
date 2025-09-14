@@ -7,9 +7,7 @@ import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.entity.UserInstruments;
 import com.teambind.profileserver.entity.key.UserGenreKey;
 import com.teambind.profileserver.entity.key.UserInstrumentKey;
-import com.teambind.profileserver.repository.UserGenresRepository;
-import com.teambind.profileserver.repository.UserInfoRepository;
-import com.teambind.profileserver.repository.UserInstrumentsRepository;
+import com.teambind.profileserver.repository.*;
 import com.teambind.profileserver.service.history.UserProfileHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,8 @@ public class ProfileUpdateService {
     private final UserInfoRepository userInfoRepository;
     private final UserGenresRepository userGenresRepository;
     private final UserInstrumentsRepository userInstrumentsRepository;
+    private final InstrumentNameTableRepository instrumentNameTableRepository;
+    private final GenreNameTableRepository genreNameTableRepository;
     private final UserProfileHistoryService historyService;
 
 
@@ -60,8 +60,14 @@ public class ProfileUpdateService {
 
             if (!toAdd.isEmpty()) {
                 List<UserInstruments> uiBatch = new ArrayList<>(toAdd.size());
+                // Use references to satisfy @MapsId relations without hitting DB for full entities
+                UserInfo userRef = userInfoRepository.getReferenceById(userId);
                 for (Integer instId : toAdd) {
-                    uiBatch.add(UserInstruments.builder().userId(new UserInstrumentKey(userId, instId)).build());
+                    uiBatch.add(UserInstruments.builder()
+                            .userId(new UserInstrumentKey(userId, instId))
+                            .userInfo(userRef)
+                            .instrument(instrumentNameTableRepository.getReferenceById(instId))
+                            .build());
                 }
                 userInstrumentsRepository.saveAll(uiBatch);
             }
@@ -90,8 +96,13 @@ public class ProfileUpdateService {
 
             if (!toAdd.isEmpty()) {
                 List<UserGenres> ugBatch = new ArrayList<>(toAdd.size());
+                UserInfo userRef = userInfoRepository.getReferenceById(userId);
                 for (Integer genreId : toAdd) {
-                    ugBatch.add(UserGenres.builder().userId(new UserGenreKey(userId, genreId)).build());
+                    ugBatch.add(UserGenres.builder()
+                            .userId(new UserGenreKey(userId, genreId))
+                            .userInfo(userRef)
+                            .genre(genreNameTableRepository.getReferenceById(genreId))
+                            .build());
                 }
                 userGenresRepository.saveAll(ugBatch);
             }
@@ -137,9 +148,12 @@ public class ProfileUpdateService {
         // 3) 전달된 전체 목록을 일괄 저장 (null은 빈 목록으로 간주)
         if (instruments != null && !instruments.isEmpty()) {
             List<UserInstruments> uiBatch = new ArrayList<>(instruments.size());
+            UserInfo userRef = userInfoRepository.getReferenceById(userId);
             for (Integer instId : instruments) {
                 uiBatch.add(UserInstruments.builder()
                         .userId(new UserInstrumentKey(userId, instId))
+                        .userInfo(userRef)
+                        .instrument(instrumentNameTableRepository.getReferenceById(instId))
                         .build());
             }
             historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
@@ -153,9 +167,12 @@ public class ProfileUpdateService {
 
         if (genres != null && !genres.isEmpty()) {
             List<UserGenres> ugBatch = new ArrayList<>(genres.size());
+            UserInfo userRef = userInfoRepository.getReferenceById(userId);
             for (Integer genreId : genres) {
                 ugBatch.add(UserGenres.builder()
                         .userId(new UserGenreKey(userId, genreId))
+                        .userInfo(userRef)
+                        .genre(genreNameTableRepository.getReferenceById(genreId))
                         .build());
             }
             historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{

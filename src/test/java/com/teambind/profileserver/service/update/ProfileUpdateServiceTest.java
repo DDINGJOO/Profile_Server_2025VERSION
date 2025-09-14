@@ -9,6 +9,8 @@ import com.teambind.profileserver.entity.nameTable.GenreNameTable;
 import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
 import com.teambind.profileserver.repository.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = com.teambind.profileserver.ProfileServerApplication.class)
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class ProfileUpdateServiceTest {
 
     @Autowired private ProfileUpdateService profileUpdateService;

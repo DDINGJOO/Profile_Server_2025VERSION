@@ -36,8 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
-.env.prod
-.env
+
+
+###
 /nginx/logs
 
 

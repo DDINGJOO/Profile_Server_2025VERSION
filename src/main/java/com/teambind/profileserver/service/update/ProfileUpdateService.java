@@ -25,6 +25,7 @@ public class ProfileUpdateService {
     private final UserGenresRepository userGenresRepository;
     private final UserInstrumentsRepository userInstrumentsRepository;
 
+
     @Transactional
     public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres) {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();

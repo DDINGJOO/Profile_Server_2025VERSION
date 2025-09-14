@@ -40,8 +40,9 @@ out/
 .env
 .env.prod
 ###
-/nginx/logs
 
+
+nginx/logs
 
 
 

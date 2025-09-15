@@ -35,9 +35,5 @@ public class History {
     private UserInfo userInfo;
 
 
-    @Version
-    @Column(name="version")
-    private int version;
-
 
 }

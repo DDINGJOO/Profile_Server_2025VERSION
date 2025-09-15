@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS profile_update_history (
     new_val VARCHAR(255),
     field_name VARCHAR(255),
     user_id VARCHAR(255) NOT NULL,
-    version INT NOT NULL DEFAULT 0,
     CONSTRAINT fk_history_user FOREIGN KEY (user_id)
         REFERENCES user_info(user_id)
         ON DELETE CASCADE

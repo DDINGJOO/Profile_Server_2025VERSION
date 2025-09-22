@@ -9,6 +9,7 @@ import com.teambind.profileserver.entity.key.UserGenreKey;
 import com.teambind.profileserver.entity.key.UserInstrumentKey;
 import com.teambind.profileserver.repository.*;
 import com.teambind.profileserver.service.history.UserProfileHistoryService;
+import com.teambind.profileserver.utils.NickNameValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +28,16 @@ public class ProfileUpdateService {
     private final InstrumentNameTableRepository instrumentNameTableRepository;
     private final GenreNameTableRepository genreNameTableRepository;
     private final UserProfileHistoryService historyService;
-
+    private final NickNameValidator nickNameValidator;
     @Transactional
     public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres) throws Exception {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
 
         // 닉네임이 null이 아니고 변경된 경우에만 업데이트
         if (nickname != null && !nickname.equals(userInfo.getNickname())) {
+            if (!nickNameValidator.isValidNickName(nickname)) {
+                throw new IllegalArgumentException("Invalid nickname");
+            }
             userInfo.setNickname(nickname);
         }
 

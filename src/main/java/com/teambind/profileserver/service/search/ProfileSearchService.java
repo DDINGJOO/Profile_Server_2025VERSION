@@ -18,7 +18,7 @@ public class ProfileSearchService {
     private final ProfileSearchRepository repository;
 
     @Transactional(readOnly = true)
-    public UserResponse searchProfile(String userId) {
+    public UserResponse searchProfileById(String userId) {
         UserInfo userInfo = repository.search(userId);
         return UserResponse.fromEntity(userInfo);
 

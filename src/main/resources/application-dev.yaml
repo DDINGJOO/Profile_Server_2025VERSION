@@ -40,6 +40,9 @@ spring:
       mode: never
 
 
+nickname:
+  validation:
+    regex:^[a-zA-Z0-9_]{3,15}$
 
 
 

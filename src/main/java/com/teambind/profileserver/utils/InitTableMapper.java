@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class NamingMapper {
+public class InitTableMapper {
 
 
     private final GenreNameTableRepository genreNameTableRepository;
@@ -37,13 +37,11 @@ public class NamingMapper {
         List<InstrumentNameTable> instrumentNameTables = instrumentNameTableRepository.findAll();
 
 
-
-
         genreNameTables.forEach(genreNameTable -> {
-            NamingMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable.getGenreName());
+            InitTableMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable.getGenreName());
         });
         instrumentNameTables.forEach(instrumentNameTable -> {
-            NamingMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
+            InitTableMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
         });
     }
 
@@ -51,7 +49,7 @@ public class NamingMapper {
     public List<GenreNameTable> convertGenreNameTable(List<Integer> names) {
         List<GenreNameTable> convertedNames = new ArrayList<>();
         names.forEach(name -> {
-            if( !NamingMapper.genreNameTable.containsKey(name)){
+            if( !InitTableMapper.genreNameTable.containsKey(name)){
                 convertedNames.add(genreNameTableRepository.findById(name).get());}
         });
         return convertedNames;
@@ -60,7 +58,7 @@ public class NamingMapper {
     public List<InstrumentNameTable> convertInstrumentNameTable(List<Integer> names) {
         List<InstrumentNameTable> convertedNames = new ArrayList<>();
         names.forEach(name -> {
-            if( !NamingMapper.instrumentNameTable.containsKey(name)){
+            if( !InitTableMapper.instrumentNameTable.containsKey(name)){
                 convertedNames.add(instrumentNameTableRepository.findById(name).get());}
         });
         return convertedNames;

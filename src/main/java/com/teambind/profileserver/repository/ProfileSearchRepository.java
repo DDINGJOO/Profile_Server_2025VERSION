@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface ProfileSearchRepository {
+    UserInfo search (String userId);
     Page<UserInfo> search(ProfileSearchCriteria criteria, Pageable pageable);
     Slice<UserInfo> searchByCursor(ProfileSearchCriteria criteria, String cursor, int size);
 }

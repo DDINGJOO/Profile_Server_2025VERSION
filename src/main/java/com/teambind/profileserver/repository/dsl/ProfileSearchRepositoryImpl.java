@@ -30,6 +30,19 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
     private static final QUserInstruments uins = QUserInstruments.userInstruments;
 
     @Override
+    public UserInfo search(String userId) {
+        UserInfo userInfo = queryFactory
+                .selectFrom(ui)
+                .where(ui.userId.eq(userId))
+                .fetchOne();
+
+        if (userInfo != null) {
+            batchInitializeCollections(List.of(userInfo));
+        }
+        return userInfo;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Page<UserInfo> search(ProfileSearchCriteria criteria, Pageable pageable) {
         BooleanBuilder where = buildWhere(criteria);

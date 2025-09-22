@@ -1,5 +1,6 @@
 package com.teambind.profileserver.service.search;
 
+import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.entity.UserGenres;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.entity.UserInstruments;
@@ -21,8 +22,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * 프로필 검색 서비스 통합 테스트
@@ -340,5 +340,20 @@ class ProfileSearchServiceTest {
             if (ids.get(i - 1).compareTo(ids.get(i)) < 0) return false;
         }
         return true;
+    }
+
+    @Test
+    void searchProfile() {
+    }
+
+    @Test
+    void searchProfiles() {
+        createUser("user_nick_1", "alpha", 'M', new Integer[]{901}, new Integer[]{901});
+        UserResponse userInfoResponse = profileSearchService.searchProfile("user_nick_1");
+        assertNotNull(userInfoResponse);
+        assertEquals("user_nick_1", userInfoResponse.getUserId());
+        assertEquals("alpha", userInfoResponse.getNickname());
+        assertTrue(userInfoResponse.getInstruments().contains("INSTRUMENT_901"));
+        assertTrue(userInfoResponse.getGenres().contains("GENRE_901"));
     }
 }

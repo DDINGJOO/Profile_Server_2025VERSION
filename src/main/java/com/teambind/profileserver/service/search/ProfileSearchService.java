@@ -1,5 +1,6 @@
 package com.teambind.profileserver.service.search;
 
+import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.repository.ProfileSearchRepository;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
@@ -15,6 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProfileSearchService {
 
     private final ProfileSearchRepository repository;
+
+    @Transactional(readOnly = true)
+    public UserResponse searchProfile(String userId) {
+        UserInfo userInfo = repository.search(userId);
+        return UserResponse.fromEntity(userInfo);
+
+
+    }
 
     @Transactional(readOnly = true)
     public Page<UserInfo> searchProfiles(ProfileSearchCriteria criteria, Pageable pageable) {

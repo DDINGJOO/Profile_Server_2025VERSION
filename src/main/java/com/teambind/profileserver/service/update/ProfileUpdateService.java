@@ -202,13 +202,15 @@ public class ProfileUpdateService {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
         userInfo.setProfileImageUrl(imageUrl);
         userInfoRepository.save(userInfo);
-        historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
+        if (!historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
                 HistoryUpdateRequest.builder()
                         .columnName("profileImageUrl")
                         .oldValue(userInfo.getProfileImageUrl())
                         .newValue(imageUrl)
                         .build()
-        });
+        })){
+            throw new Exception("History update failed");
+        }
 
         return userInfo;
     }

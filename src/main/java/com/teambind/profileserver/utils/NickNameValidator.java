@@ -11,10 +11,20 @@ public class NickNameValidator {
     private final UserInfoRepository userInfoRepository;
 
     @Value("${nickname.validation.regex}")
-    private static String regex;
+    private  String regex;
 
-    public static boolean isValidNickName(String nickName) {
-        return nickName.matches(regex);
+    public  boolean isValidNickName(String nickName) {
+         if(!nickName.matches(regex)){
+             return false;
+         };
+
+        if(userInfoRepository.existsByNickname(nickName))
+        {
+            return false;
+        };
+
+        return true;
+
 
     }
 }

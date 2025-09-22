@@ -1,6 +1,7 @@
 package com.teambind.profileserver.repository.search;
 
 import com.teambind.profileserver.enums.City;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 
 @Getter
+@AllArgsConstructor
 @Builder
 public class ProfileSearchCriteria {
     private final City city;

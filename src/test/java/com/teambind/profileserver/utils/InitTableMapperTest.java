@@ -67,7 +67,8 @@ class InitTableMapperTest {
 
         // then: 캐시에 없는 20만 반환되고, 10은 조회하지 않음
         assertEquals(1, result.size());
-        assertEquals(20, result.get(0).getInstrumentId());
+        assertEquals(20, result.get(0).
+                getInstrumentId());
         verify(instrumentRepo, times(1)).findById(20);
         verify(instrumentRepo, never()).findById(10);
     }

@@ -35,7 +35,7 @@ public class TestDataInitializer {
     @PostConstruct
     public void init() {
         int total = getIntProp("profile.test.seed-users", 200);
-        int batch = getIntProp("profile.test.seed-batch", 50);
+        int batch = getIntProp("profile.test.seed-batch", 10);
         log.info("[TestDataInitializer] Ensuring test data exists: total={}, batch={}", total, batch);
         userInfoFactory.ensureUsersGenerated(total, batch);
     }

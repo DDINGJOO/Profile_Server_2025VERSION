@@ -15,13 +15,13 @@
 
 ---
 ### 요구사항 정리 
-- [ ] 닉네임, 장르, 악기로 필터링이 가능해야함
-- [ ] 유저는 언제든 프로필을 수정 할 수 있어야함 
+- [x] 닉네임, 장르, 악기로 필터링이 가능해야함
+- [x] 유저는 언제든 프로필을 수정 할 수 있어야함 
 - [ ] 이메일 인증을 한 유저는 하나의 프로필을 갖고 있어야함.
-- [ ] 한 유저는 여러 장르, 악기를 선택 할 수 있어야 함 
-- [ ] 닉네임이 같은 여러명의 유저는 존재 하지 않음 
-- [ ] 한 유저는 하나의 프로필 이미지를 갖고 있어야 함
-- [ ] 프로필 서버는 3대의 스케일 아웃을 고려중이며, 1대의 높은 하드웨어 서버와 2대의 예비서버로 구성됨 
+- [x] 한 유저는 여러 장르, 악기를 선택 할 수 있어야 함 
+- [x] 닉네임이 같은 여러명의 유저는 존재 하지 않음 
+- [x] 한 유저는 하나의 프로필 이미지를 갖고 있어야 함
+- [x] 프로필 서버는 3대의 스케일 아웃을 고려중이며, 1대의 높은 하드웨어 서버와 2대의 예비서버로 구성됨 
 - [ ] 유저는 오직 개인의 프로필만 수정 할 수있음
 
 
@@ -31,8 +31,8 @@
 ![erd3.png](readMe_images/erd3.png)
 - 장르와 , 선호악기는 프로필과 M:N 매핑 관계
 - 조회 및 필터 기능에서 성능 최적화가 수준 높게 요구됨
-- [ ] 장르, 악기 종류가 추가 되어도 서버는 지속적으로 운영되어야 함.
-- [ ] 서버가 처음 켜질때 데이터 베이스의 이름 목록을 조회 해야됨.
+- [x] 장르, 악기 종류가 추가 되어도 서버는 지속적으로 운영되어야 함.
+- [x] 서버가 처음 켜질때 데이터 베이스의 이름 목록을 조회 해야됨.
 ---
 
 ### 요구사항 명세 프로필 
@@ -73,6 +73,22 @@
   WORLD_MUSIC,
   OTHER // 기타
 
+- 악기 목록 
+    VOCAL,
+  GUITAR,
+  BASS,
+  DRUM,
+  KEYBOARD,
+  PERCUSSION,
+  SAXOPHONE,
+  VIOLIN,
+  CELLO,
+  TRUMPET,
+  FLUTE,
+  DJ,
+  PRODUCER,
+  ETC // 기타
+
 - 지역 목록  
   서울,
   부산,
@@ -91,23 +107,17 @@
   경남,
   제주,
   ETC
+---
+# TEST 
+- 2025-09-14
 
-- 악기 목록 
-    VOCAL,
-  GUITAR,
-  BASS,
-  DRUM,
-  KEYBOARD,
-  PERCUSSION,
-  SAXOPHONE,
-  VIOLIN,
-  CELLO,
-  TRUMPET,
-  FLUTE,
-  DJ,
-  PRODUCER,
-  ETC // 기타
 
+![test1.png](readMe_images/test1.png)
+![test2.png](readMe_images/test2.png)
+![test3.png](readMe_images/test3.png)
+![test4.png](readMe_images/test4.png)
+![test5.png](readMe_images/test5.png)
+![test6.png](readMe_images/test6.png)
 
 ---
 ### 예시 프로필 등록 사진

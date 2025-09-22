@@ -37,10 +37,12 @@ out/
 .vscode/
 
 
-### env ###
-.env.prod
 .env
+.env.prod
+###
 
+
+nginx/logs
 
 
 

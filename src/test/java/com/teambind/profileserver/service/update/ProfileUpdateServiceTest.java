@@ -8,8 +8,7 @@ import com.teambind.profileserver.entity.key.UserInstrumentKey;
 import com.teambind.profileserver.entity.nameTable.GenreNameTable;
 import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
 import com.teambind.profileserver.repository.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = com.teambind.profileserver.ProfileServerApplication.class)
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class ProfileUpdateServiceTest {
 
     @Autowired private ProfileUpdateService profileUpdateService;
@@ -116,6 +116,7 @@ class ProfileUpdateServiceTest {
     // ====== Tests for updateProfile (partial update semantics) ======
 
     @Test
+    @DisplayName("닉네임이 null이면 변경을 무시한다")
     void nickname_null_is_ignored() throws Exception {
         // given
         ensureNameTables(List.of(1,2), List.of(10,20));
@@ -130,6 +131,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("닉네임이 동일하면 변경되지 않는다")
     void nickname_same_value_results_in_no_change() throws Exception {
         ensureNameTables(List.of(), List.of());
         String uid = "u2";
@@ -139,6 +141,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("닉네임이 변경되면 저장된다")
     void nickname_changed_is_applied() throws Exception {
         ensureNameTables(List.of(), List.of());
         String uid = "u3";
@@ -148,6 +151,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기 목록이 null이면 변경을 무시한다")
     void instruments_null_is_ignored() throws Exception {
         ensureNameTables(List.of(3), List.of(30));
         String uid = "u4";
@@ -157,6 +161,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기 목록이 빈 리스트면 전부 삭제한다")
     void instruments_empty_deletes_all() throws Exception {
         ensureNameTables(List.of(), List.of(31,32));
         String uid = "u5";
@@ -166,6 +171,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기 목록에 항목만 추가된다")
     void instruments_add_only() throws Exception {
         ensureNameTables(List.of(), List.of(40,41));
         String uid = "u6";
@@ -175,6 +181,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기 목록에서 항목만 제거된다")
     void instruments_remove_only() throws Exception {
         ensureNameTables(List.of(), List.of(50,51));
         String uid = "u7";
@@ -184,6 +191,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기 목록에서 추가와 제거가 함께 처리된다")
     void instruments_add_and_remove_mixed() throws Exception {
         ensureNameTables(List.of(), List.of(60,61,62));
         String uid = "u8";
@@ -193,6 +201,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기 입력의 중복은 한 번만 반영된다")
     void instruments_duplicates_in_input_are_handled() throws Exception {
         ensureNameTables(List.of(), List.of(70,71));
         String uid = "u9";
@@ -202,6 +211,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기 대량 목록으로 대체된다")
     void instruments_large_list_replace() throws Exception {
         List<Integer> ids = new ArrayList<>();
         for (int i=100;i<130;i++) ids.add(i);
@@ -213,6 +223,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("장르 목록이 null이면 변경을 무시한다")
     void genres_null_is_ignored() throws Exception {
         ensureNameTables(List.of(81), List.of(801));
         String uid = "u11";
@@ -222,6 +233,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("장르 목록이 빈 리스트면 전부 삭제한다")
     void genres_empty_deletes_all() throws Exception {
         ensureNameTables(List.of(82,83), List.of());
         String uid = "u12";
@@ -231,6 +243,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("장르 목록에 항목만 추가된다")
     void genres_add_only() throws Exception {
         ensureNameTables(List.of(90,91), List.of());
         String uid = "u13";
@@ -240,6 +253,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("장르 목록에서 항목만 제거된다")
     void genres_remove_only() throws Exception {
         ensureNameTables(List.of(100,101), List.of());
         String uid = "u14";
@@ -249,6 +263,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("장르 목록에서 추가와 제거가 함께 처리된다")
     void genres_add_and_remove_mixed() throws Exception {
         ensureNameTables(List.of(110,111,112), List.of());
         String uid = "u15";
@@ -258,6 +273,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("장르 입력의 중복은 한 번만 반영된다")
     void genres_duplicates_in_input_are_handled() throws Exception {
         ensureNameTables(List.of(120,121), List.of());
         String uid = "u16";
@@ -267,6 +283,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("악기와 장르를 동시에 업데이트한다")
     void updating_both_instruments_and_genres() throws Exception {
         ensureNameTables(List.of(130,131,132), List.of(230,231,232));
         String uid = "u17";
@@ -278,6 +295,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("원하는 목록과 현재가 모두 비어도 상태는 정상이다")
     void when_desired_empty_and_current_empty_no_delete_called_but_state_ok() throws Exception {
         ensureNameTables(List.of(), List.of());
         String uid = "u18";
@@ -288,11 +306,13 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("부분 업데이트 시 존재하지 않는 사용자는 예외 발생")
     void updateProfile_nonexistent_user_throws() {
         assertThrows(NoSuchElementException.class, () -> profileUpdateService.updateProfile("nope", null, null, null));
     }
 
     @Test
+    @DisplayName("같은 목록으로 반복 업데이트해도 결과가 동일하다(멱등성)")
     void idempotent_update_same_lists() throws Exception {
         ensureNameTables(List.of(201,202), List.of(301,302));
         String uid = "u19";
@@ -306,6 +326,7 @@ class ProfileUpdateServiceTest {
     // ====== Tests for updateProfileAll (full replace semantics) ======
 
     @Test
+    @DisplayName("전체 업데이트는 모든 값을 교체한다")
     void updateAll_replaces_everything() throws Exception {
         ensureNameTables(List.of(401,402,403), List.of(501,502,503));
         String uid = "u20";
@@ -317,6 +338,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("전체 업데이트에서 목록이 null이면 모두 비워진다")
     void updateAll_with_null_lists_results_in_clear() throws Exception {
         ensureNameTables(List.of(410), List.of(510));
         String uid = "u21";
@@ -328,6 +350,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("전체 업데이트에서 빈 목록이면 모두 비워진다")
     void updateAll_with_empty_lists_results_in_clear() throws Exception {
         ensureNameTables(List.of(420), List.of(520));
         String uid = "u22";
@@ -338,6 +361,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("전체 업데이트에서 악기만 주면 장르는 비워진다")
     void updateAll_only_instruments_provided_clears_genres() throws Exception {
         ensureNameTables(List.of(430), List.of(530,531));
         String uid = "u23";
@@ -348,6 +372,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("전체 업데이트에서 장르만 주면 악기는 비워진다")
     void updateAll_only_genres_provided_clears_instruments() throws Exception {
         ensureNameTables(List.of(440,441), List.of(540));
         String uid = "u24";
@@ -358,11 +383,13 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("전체 업데이트 시 존재하지 않는 사용자는 예외 발생")
     void updateAll_nonexistent_user_throws() {
         assertThrows(NoSuchElementException.class, () -> profileUpdateService.updateProfileAll("noUser", null, null, null));
     }
 
     @Test
+    @DisplayName("전체 업데이트에서 대량 입력도 정상 처리된다")
     void updateAll_large_inputs() throws Exception {
         List<Integer> g = new ArrayList<>();
         List<Integer> i = new ArrayList<>();
@@ -379,6 +406,7 @@ class ProfileUpdateServiceTest {
     // ====== Tests for updateProfileImage ======
 
     @Test
+    @DisplayName("프로필 이미지 URL을 설정하고 이력을 남긴다")
     void updateProfileImage_sets_url_and_adds_history() throws Exception {
         ensureNameTables(List.of(), List.of());
         String uid = "u26";
@@ -390,6 +418,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("프로필 이미지 업데이트 시 존재하지 않는 사용자는 예외 발생")
     void updateProfileImage_nonexistent_user_throws() {
         assertThrows(NoSuchElementException.class, () -> profileUpdateService.updateProfileImage("noUser", "x"));
     }
@@ -397,6 +426,7 @@ class ProfileUpdateServiceTest {
     // ====== Additional edge and behavior tests to exceed 30 cases ======
 
     @Test
+    @DisplayName("부분 업데이트에서 입력이 빈 리스트면 기존 악기를 모두 제거한다")
     void updateProfile_instruments_clear_when_input_empty_and_current_non_empty() throws Exception {
         ensureNameTables(List.of(), List.of(801,802));
         String uid = "u27";
@@ -406,6 +436,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("부분 업데이트에서 입력이 빈 리스트면 기존 장르를 모두 제거한다")
     void updateProfile_genres_clear_when_input_empty_and_current_non_empty() throws Exception {
         ensureNameTables(List.of(901,902), List.of());
         String uid = "u28";
@@ -415,6 +446,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("부분 업데이트에서 목록 동일·닉네임 null이면 변경 없음")
     void updateProfile_noop_when_both_lists_same_and_nickname_null() throws Exception {
         ensureNameTables(List.of(1001,1002), List.of(1101,1102));
         String uid = "u29";
@@ -425,6 +457,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("부분 업데이트에서 닉네임만 변경해도 목록에는 영향이 없다")
     void updateProfile_change_only_nickname_does_not_touch_lists() throws Exception {
         ensureNameTables(List.of(1201), List.of(1301));
         String uid = "u30";
@@ -435,6 +468,7 @@ class ProfileUpdateServiceTest {
     }
 
     @Test
+    @DisplayName("전체 업데이트에서 닉네임 변경과 null 목록으로 초기화된다")
     void updateAll_change_nickname_and_clear_lists_with_null() throws Exception {
         ensureNameTables(List.of(1401), List.of(1501));
         String uid = "u31";

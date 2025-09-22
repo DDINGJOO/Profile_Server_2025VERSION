@@ -1,9 +1,11 @@
 package com.teambind.profileserver.controller;
 
 
+import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import com.teambind.profileserver.service.search.ProfileSearchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,8 +18,9 @@ public class ProfileSearchController {
 
     private final ProfileSearchService profileSearchService;
     @GetMapping("")
-    public String getProfiles(@RequestParam String id) {
-        return "Profiles : " + id;
+    public ResponseEntity<UserResponse> getProfiles(@RequestParam String id) {
+        var Response = profileSearchService.searchProfileById(id);
+        return ResponseEntity.ok(Response);
     }
 
     @GetMapping("/search-by-filter")

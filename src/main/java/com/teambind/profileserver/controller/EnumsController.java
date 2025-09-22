@@ -1,10 +1,7 @@
 package com.teambind.profileserver.controller;
 
 
-import com.teambind.profileserver.utils.NamingMapper;
-import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.http.ResponseEntity;
+import com.teambind.profileserver.utils.InitTableMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,10 +13,10 @@ public class EnumsController {
 
     @RequestMapping("/genres")
     public Map<Integer, String> getGenres() {
-        return NamingMapper.genreNameTable;
+        return InitTableMapper.genreNameTable;
     }
     @RequestMapping("/instruments")
     public Map<Integer, String> getInstruments() {
-        return NamingMapper.instrumentNameTable;
+        return InitTableMapper.instrumentNameTable;
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileSearchController {
 
     private final ProfileSearchService profileSearchService;
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getProfiles(@PathVariable String id) {
         var Response = profileSearchService.searchProfileById(id);
         return ResponseEntity.ok(Response);

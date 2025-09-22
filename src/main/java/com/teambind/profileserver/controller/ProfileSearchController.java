@@ -6,10 +6,7 @@ import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import com.teambind.profileserver.service.search.ProfileSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileSearchController {
 
     private final ProfileSearchService profileSearchService;
-    @GetMapping("")
-    public ResponseEntity<UserResponse> getProfiles(@RequestParam String id) {
+    @GetMapping("{userId}")
+    public ResponseEntity<UserResponse> getProfiles(@PathVariable String id) {
         var Response = profileSearchService.searchProfileById(id);
         return ResponseEntity.ok(Response);
     }
 
-    @GetMapping("/search-by-filter")
+    @GetMapping("")
     public String searchProfiles( @RequestParam ProfileSearchCriteria criteria, String cursor, int size) {
         if (cursor == null || cursor.isBlank()) cursor = null;
         if (size <= 0) size = 10;

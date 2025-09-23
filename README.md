@@ -25,7 +25,7 @@
 - [ ] 유저는 오직 개인의 프로필만 수정 할 수있음
 - [ ] 유저의 프로필 뷰 요청과 프로필 수정 뷰가 다름 (IssuesNo10-2)
 - [ ] 프로필 카드뷰를 따로 DTO로 전달 가능 해야함 (IssuesNo10-2)
-- [ ] 악기와 장르르는 최대 3가지씩만 고를 수 있음 (IssuesNo10-1)
+- [x ] 악기와 장르는 최대 3가지씩만 고를 수 있음 (IssuesNo10-1)
 
 ---
 
@@ -122,7 +122,7 @@
 ![test4.png](readMe_images/test4.png)
 ![test5.png](readMe_images/test5.png)
 ![test6.png](readMe_images/test6.png)
-
+![스크린샷 2025-09-23 오후 10.23.37.png](readMe_images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-09-23%20%EC%98%A4%ED%9B%84%2010.23.37.png)
 ---
 ### 예시 프로필 등록 사진
 ![UserProfile.png](readMe_images/UserProfile.png)

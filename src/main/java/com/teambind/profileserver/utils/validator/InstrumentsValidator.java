@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 @Setter
 public class InstrumentsValidator {
-    @Value("${instruments.validation.max-size}")
+    @Value("${instruments.validation.max-size:3}")
     private int maxSize;
 
     public boolean isValidInstrumentByIds(Map<Integer, String> instrumentsMap) throws ProfileException {

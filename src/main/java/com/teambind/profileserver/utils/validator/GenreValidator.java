@@ -13,7 +13,7 @@ import java.util.Map;
 @Setter
 public class GenreValidator {
 
-    @Value("${genres.validation.max-size}")
+    @Value("${genres.validation.max-size:3}")
     private int maxSize;
 
     public boolean isValidGenreByIds(Map<Integer, String> genre) throws ProfileException {

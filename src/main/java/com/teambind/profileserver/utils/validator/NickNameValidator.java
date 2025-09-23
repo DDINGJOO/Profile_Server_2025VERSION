@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Setter
 public class NickNameValidator {
 
-    @Value("${nickname.validation.regex}")
+    @Value("${nickname.validation.regex:^[a-zA-Z0-9_]{3,15}$}")
     private  String regex;
 
     public  boolean isValidNickName(String nickName) {

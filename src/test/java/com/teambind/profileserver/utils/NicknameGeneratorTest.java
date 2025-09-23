@@ -1,8 +1,8 @@
 package com.teambind.profileserver.utils;
 
+import com.teambind.profileserver.utils.generator.NicknameGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 

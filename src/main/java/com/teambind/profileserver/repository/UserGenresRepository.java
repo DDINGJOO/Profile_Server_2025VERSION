@@ -25,4 +25,6 @@ public interface UserGenresRepository extends JpaRepository<UserGenres, UserGenr
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from UserGenres ug where ug.userId.userId = :userId")
     int deleteByUserId(@Param("userId") String userId);
+
+
 }

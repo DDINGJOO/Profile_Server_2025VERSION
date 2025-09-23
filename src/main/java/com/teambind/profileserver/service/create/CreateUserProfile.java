@@ -3,7 +3,7 @@ package com.teambind.profileserver.service.create;
 
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.repository.UserInfoRepository;
-import com.teambind.profileserver.utils.NicknameGenerator;
+import com.teambind.profileserver.utils.generator.NicknameGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.teambind.profileserver.utils.impl;
+package com.teambind.profileserver.utils.generator.impl;
 
 
-import com.teambind.profileserver.utils.PKeyGenerator;
+import com.teambind.profileserver.utils.generator.PKeyGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;

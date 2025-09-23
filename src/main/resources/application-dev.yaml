@@ -42,9 +42,15 @@ spring:
 
 nickname:
   validation:
-    regex:^[a-zA-Z0-9_]{3,15}$
+    regex: ^[a-zA-Z0-9_]{3,15}$
 
+genres:
+  validation:
+    max-size: 3
 
+instruments:
+  validation:
+    max-size: 3
 
 
 

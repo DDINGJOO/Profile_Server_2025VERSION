@@ -1,5 +1,6 @@
 package com.teambind.profileserver.utils;
 
+import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.utils.validator.GenreValidator;
 import com.teambind.profileserver.utils.validator.InstrumentsValidator;
 import com.teambind.profileserver.utils.validator.NickNameValidator;
@@ -54,7 +55,7 @@ public class ValidatorTest {
 
     @Test
     @DisplayName("악기 3개 이하 선택시 정상 실행")
-    void validateInstruments_valid() {
+    void validateInstruments_valid() throws ProfileException {
 
         InstrumentsValidator instrumentsValidate = new InstrumentsValidator();
         instrumentsValidate.setMaxSize(3);
@@ -77,14 +78,14 @@ public class ValidatorTest {
         for (Map.Entry<Integer, String> entry : instrumentsMap.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(ProfileException.class, () -> {
             instrumentsValidate.isValidInstrumentByIds(instrumentsMap);
         });
     }
 
     @Test
     @DisplayName("장르 3개 이하 선택시 정상 실행")
-    void validateGenre_valid() {
+    void validateGenre_valid() throws ProfileException {
         GenreValidator genreValidate = new GenreValidator();
         genreValidate.setMaxSize(3);
 
@@ -101,7 +102,7 @@ public class ValidatorTest {
     void validateGenre_invalid() {
         GenreValidator genreValidate = new GenreValidator();
         Map<Integer,String > genreMap = Map.of(1, "test1", 2, "test2", 3, "test3", 4, "test4");
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(ProfileException.class, () -> {
             genreValidate.isValidGenreByIds(genreMap);
         });
     }

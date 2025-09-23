@@ -7,6 +7,8 @@ import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.entity.UserInstruments;
 import com.teambind.profileserver.entity.key.UserGenreKey;
 import com.teambind.profileserver.entity.key.UserInstrumentKey;
+import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.*;
 import com.teambind.profileserver.service.history.UserProfileHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +37,7 @@ public class ProfileUpdateService {
         if (nickname != null && !nickname.equals(userInfo.getNickname())) {
             if(userInfoRepository.existsByNickname(nickname))
             {
-                throw new Exception("Nickname already exists");
+                throw new ProfileException(ErrorCode.NICKNAME_ALREADY_EXISTS);
             }
             userInfo.setNickname(nickname);
         }
@@ -133,7 +135,7 @@ public class ProfileUpdateService {
         //    (null 허용 정책이 별도로 없다면 null이면 기존 값 유지로 처리)
         if (nickname != null && !nickname.equals(userInfo.getNickname())) {
             if (userInfoRepository.existsByNickname(nickname)) {
-                throw new Exception("Nickname already exists");
+                throw new ProfileException(ErrorCode.NICKNAME_ALREADY_EXISTS);
             }
             userInfo.setNickname(nickname);
             historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
@@ -212,7 +214,7 @@ public class ProfileUpdateService {
                         .newValue(imageUrl)
                         .build()
         })){
-            throw new Exception("History update failed");
+            throw new ProfileException(ErrorCode.HISTORY_UPDATE_FAILED);
         }
 
         return userInfo;

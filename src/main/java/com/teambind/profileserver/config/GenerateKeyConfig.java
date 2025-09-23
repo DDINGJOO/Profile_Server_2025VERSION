@@ -1,7 +1,7 @@
 package com.teambind.profileserver.config;
 
-import com.teambind.profileserver.utils.PKeyGenerator;
-import com.teambind.profileserver.utils.impl.Snowflake;
+import com.teambind.profileserver.utils.generator.PKeyGenerator;
+import com.teambind.profileserver.utils.generator.impl.Snowflake;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

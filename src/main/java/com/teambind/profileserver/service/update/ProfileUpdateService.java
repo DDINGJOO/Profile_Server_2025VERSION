@@ -9,7 +9,6 @@ import com.teambind.profileserver.entity.key.UserGenreKey;
 import com.teambind.profileserver.entity.key.UserInstrumentKey;
 import com.teambind.profileserver.repository.*;
 import com.teambind.profileserver.service.history.UserProfileHistoryService;
-import com.teambind.profileserver.utils.NickNameValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +27,15 @@ public class ProfileUpdateService {
     private final InstrumentNameTableRepository instrumentNameTableRepository;
     private final GenreNameTableRepository genreNameTableRepository;
     private final UserProfileHistoryService historyService;
-    private final NickNameValidator nickNameValidator;
     @Transactional
     public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres) throws Exception {
-        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
 
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
         // 닉네임이 null이 아니고 변경된 경우에만 업데이트
         if (nickname != null && !nickname.equals(userInfo.getNickname())) {
-            if (!nickNameValidator.isValidNickName(nickname)) {
-                throw new IllegalArgumentException("Invalid nickname");
+            if(userInfoRepository.existsByNickname(nickname))
+            {
+                throw new Exception("Nickname already exists");
             }
             userInfo.setNickname(nickname);
         }
@@ -132,7 +131,10 @@ public class ProfileUpdateService {
 
         // 1) 닉네임은 전체 데이터 갱신 요구사항에 따라 전달된 값으로 그대로 반영
         //    (null 허용 정책이 별도로 없다면 null이면 기존 값 유지로 처리)
-        if (nickname != null) {
+        if (nickname != null && !nickname.equals(userInfo.getNickname())) {
+            if (userInfoRepository.existsByNickname(nickname)) {
+                throw new Exception("Nickname already exists");
+            }
             userInfo.setNickname(nickname);
             historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
                     HistoryUpdateRequest.builder()
@@ -142,6 +144,7 @@ public class ProfileUpdateService {
                             .build()
             });
         }
+
 
         // 2) 악기/장르 모두 전체 갱신: 기존 것을 모두 삭제하고, 전달된 전체 목록을 넣는다
         //    repositories에 있는 bulk delete를 사용해 효율적으로 삭제

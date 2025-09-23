@@ -349,7 +349,7 @@ class ProfileSearchServiceTest {
     @Test
     void searchProfiles() {
         createUser("user_nick_1", "alpha", 'M', new Integer[]{901}, new Integer[]{901});
-        UserResponse userInfoResponse = profileSearchService.searchProfile("user_nick_1");
+        UserResponse userInfoResponse = profileSearchService.searchProfileById("user_nick_1");
         assertNotNull(userInfoResponse);
         assertEquals("user_nick_1", userInfoResponse.getUserId());
         assertEquals("alpha", userInfoResponse.getNickname());

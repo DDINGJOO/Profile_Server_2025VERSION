@@ -3,7 +3,7 @@ package com.teambind.profileserver.dto.request;
 import com.teambind.profileserver.enums.City;
 import lombok.*;
 
-import java.util.List;
+import java.util.Map;
 
 @Data
 @Getter
@@ -14,6 +14,8 @@ import java.util.List;
 public class ProfileUpdateRequest {
     private String nickname;
     private City city;
-    private List<Integer> genres;
-    private List<Integer> instruments;
+
+
+    private Map<Integer,String> genres;
+    private Map<Integer,String> instruments;
 }

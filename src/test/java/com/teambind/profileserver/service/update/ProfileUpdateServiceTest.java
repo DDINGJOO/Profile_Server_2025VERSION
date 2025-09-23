@@ -17,13 +17,12 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 @SpringBootTest(classes = com.teambind.profileserver.ProfileServerApplication.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class ProfileUpdateServiceTest {
 
     @Autowired private ProfileUpdateService profileUpdateService;
-
     @Autowired private UserInfoRepository userInfoRepository;
     @Autowired private UserGenresRepository userGenresRepository;
     @Autowired private UserInstrumentsRepository userInstrumentsRepository;

@@ -1,4 +1,4 @@
-package com.teambind.profileserver.utils;
+package com.teambind.profileserver.utils.generator;
 
 
 import org.springframework.stereotype.Component;

@@ -23,7 +23,7 @@ services:
     env_file:
       - .env.prod
     ports:
-      - "4000:3306"
+      - "4010:3306"
     networks:
       - profile-network
     volumes:
@@ -48,6 +48,7 @@ services:
     container_name: profile-server-1
     networks:
       - profile-network
+      - infra-network
     depends_on:
       - mariadb
 
@@ -67,6 +68,7 @@ services:
     container_name: profile-server-2
     networks:
       - profile-network
+      - infra-network
     depends_on:
       - mariadb
 
@@ -86,6 +88,7 @@ services:
     container_name: profile-server-3
     networks:
       - profile-network
+      - infra-network
     depends_on:
       - mariadb
 
@@ -112,6 +115,10 @@ networks:
   profile-network:
     driver: bridge
     name: profile-network
+  infra-network:
+      external: true
+      name: infra-network
+
 
 volumes:
   db-data:

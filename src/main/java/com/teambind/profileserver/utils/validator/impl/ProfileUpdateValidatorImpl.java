@@ -1,6 +1,5 @@
 package com.teambind.profileserver.utils.validator.impl;
 
-import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.utils.validator.GenreValidator;
 import com.teambind.profileserver.utils.validator.InstrumentsValidator;
 import com.teambind.profileserver.utils.validator.NickNameValidator;
@@ -20,7 +19,7 @@ public class ProfileUpdateValidatorImpl implements ProfileUpdateValidator {
 
 
     @Override
-    public void validateProfileUpdateRequest(String Nickname, Map<Integer,String> genreMap, Map<Integer, String> instrumentMap) throws ProfileException {
+    public void validateProfileUpdateRequest(String Nickname, Map<Integer,String> genreMap, Map<Integer, String> instrumentMap){
         if(!NicknameValidation(Nickname)) throw new IllegalArgumentException("Invalid nickname");
         if(!isGenreValidByIds(genreMap)) throw new IllegalArgumentException("Invalid genre ids");
         isInstrumentValidByIds(instrumentMap);
@@ -32,12 +31,12 @@ public class ProfileUpdateValidatorImpl implements ProfileUpdateValidator {
     }
 
     @Override
-    public boolean isGenreValidByIds(Map<Integer,String> genreMaps) throws ProfileException {
+    public boolean isGenreValidByIds(Map<Integer,String> genreMaps)  {
         return genreValidator.isValidGenreByIds(genreMaps);
     }
 
     @Override
-    public void isInstrumentValidByIds(Map<Integer,String> instrumentMaps) throws ProfileException {
+    public void isInstrumentValidByIds(Map<Integer,String> instrumentMaps)  {
         instrumentValidator.isValidInstrumentByIds(instrumentMaps);
     }
 }

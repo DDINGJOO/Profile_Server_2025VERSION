@@ -16,7 +16,7 @@ public class GenreValidator {
     @Value("${genres.validation.max-size:3}")
     private int maxSize;
 
-    public boolean isValidGenreByIds(Map<Integer, String> genre) throws ProfileException {
+    public boolean isValidGenreByIds(Map<Integer, String> genre) {
         // 최대 장르 수 확인
         validateGenreSize(genre.size());
         // ID 매핑되는 값인지 확인 (초기 맵 미초기화 시 스킵)
@@ -24,13 +24,13 @@ public class GenreValidator {
         return true;
     }
 
-    private void validateGenreSize(int size) throws ProfileException {
+    private void validateGenreSize(int size) {
         if (size < 0 || size > maxSize) {
             throw new ProfileException(ErrorCode.GENRE_SIZE_INVALID);
         }
     }
 
-    private void validateGenreIds(Map<Integer, String> genre)  throws ProfileException{
+    private void validateGenreIds(Map<Integer, String> genre)  {
         // 테스트 환경 등에서 InitTableMapper가 아직 초기화되지 않은 경우를 허용
         if (InitTableMapper.genreNameTable == null || InitTableMapper.genreNameTable.isEmpty()) {
             return;

@@ -36,5 +36,4 @@ public class UserResponse {
                 .genres(userInfo.getUserGenres().stream().map(ug -> ug.getGenre().getGenreName()).toList())
                 .build();
     }
-
 }

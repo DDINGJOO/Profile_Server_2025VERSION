@@ -1,20 +1,25 @@
 spring:
   kafka:
-    bootstrap-servers: ${KAFKA_URL}
+    bootstrap-servers: ${KAFKA_URL1},${KAFKA_URL2},${KAFKA_URL3}
+    producer:
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
     consumer:
-      group-id: user-profile-consumer-group
+      group-id: profile-consumer-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
     listener:
       ack-mode: record
-
   datasource:
-    url: jdbc:mariadb://${DATABASE_HOST:localhost}:${DATABASE_PORT:4000}/${DATABASE_NAME:profiles}
-    username: ${DATABASE_USER_NAME:root}
-    password: ${DATABASE_PASSWORD:pass123#}
-    driver-class-name: org.mariadb.jdbc.Driver
-
+    url: jdbc:mariadb://${DATABASE_HOST}:${DATABASE_PORT}/profiles
+    username: ${DATABASE_USER_NAME}
+    password: ${DATABASE_PASSWORD}
 
 
   jpa:

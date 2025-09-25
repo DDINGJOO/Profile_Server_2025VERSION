@@ -30,7 +30,7 @@ public class ProfileUpdateService {
     private final GenreNameTableRepository genreNameTableRepository;
     private final UserProfileHistoryService historyService;
     @Transactional
-    public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres) throws Exception {
+    public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile) {
 
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
         // 닉네임이 null이 아니고 변경된 경우에만 업데이트
@@ -41,6 +41,9 @@ public class ProfileUpdateService {
             }
             userInfo.setNickname(nickname);
         }
+
+        userInfo.setIsChatable(isChattable);
+        userInfo.setIsPublic(isPublicProfile);
 
         // 악기 목록이 제공된 경우에만 업데이트 (null이면 변경 없음, 빈 리스트면 전체 삭제)
         if (instruments != null) {
@@ -128,7 +131,7 @@ public class ProfileUpdateService {
     }
 
     @Transactional
-    public UserInfo updateProfileAll(String userId, String nickname, List<Integer> instruments, List<Integer> genres) throws Exception {
+    public UserInfo updateProfileAll(String userId, String nickname, List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile)  {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
 
         // 1) 닉네임은 전체 데이터 갱신 요구사항에 따라 전달된 값으로 그대로 반영
@@ -138,6 +141,8 @@ public class ProfileUpdateService {
                 throw new ProfileException(ErrorCode.NICKNAME_ALREADY_EXISTS);
             }
             userInfo.setNickname(nickname);
+            userInfo.setIsChatable(isChattable);
+            userInfo.setIsPublic(isPublicProfile);
             historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
                     HistoryUpdateRequest.builder()
                             .columnName("nickname")
@@ -203,7 +208,7 @@ public class ProfileUpdateService {
 
 
     @Transactional
-    public UserInfo updateProfileImage(String userId, String imageUrl) throws Exception {
+    public UserInfo updateProfileImage(String userId, String imageUrl)  {
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
         userInfo.setProfileImageUrl(imageUrl);
         userInfoRepository.save(userInfo);

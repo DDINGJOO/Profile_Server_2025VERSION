@@ -32,8 +32,7 @@ public class UserProfileHistoryService {
         return true;
     }
 
-    public boolean saveAllHistory(UserInfo userInfo, HistoryUpdateRequest[] reqs)
-        throws Exception {
+    public boolean saveAllHistory(UserInfo userInfo, HistoryUpdateRequest[] reqs) {
         List<History> histories = Arrays.stream(reqs).collect(Collectors.toSet())
                 .stream().map(req -> History.builder()
                         .userInfo(userInfo)

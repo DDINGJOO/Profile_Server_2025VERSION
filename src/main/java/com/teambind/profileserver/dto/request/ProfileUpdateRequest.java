@@ -15,6 +15,8 @@ public class ProfileUpdateRequest {
     private String nickname;
     private City city;
 
+    private boolean chattable;
+    private boolean publicProfile;
 
     private Map<Integer,String> genres;
     private Map<Integer,String> instruments;

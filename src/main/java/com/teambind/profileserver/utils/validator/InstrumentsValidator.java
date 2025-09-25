@@ -15,19 +15,19 @@ public class InstrumentsValidator {
     @Value("${instruments.validation.max-size:3}")
     private int maxSize;
 
-    public boolean isValidInstrumentByIds(Map<Integer, String> instrumentsMap) throws ProfileException {
+    public boolean isValidInstrumentByIds(Map<Integer, String> instrumentsMap)  {
         validateInstrumentSize(instrumentsMap.size());
         validateInstrumentIds(instrumentsMap);
         return true;
     }
 
-    private void validateInstrumentSize(int size) throws ProfileException {
+    private void validateInstrumentSize(int size)  {
         if (size < 0 || size > maxSize) {
             throw new ProfileException(ErrorCode.INSTRUMENT_SIZE_INVALID);
         }
     }
 
-    private void validateInstrumentIds(Map<Integer, String> instrumentsMap) throws ProfileException {
+    private void validateInstrumentIds(Map<Integer, String> instrumentsMap)  {
         // 테스트 환경 등에서 InitTableMapper가 아직 초기화되지 않은 경우를 허용
         if (InitTableMapper.instrumentNameTable == null || InitTableMapper.instrumentNameTable.isEmpty()) {
             return;

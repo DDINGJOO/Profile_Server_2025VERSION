@@ -3,7 +3,7 @@ package com.teambind.profileserver.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class ProfileException extends Exception {
+public class ProfileException extends RuntimeException {
     private final ErrorCode errorcode;
     public ProfileException(ErrorCode errorcode) {
 

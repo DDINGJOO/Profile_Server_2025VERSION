@@ -29,6 +29,16 @@ public class ProfileUpdateService {
     private final InstrumentNameTableRepository instrumentNameTableRepository;
     private final GenreNameTableRepository genreNameTableRepository;
     private final UserProfileHistoryService historyService;
+
+
+    @Transactional
+    public void UserProfileImageUpdate(String userId, String imageUrl)
+    {
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
+                () -> new ProfileException(ErrorCode.USER_NOT_FOUND)
+        );
+        userInfo.setProfileImageUrl(imageUrl);
+    }
     @Transactional
     public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile) {
 

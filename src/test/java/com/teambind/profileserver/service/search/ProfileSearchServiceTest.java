@@ -138,12 +138,12 @@ class ProfileSearchServiceTest {
                 .build();
 
         // when
-        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        Page<UserResponse> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
         log.info("[검증 로그] 닉네임 필터 결과 수: {}", page.getTotalElements());
 
         // then
         assertFalse(page.isEmpty(), "검색 결과가 비어있지 않아야 합니다");
-        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        List<String> ids = page.map(UserResponse::getUserId).getContent();
         assertTrue(ids.contains("user_nick_1"), "alpha 유저가 포함되어야 합니다");
         assertFalse(ids.contains("user_nick_2"), "beta 유저는 제외되어야 합니다");
     }
@@ -161,11 +161,11 @@ class ProfileSearchServiceTest {
                 .build();
 
         // when
-        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        Page<UserResponse> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
         log.info("[검증 로그] 성별(M) 필터 결과 수: {}", page.getTotalElements());
 
         // then
-        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        List<String> ids = page.map(UserResponse::getUserId).getContent();
         assertTrue(ids.contains("user_sex_m"), "남성 유저가 포함되어야 합니다");
         assertFalse(ids.contains("user_sex_f"), "여성 유저는 제외되어야 합니다");
     }
@@ -183,11 +183,11 @@ class ProfileSearchServiceTest {
                 .build();
 
         // when
-        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        Page<UserResponse> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
         log.info("[검증 로그] 장르(903) 필터 결과 수: {}", page.getTotalElements());
 
         // then
-        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        List<String> ids = page.map(UserResponse::getUserId).getContent();
         assertTrue(ids.contains("user_g1"), "장르 903 유저가 포함되어야 합니다");
         assertFalse(ids.contains("user_g2"), "다른 장르 유저는 제외되어야 합니다");
     }
@@ -206,11 +206,11 @@ class ProfileSearchServiceTest {
                 .build();
 
         // when
-        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        Page<UserResponse> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
         log.info("[검증 로그] 장르(905,906) 필터 결과 수: {}", page.getTotalElements());
 
         // then
-        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        List<String> ids = page.map(UserResponse::getUserId).getContent();
         assertTrue(ids.contains("user_g905"));
         assertTrue(ids.contains("user_g906"));
         assertFalse(ids.contains("user_g_none"));
@@ -230,11 +230,11 @@ class ProfileSearchServiceTest {
                 .build();
 
         // when
-        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        Page<UserResponse> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
         log.info("[검증 로그] 악기(907,908) 필터 결과 수: {}", page.getTotalElements());
 
         // then
-        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        List<String> ids = page.map(UserResponse::getUserId).getContent();
         assertTrue(ids.contains("user_i907"));
         assertTrue(ids.contains("user_i908"));
         assertFalse(ids.contains("user_i_none"));
@@ -253,11 +253,11 @@ class ProfileSearchServiceTest {
                 .build();
 
         // when
-        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        Page<UserResponse> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
         log.info("[검증 로그] 악기(909) 단일 필터 결과 수: {}", page.getTotalElements());
 
         // then
-        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        List<String> ids = page.map(UserResponse::getUserId).getContent();
         assertTrue(ids.contains("user_ins_909"));
         assertFalse(ids.contains("user_ins_910"));
     }
@@ -281,11 +281,11 @@ class ProfileSearchServiceTest {
                 .build();
 
         // when
-        Page<UserInfo> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
+        Page<UserResponse> page = profileSearchService.searchProfiles(criteria, PageRequest.of(0, 10));
         log.info("[검증 로그] 다중필터 결과 수: {}", page.getTotalElements());
 
         // then
-        List<String> ids = page.map(UserInfo::getUserId).getContent();
+        List<String> ids = page.map(UserResponse::getUserId).getContent();
         assertTrue(ids.contains("user_mix_ok"));
         assertFalse(ids.contains("user_mix_bad_nick"));
         assertFalse(ids.contains("user_mix_bad_genre"));
@@ -308,9 +308,9 @@ class ProfileSearchServiceTest {
 
         // 1페이지
         var slice1 = profileSearchService.searchProfilesByCursor(criteria, null, 2);
-        List<UserInfo> page1 = slice1.getContent();
+        List<UserResponse> page1 = slice1.getContent();
         log.info("[커서1] size={}, hasNext={}, ids={}", page1.size(), slice1.hasNext(),
-                page1.stream().map(UserInfo::getUserId).toList());
+                page1.stream().map(UserResponse::getUserId).toList());
         assertTrue(page1.size() <= 2);
         assertTrue(slice1.hasNext());
 
@@ -318,13 +318,13 @@ class ProfileSearchServiceTest {
 
         // 2페이지 (nextCursor 기준으로 이어받기)
         var slice2 = profileSearchService.searchProfilesByCursor(criteria, nextCursor, 2);
-        List<UserInfo> page2 = slice2.getContent();
+        List<UserResponse> page2 = slice2.getContent();
         log.info("[커서2] size={}, hasNext={}, ids={}", page2.size(), slice2.hasNext(),
-                page2.stream().map(UserInfo::getUserId).toList());
+                page2.stream().map(UserResponse::getUserId).toList());
 
         // 중복 없음 확인
-        List<String> ids1 = page1.stream().map(UserInfo::getUserId).toList();
-        List<String> ids2 = page2.stream().map(UserInfo::getUserId).toList();
+        List<String> ids1 = page1.stream().map(UserResponse::getUserId).toList();
+        List<String> ids2 = page2.stream().map(UserResponse::getUserId).toList();
         for (String id : ids1) {
             assertFalse(ids2.contains(id), "커서 페이지 간 중복이 없어야 합니다");
         }

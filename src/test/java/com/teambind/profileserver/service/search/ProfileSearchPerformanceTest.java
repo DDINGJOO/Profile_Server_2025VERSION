@@ -1,6 +1,6 @@
 package com.teambind.profileserver.service.search;
 
-import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.factory.UserInfoFactory;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import org.junit.jupiter.api.BeforeAll;
@@ -60,13 +60,13 @@ class ProfileSearchPerformanceTest {
         long startPage = System.nanoTime();
         int collected = 0;
         int pageIndex = 0;
-        List<UserInfo> pageCollected = new ArrayList<>(targetCount);
+        List<UserResponse> pageCollected = new ArrayList<>(targetCount);
         while (collected < targetCount) {
             Pageable pageable = PageRequest.of(pageIndex++, pageSize);
-            Page<UserInfo> page = profileSearchService.searchProfiles(criteria, pageable);
-            List<UserInfo> content = page.getContent();
+            Page<UserResponse> page = profileSearchService.searchProfiles(criteria, pageable);
+            List<UserResponse> content = page.getContent();
             if (content.isEmpty()) break;
-            for (UserInfo u : content) {
+            for (UserResponse u : content) {
                 pageCollected.add(u);
                 if (++collected >= targetCount) break;
             }
@@ -83,12 +83,12 @@ class ProfileSearchPerformanceTest {
         long startCursor = System.nanoTime();
         collected = 0;
         String cursor = null; // 최초 커서는 null
-        List<UserInfo> cursorCollected = new ArrayList<>(targetCount);
+        List<UserResponse> cursorCollected = new ArrayList<>(targetCount);
         while (collected < targetCount) {
-            Slice<UserInfo> slice = profileSearchService.searchProfilesByCursor(criteria, cursor, pageSize);
-            List<UserInfo> content = slice.getContent();
+            Slice<UserResponse> slice = profileSearchService.searchProfilesByCursor(criteria, cursor, pageSize);
+            List<UserResponse> content = slice.getContent();
             if (content.isEmpty()) break;
-            for (UserInfo u : content) {
+            for (UserResponse u : content) {
                 cursorCollected.add(u);
                 if (++collected >= targetCount) break;
             }

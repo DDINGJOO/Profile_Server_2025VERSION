@@ -1628,3 +1628,56 @@
 2025/09/27 00:37:31 [notice] 1#1: start worker process 29
 2025/09/27 00:37:31 [notice] 1#1: start worker process 30
 2025/09/27 00:37:31 [notice] 1#1: start worker process 31
+2025/09/27 02:40:03 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/09/27 02:40:03 [notice] 26#26: gracefully shutting down
+2025/09/27 02:40:03 [notice] 29#29: gracefully shutting down
+2025/09/27 02:40:03 [notice] 28#28: gracefully shutting down
+2025/09/27 02:40:03 [notice] 21#21: gracefully shutting down
+2025/09/27 02:40:03 [notice] 22#22: gracefully shutting down
+2025/09/27 02:40:03 [notice] 31#31: gracefully shutting down
+2025/09/27 02:40:03 [notice] 30#30: gracefully shutting down
+2025/09/27 02:40:03 [notice] 24#24: gracefully shutting down
+2025/09/27 02:40:03 [notice] 23#23: gracefully shutting down
+2025/09/27 02:40:03 [notice] 27#27: gracefully shutting down
+2025/09/27 02:40:03 [notice] 25#25: gracefully shutting down
+2025/09/27 02:40:03 [notice] 20#20: gracefully shutting down
+2025/09/27 02:40:03 [notice] 27#27: exiting
+2025/09/27 02:40:03 [notice] 31#31: exiting
+2025/09/27 02:40:03 [notice] 22#22: exiting
+2025/09/27 02:40:03 [notice] 22#22: exit
+2025/09/27 02:40:03 [notice] 27#27: exit
+2025/09/27 02:40:03 [notice] 26#26: exiting
+2025/09/27 02:40:03 [notice] 31#31: exit
+2025/09/27 02:40:03 [notice] 23#23: exiting
+2025/09/27 02:40:03 [notice] 30#30: exiting
+2025/09/27 02:40:03 [notice] 24#24: exiting
+2025/09/27 02:40:03 [notice] 29#29: exiting
+2025/09/27 02:40:03 [notice] 24#24: exit
+2025/09/27 02:40:03 [notice] 25#25: exiting
+2025/09/27 02:40:03 [notice] 21#21: exiting
+2025/09/27 02:40:03 [notice] 28#28: exiting
+2025/09/27 02:40:03 [notice] 26#26: exit
+2025/09/27 02:40:03 [notice] 23#23: exit
+2025/09/27 02:40:03 [notice] 28#28: exit
+2025/09/27 02:40:03 [notice] 20#20: exiting
+2025/09/27 02:40:03 [notice] 30#30: exit
+2025/09/27 02:40:03 [notice] 29#29: exit
+2025/09/27 02:40:03 [notice] 25#25: exit
+2025/09/27 02:40:03 [notice] 21#21: exit
+2025/09/27 02:40:03 [notice] 20#20: exit
+2025/09/27 02:40:03 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2025/09/27 02:40:03 [notice] 1#1: worker process 22 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 21 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 20 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 23 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 24 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 25 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 26 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 28 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 29 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 31 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: signal 29 (SIGIO) received
+2025/09/27 02:40:03 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2025/09/27 02:40:03 [notice] 1#1: worker process 27 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: worker process 30 exited with code 0
+2025/09/27 02:40:03 [notice] 1#1: exit

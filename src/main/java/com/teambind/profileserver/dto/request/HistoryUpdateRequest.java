@@ -1,6 +1,5 @@
 package com.teambind.profileserver.dto.request;
 
-
 import lombok.*;
 
 @Data

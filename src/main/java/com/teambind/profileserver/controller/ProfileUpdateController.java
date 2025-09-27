@@ -16,18 +16,20 @@ public class ProfileUpdateController {
     private final ProfileUpdateValidator profileUpdateValidator;
 
 
-    @PutMapping("/ver1")
-    public ResponseEntity<Boolean> updateProfile(@RequestParam String userId, @RequestBody ProfileUpdateRequest request)  {
+    @PutMapping("/{userId}/ver1")
+    public ResponseEntity<Boolean> updateProfile(@PathVariable String userId, @RequestBody ProfileUpdateRequest request)  {
 
         profileUpdateValidator.validateProfileUpdateRequest(request.getNickname(), request.getInstruments(), request.getGenres());
         profileUpdateService.updateProfile(userId, request.getNickname(), request.getInstruments().keySet().stream().toList(),request.getGenres().keySet().stream().toList(),request.isChattable(),request.isPublicProfile());
         return ResponseEntity.ok(true);
     }
 
-    @PutMapping("/ver2")
-    public ResponseEntity<Boolean> updateProfileAll(@RequestParam String userId, @RequestBody ProfileUpdateRequest request)  {
+    @PutMapping("/{userId}/ver2")
+    public ResponseEntity<Boolean> updateProfileAll(@PathVariable String userId, @RequestBody ProfileUpdateRequest request)  {
         profileUpdateValidator.validateProfileUpdateRequest(request.getNickname(), request.getInstruments(), request.getGenres());
         profileUpdateService.updateProfileAll(userId, request.getNickname(),request.getInstruments().keySet().stream().toList(),request.getGenres().keySet().stream().toList(), request.isChattable(), request.isPublicProfile());
         return ResponseEntity.ok(true);
     }
 }
+
+

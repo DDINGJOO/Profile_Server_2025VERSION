@@ -1473,3 +1473,158 @@
 2025/09/26 08:37:25 [notice] 1#1: start worker process 30
 2025/09/26 08:37:25 [notice] 1#1: start worker process 31
 2025/09/26 08:37:25 [notice] 1#1: start worker process 32
+2025/09/26 08:43:11 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/09/26 08:43:11 [notice] 22#22: gracefully shutting down
+2025/09/26 08:43:11 [notice] 26#26: gracefully shutting down
+2025/09/26 08:43:11 [notice] 30#30: gracefully shutting down
+2025/09/26 08:43:11 [notice] 24#24: gracefully shutting down
+2025/09/26 08:43:11 [notice] 21#21: gracefully shutting down
+2025/09/26 08:43:11 [notice] 23#23: gracefully shutting down
+2025/09/26 08:43:11 [notice] 25#25: gracefully shutting down
+2025/09/26 08:43:11 [notice] 22#22: exiting
+2025/09/26 08:43:11 [notice] 25#25: exiting
+2025/09/26 08:43:11 [notice] 28#28: gracefully shutting down
+2025/09/26 08:43:11 [notice] 29#29: gracefully shutting down
+2025/09/26 08:43:11 [notice] 26#26: exiting
+2025/09/26 08:43:11 [notice] 29#29: exiting
+2025/09/26 08:43:11 [notice] 29#29: exit
+2025/09/26 08:43:11 [notice] 27#27: gracefully shutting down
+2025/09/26 08:43:11 [notice] 31#31: gracefully shutting down
+2025/09/26 08:43:11 [notice] 32#32: gracefully shutting down
+2025/09/26 08:43:11 [notice] 30#30: exiting
+2025/09/26 08:43:11 [notice] 24#24: exiting
+2025/09/26 08:43:11 [notice] 21#21: exiting
+2025/09/26 08:43:11 [notice] 23#23: exiting
+2025/09/26 08:43:11 [notice] 22#22: exit
+2025/09/26 08:43:11 [notice] 25#25: exit
+2025/09/26 08:43:11 [notice] 28#28: exiting
+2025/09/26 08:43:11 [notice] 28#28: exit
+2025/09/26 08:43:11 [notice] 26#26: exit
+2025/09/26 08:43:11 [notice] 27#27: exiting
+2025/09/26 08:43:11 [notice] 31#31: exiting
+2025/09/26 08:43:11 [notice] 32#32: exiting
+2025/09/26 08:43:11 [notice] 30#30: exit
+2025/09/26 08:43:11 [notice] 32#32: exit
+2025/09/26 08:43:11 [notice] 24#24: exit
+2025/09/26 08:43:11 [notice] 21#21: exit
+2025/09/26 08:43:11 [notice] 23#23: exit
+2025/09/26 08:43:11 [notice] 27#27: exit
+2025/09/26 08:43:11 [notice] 31#31: exit
+2025/09/26 08:43:11 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2025/09/26 08:43:11 [notice] 1#1: worker process 29 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: signal 29 (SIGIO) received
+2025/09/26 08:43:11 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2025/09/26 08:43:11 [notice] 1#1: worker process 22 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 23 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 25 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 24 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 26 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 21 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 27 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 28 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 30 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 31 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: worker process 32 exited with code 0
+2025/09/26 08:43:11 [notice] 1#1: exit
+2025/09/27 00:35:35 [notice] 1#1: using the "epoll" event method
+2025/09/27 00:35:35 [notice] 1#1: nginx/1.29.1
+2025/09/27 00:35:35 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) 
+2025/09/27 00:35:35 [notice] 1#1: OS: Linux 6.10.14-linuxkit
+2025/09/27 00:35:35 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/09/27 00:35:35 [notice] 1#1: start worker processes
+2025/09/27 00:35:35 [notice] 1#1: start worker process 19
+2025/09/27 00:35:35 [notice] 1#1: start worker process 20
+2025/09/27 00:35:35 [notice] 1#1: start worker process 21
+2025/09/27 00:35:35 [notice] 1#1: start worker process 22
+2025/09/27 00:35:35 [notice] 1#1: start worker process 23
+2025/09/27 00:35:35 [notice] 1#1: start worker process 24
+2025/09/27 00:35:35 [notice] 1#1: start worker process 25
+2025/09/27 00:35:35 [notice] 1#1: start worker process 26
+2025/09/27 00:35:35 [notice] 1#1: start worker process 27
+2025/09/27 00:35:35 [notice] 1#1: start worker process 28
+2025/09/27 00:35:35 [notice] 1#1: start worker process 29
+2025/09/27 00:35:35 [notice] 1#1: start worker process 30
+2025/09/27 00:36:24 [error] 19#19: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.3:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:36:24 [error] 19#19: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.2:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:36:24 [error] 19#19: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.4:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:36:39 [error] 20#20: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.3:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:36:39 [error] 20#20: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.2:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:36:39 [error] 20#20: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.4:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:37:18 [error] 21#21: *9 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.3:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:37:18 [error] 21#21: *9 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.2:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:37:18 [error] 21#21: *9 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.4:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:37:19 [error] 22#22: *13 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.3:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:37:19 [error] 22#22: *13 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.2:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:37:19 [error] 22#22: *13 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.65.1, server: _, request: "GET /api/porfiles/enums/genres HTTP/1.1", upstream: "http://172.23.0.4:8083/api/porfiles/enums/genres", host: "localhost:9100"
+2025/09/27 00:37:25 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2025/09/27 00:37:25 [notice] 19#19: gracefully shutting down
+2025/09/27 00:37:25 [notice] 27#27: gracefully shutting down
+2025/09/27 00:37:25 [notice] 20#20: gracefully shutting down
+2025/09/27 00:37:25 [notice] 21#21: gracefully shutting down
+2025/09/27 00:37:25 [notice] 22#22: gracefully shutting down
+2025/09/27 00:37:25 [notice] 23#23: gracefully shutting down
+2025/09/27 00:37:25 [notice] 25#25: gracefully shutting down
+2025/09/27 00:37:25 [notice] 25#25: exiting
+2025/09/27 00:37:25 [notice] 24#24: gracefully shutting down
+2025/09/27 00:37:25 [notice] 25#25: exit
+2025/09/27 00:37:25 [notice] 28#28: gracefully shutting down
+2025/09/27 00:37:25 [notice] 28#28: exiting
+2025/09/27 00:37:25 [notice] 29#29: gracefully shutting down
+2025/09/27 00:37:25 [notice] 28#28: exit
+2025/09/27 00:37:25 [notice] 30#30: gracefully shutting down
+2025/09/27 00:37:25 [notice] 26#26: gracefully shutting down
+2025/09/27 00:37:25 [notice] 19#19: exiting
+2025/09/27 00:37:25 [notice] 27#27: exiting
+2025/09/27 00:37:25 [notice] 20#20: exiting
+2025/09/27 00:37:25 [notice] 21#21: exiting
+2025/09/27 00:37:25 [notice] 22#22: exiting
+2025/09/27 00:37:25 [notice] 23#23: exiting
+2025/09/27 00:37:25 [notice] 22#22: exit
+2025/09/27 00:37:25 [notice] 24#24: exiting
+2025/09/27 00:37:25 [notice] 23#23: exit
+2025/09/27 00:37:25 [notice] 29#29: exiting
+2025/09/27 00:37:25 [notice] 30#30: exiting
+2025/09/27 00:37:25 [notice] 29#29: exit
+2025/09/27 00:37:25 [notice] 26#26: exiting
+2025/09/27 00:37:25 [notice] 19#19: exit
+2025/09/27 00:37:25 [notice] 27#27: exit
+2025/09/27 00:37:25 [notice] 20#20: exit
+2025/09/27 00:37:25 [notice] 21#21: exit
+2025/09/27 00:37:25 [notice] 24#24: exit
+2025/09/27 00:37:25 [notice] 30#30: exit
+2025/09/27 00:37:25 [notice] 26#26: exit
+2025/09/27 00:37:25 [notice] 1#1: signal 17 (SIGCHLD) received from 27
+2025/09/27 00:37:25 [notice] 1#1: worker process 27 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 30 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: signal 29 (SIGIO) received
+2025/09/27 00:37:25 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2025/09/27 00:37:25 [notice] 1#1: signal 17 (SIGCHLD) received from 23
+2025/09/27 00:37:25 [notice] 1#1: worker process 20 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 21 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 22 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 19 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 23 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 24 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 25 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 26 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 28 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: worker process 29 exited with code 0
+2025/09/27 00:37:25 [notice] 1#1: exit
+2025/09/27 00:37:31 [notice] 1#1: using the "epoll" event method
+2025/09/27 00:37:31 [notice] 1#1: nginx/1.29.1
+2025/09/27 00:37:31 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) 
+2025/09/27 00:37:31 [notice] 1#1: OS: Linux 6.10.14-linuxkit
+2025/09/27 00:37:31 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025/09/27 00:37:31 [notice] 1#1: start worker processes
+2025/09/27 00:37:31 [notice] 1#1: start worker process 20
+2025/09/27 00:37:31 [notice] 1#1: start worker process 21
+2025/09/27 00:37:31 [notice] 1#1: start worker process 22
+2025/09/27 00:37:31 [notice] 1#1: start worker process 23
+2025/09/27 00:37:31 [notice] 1#1: start worker process 24
+2025/09/27 00:37:31 [notice] 1#1: start worker process 25
+2025/09/27 00:37:31 [notice] 1#1: start worker process 26
+2025/09/27 00:37:31 [notice] 1#1: start worker process 27
+2025/09/27 00:37:31 [notice] 1#1: start worker process 28
+2025/09/27 00:37:31 [notice] 1#1: start worker process 29
+2025/09/27 00:37:31 [notice] 1#1: start worker process 30
+2025/09/27 00:37:31 [notice] 1#1: start worker process 31

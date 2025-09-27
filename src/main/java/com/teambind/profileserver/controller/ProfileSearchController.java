@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/profiles")
@@ -21,13 +23,13 @@ public class ProfileSearchController {
     }
 
     @GetMapping("")
-    public String searchProfiles( @RequestParam ProfileSearchCriteria criteria, String cursor, int size) {
+    public ResponseEntity<List<UserResponse>> searchProfiles(@RequestParam ProfileSearchCriteria criteria, @RequestParam String cursor, @RequestParam int size) {
         if (cursor == null || cursor.isBlank()) cursor = null;
         if (size <= 0) size = 10;
         if (size > 100) size = 100;
         if (size < 1) size = 1;
-        return "Profiles : " + profileSearchService.searchProfilesByCursor(criteria, cursor, size);
+        var result= profileSearchService.searchProfilesByCursor(criteria, cursor, size);
+        return ResponseEntity.ok(result);
     }
-
 
 }

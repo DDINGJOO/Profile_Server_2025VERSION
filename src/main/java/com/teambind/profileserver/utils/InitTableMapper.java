@@ -35,7 +35,9 @@ public class InitTableMapper {
     public void initializeTables() {
         List<GenreNameTable> genreNameTables = genreNameTableRepository.findAll();
         List<InstrumentNameTable> instrumentNameTables = instrumentNameTableRepository.findAll();
-
+        
+        genreNameTable= new HashMap<>();
+        instrumentNameTable= new HashMap<>();
 
         genreNameTables.forEach(genreNameTable -> {
             InitTableMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable.getGenreName());

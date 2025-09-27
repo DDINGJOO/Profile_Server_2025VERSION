@@ -1,5 +1,7 @@
 package com.teambind.profileserver.utils.validator.impl;
 
+import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.utils.validator.GenreValidator;
 import com.teambind.profileserver.utils.validator.InstrumentsValidator;
 import com.teambind.profileserver.utils.validator.NickNameValidator;
@@ -20,8 +22,8 @@ public class ProfileUpdateValidatorImpl implements ProfileUpdateValidator {
 
     @Override
     public void validateProfileUpdateRequest(String Nickname, Map<Integer,String> genreMap, Map<Integer, String> instrumentMap){
-        if(!NicknameValidation(Nickname)) throw new IllegalArgumentException("Invalid nickname");
-        if(!isGenreValidByIds(genreMap)) throw new IllegalArgumentException("Invalid genre ids");
+        if(!NicknameValidation(Nickname)) throw new ProfileException(ErrorCode.NICKNAME_INVALID);
+        if(!isGenreValidByIds(genreMap)) throw new ProfileException(ErrorCode.GENRE_INVALID);
         isInstrumentValidByIds(instrumentMap);
     }
 

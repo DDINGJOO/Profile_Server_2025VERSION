@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class NickNameValidatorServiceTest {
+class NickNameValidatorServiceServiceTest {
 
     @Mock
     private UserInfoRepository userInfoRepository;
@@ -25,7 +25,7 @@ class NickNameValidatorServiceTest {
     private ProfileUpdateValidator profileUpdateValidator;
 
     @InjectMocks
-    private NickNameValidator nickNameValidator;
+    private NickNameValidatorService nickNameValidatorService;
 
     @Test
     @DisplayName("닉네임 유효하고 존재하지 않는 경우: true 반환")
@@ -34,7 +34,7 @@ class NickNameValidatorServiceTest {
         when(profileUpdateValidator.NicknameValidation(nickname)).thenReturn(false);
         when(userInfoRepository.existsByNickname(nickname)).thenReturn(false);
 
-        boolean result = nickNameValidator.validateNickname(nickname);
+        boolean result = nickNameValidatorService.validateNickname(nickname);
 
         assertThat(result).isTrue();
     }
@@ -45,7 +45,7 @@ class NickNameValidatorServiceTest {
         String nickname = "__"; // invalid per validator indicating true -> invalid
         when(profileUpdateValidator.NicknameValidation(nickname)).thenReturn(true);
 
-        ProfileException ex = assertThrows(ProfileException.class, () -> nickNameValidator.validateNickname(nickname));
+        ProfileException ex = assertThrows(ProfileException.class, () -> nickNameValidatorService.validateNickname(nickname));
         assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.NICKNAME_INVALID);
     }
 
@@ -56,7 +56,7 @@ class NickNameValidatorServiceTest {
         when(profileUpdateValidator.NicknameValidation(nickname)).thenReturn(false);
         when(userInfoRepository.existsByNickname(nickname)).thenReturn(true);
 
-        ProfileException ex = assertThrows(ProfileException.class, () -> nickNameValidator.validateNickname(nickname));
+        ProfileException ex = assertThrows(ProfileException.class, () -> nickNameValidatorService.validateNickname(nickname));
         assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.NICKNAME_ALREADY_EXISTS);
     }
 }

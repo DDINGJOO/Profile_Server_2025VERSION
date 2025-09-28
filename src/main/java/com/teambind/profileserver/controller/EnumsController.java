@@ -21,4 +21,8 @@ public class EnumsController {
     public Map<Integer, String> getInstruments() {
         return InitTableMapper.instrumentNameTable;
     }
+    @GetMapping("/locations")
+    public Map<String, String> getLocations() {
+        return InitTableMapper.locationNamesTable;
+    }
 }

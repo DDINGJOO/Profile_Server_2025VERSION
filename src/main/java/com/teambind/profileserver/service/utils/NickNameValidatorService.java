@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class NickNameValidator {
+public class NickNameValidatorService {
 
     private final UserInfoRepository userInfoRepository;
     private final ProfileUpdateValidator validator;

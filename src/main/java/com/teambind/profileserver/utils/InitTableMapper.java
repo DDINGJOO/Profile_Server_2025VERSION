@@ -3,8 +3,10 @@ package com.teambind.profileserver.utils;
 
 import com.teambind.profileserver.entity.nameTable.GenreNameTable;
 import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
+import com.teambind.profileserver.entity.nameTable.LocationNameTable;
 import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
+import com.teambind.profileserver.repository.LocationNameTableRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +24,10 @@ public class InitTableMapper {
 
     private final GenreNameTableRepository genreNameTableRepository;
     private final InstrumentNameTableRepository instrumentNameTableRepository;
+    private final LocationNameTableRepository locationNameTableRepository;
     public static HashMap<Integer, String> genreNameTable = new HashMap<>();
     public static HashMap<Integer, String> instrumentNameTable = new HashMap<>();
-
+    public static HashMap<String, String> locationNamesTable = new HashMap<>();
 
     @PostConstruct
     public void initOnStartup() {
@@ -35,7 +38,13 @@ public class InitTableMapper {
     public void initializeTables() {
         List<GenreNameTable> genreNameTables = genreNameTableRepository.findAll();
         List<InstrumentNameTable> instrumentNameTables = instrumentNameTableRepository.findAll();
-        
+        List<LocationNameTable> locationNameTables = locationNameTableRepository.findAll();
+
+        locationNameTables.forEach(locationNameTable -> {
+            InitTableMapper.locationNamesTable.put(locationNameTable.getId(), locationNameTable.getCity());
+        });
+
+
         genreNameTable= new HashMap<>();
         instrumentNameTable= new HashMap<>();
 

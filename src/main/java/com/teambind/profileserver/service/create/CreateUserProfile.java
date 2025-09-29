@@ -17,6 +17,7 @@ public class CreateUserProfile {
     private final UserInfoRepository userInfoRepository;
 
 
+
     public String createUserProfile(String userId, String provider) {
         UserInfo userInfo = UserInfo.builder()
                 .userId(userId)

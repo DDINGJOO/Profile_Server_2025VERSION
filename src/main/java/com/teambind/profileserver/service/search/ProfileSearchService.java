@@ -2,6 +2,8 @@ package com.teambind.profileserver.service.search;
 
 import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.ProfileSearchRepository;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ public class ProfileSearchService {
     @Transactional(readOnly = true)
     public UserResponse searchProfileById(String userId) {
         UserInfo userInfo = repository.search(userId);
+        if(userInfo == null)
+            throw new ProfileException(ErrorCode.USER_NOT_FOUND);
         return UserResponse.fromEntity(userInfo);
     }
 

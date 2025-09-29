@@ -21,19 +21,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(body);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        ErrorResponse body = ErrorResponse.of(status.value(), "BAD_REQUEST", ex.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(body);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        ErrorResponse body = ErrorResponse.of(status.value(), "INTERNAL_SERVER_ERROR", ex.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(body);
-    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

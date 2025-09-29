@@ -95,6 +95,8 @@ networks:
   profile-network:
     driver: bridge
     name: profile-network
+
+
   infra-network:
     external: true
     name: infra-network

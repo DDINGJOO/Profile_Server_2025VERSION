@@ -17,7 +17,7 @@ services:
 
   # profile-server 인스턴스들을 개별 서비스로 정의
   profile-server-1:
-    image: ddingsh9/profile-server:1.7.5
+    image: ddingsh9/profile-server:1.7.5.3
     pull_policy: always
     env_file:
       - .env.prod
@@ -37,7 +37,7 @@ services:
         max-size: "50m"
         max-file: "3"
   profile-server-2:
-    image: ddingsh9/profile-server:1.7.5
+    image: ddingsh9/profile-server:1.7.5.3
     pull_policy: always
     env_file:
       - .env.prod
@@ -58,7 +58,7 @@ services:
         max-file: "3"
 
   profile-server-3:
-    image: ddingsh9/profile-server:1.7.5
+    image: ddingsh9/profile-server:1.7.5.3
     pull_policy: always
     env_file:
       - .env.prod

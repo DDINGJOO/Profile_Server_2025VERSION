@@ -11,14 +11,13 @@ import com.teambind.profileserver.exceptions.ErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.*;
 import com.teambind.profileserver.service.history.UserProfileHistoryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +39,11 @@ public class ProfileUpdateService {
         userInfo.setProfileImageUrl(imageUrl);
     }
     @Transactional
-    public UserInfo updateProfile(String userId, String nickname, List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile) {
+    public UserInfo updateProfile(String userId, String nickname,List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile,Character sex, String city) {
 
-        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
+                () -> new ProfileException(ErrorCode.USER_NOT_FOUND)
+        );
         // 닉네임이 null이 아니고 변경된 경우에만 업데이트
         if (nickname != null && !nickname.equals(userInfo.getNickname())) {
             if(userInfoRepository.existsByNickname(nickname))
@@ -54,6 +55,9 @@ public class ProfileUpdateService {
 
         userInfo.setIsChatable(isChattable);
         userInfo.setIsPublic(isPublicProfile);
+        userInfo.setSex(sex);
+        userInfo.setCity(city);
+
 
         // 악기 목록이 제공된 경우에만 업데이트 (null이면 변경 없음, 빈 리스트면 전체 삭제)
         if (instruments != null) {
@@ -141,8 +145,9 @@ public class ProfileUpdateService {
     }
 
     @Transactional
-    public UserInfo updateProfileAll(String userId, String nickname, List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile)  {
-        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
+    public UserInfo updateProfileAll(String userId, String nickname, List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile,Character sex, String city)  {
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
+                () -> new ProfileException(ErrorCode.USER_NOT_FOUND));
 
         // 1) 닉네임은 전체 데이터 갱신 요구사항에 따라 전달된 값으로 그대로 반영
         //    (null 허용 정책이 별도로 없다면 null이면 기존 값 유지로 처리)
@@ -161,6 +166,8 @@ public class ProfileUpdateService {
                             .build()
             });
         }
+        userInfo.setCity(city);
+        userInfo.setSex(sex);
 
 
         // 2) 악기/장르 모두 전체 갱신: 기존 것을 모두 삭제하고, 전달된 전체 목록을 넣는다

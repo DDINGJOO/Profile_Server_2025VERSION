@@ -1,10 +1,8 @@
 package com.teambind.profileserver.dto.response;
 
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.enums.City;
-import lombok.*;
-
 import java.util.List;
+import lombok.*;
 
 @Data
 @Getter
@@ -18,7 +16,7 @@ public class UserResponse {
     private String profileImageUrl;
     private List<String> genres;
     private List<String> instruments;
-    private City city;
+    private String city;
     private String nickname;
     private Boolean isChattable;
     private Boolean isPublic;

@@ -7,18 +7,16 @@ import com.teambind.profileserver.entity.key.UserGenreKey;
 import com.teambind.profileserver.entity.key.UserInstrumentKey;
 import com.teambind.profileserver.entity.nameTable.GenreNameTable;
 import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
-import com.teambind.profileserver.enums.City;
 import com.teambind.profileserver.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 대량 테스트 데이터를 생성하는 팩토리. (테스트 전용)
@@ -121,6 +119,51 @@ public class UserInfoFactory {
         generateUsersRange(start, total, batchSize);
     }
 
+    private static String randomCity(Random rnd) {
+        String[] values = new String[]{"123","12453"};
+        return values[rnd.nextInt(values.length)];
+    }
+
+    private void flushBatches(List<UserInfo> userBatch, List<UserGenres> ugBatch, List<UserInstruments> uiBatch) {
+        if (!userBatch.isEmpty()) {
+            userInfoRepository.saveAll(userBatch);
+            userBatch.clear();
+        }
+        if (!ugBatch.isEmpty()) {
+            userGenresRepository.saveAll(ugBatch);
+            ugBatch.clear();
+        }
+        if (!uiBatch.isEmpty()) {
+            userInstrumentsRepository.saveAll(uiBatch);
+            uiBatch.clear();
+        }
+        // 영속성 컨텍스트를 비워 메모리 사용을 줄임
+        em.flush();
+        em.clear();
+    }
+
+    private static void setUserGenreKey(UserGenreKey key, String userId, int genreId) {
+        try {
+            var f1 = UserGenreKey.class.getDeclaredField("userId");
+            var f2 = UserGenreKey.class.getDeclaredField("genreId");
+            f1.setAccessible(true); f2.setAccessible(true);
+            f1.set(key, userId); f2.set(key, genreId);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void setUserInstrumentKey(UserInstrumentKey key, String userId, int instrumentId) {
+        try {
+            var f1 = UserInstrumentKey.class.getDeclaredField("userId");
+            var f2 = UserInstrumentKey.class.getDeclaredField("instrumentId");
+            f1.setAccessible(true); f2.setAccessible(true);
+            f1.set(key, userId); f2.set(key, instrumentId);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * 지정한 범위의 user 번호로 데이터를 생성합니다. (start <= N <= end)
      */
@@ -147,7 +190,7 @@ public class UserInfoFactory {
             String id = String.format(Locale.ROOT, "user_%06d", i);
                 String nickname = String.format(Locale.ROOT, "nick_%06d", i);
 
-            City city = randomCity(rnd);
+            String city = randomCity(rnd);
             Character sex = rnd.nextBoolean() ? 'M' : 'F';
             boolean isPublic = rnd.nextBoolean();
             boolean isChatable = rnd.nextBoolean();
@@ -200,51 +243,6 @@ public class UserInfoFactory {
         flushBatches(userBatch, ugBatch, uiBatch);
 
         log.info("Generated users in range [{}..{}] with genres/instruments", start, end);
-    }
-
-    private void flushBatches(List<UserInfo> userBatch, List<UserGenres> ugBatch, List<UserInstruments> uiBatch) {
-        if (!userBatch.isEmpty()) {
-            userInfoRepository.saveAll(userBatch);
-            userBatch.clear();
-        }
-        if (!ugBatch.isEmpty()) {
-            userGenresRepository.saveAll(ugBatch);
-            ugBatch.clear();
-        }
-        if (!uiBatch.isEmpty()) {
-            userInstrumentsRepository.saveAll(uiBatch);
-            uiBatch.clear();
-        }
-        // 영속성 컨텍스트를 비워 메모리 사용을 줄임
-        em.flush();
-        em.clear();
-    }
-
-    private static void setUserGenreKey(UserGenreKey key, String userId, int genreId) {
-        try {
-            var f1 = UserGenreKey.class.getDeclaredField("userId");
-            var f2 = UserGenreKey.class.getDeclaredField("genreId");
-            f1.setAccessible(true); f2.setAccessible(true);
-            f1.set(key, userId); f2.set(key, genreId);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void setUserInstrumentKey(UserInstrumentKey key, String userId, int instrumentId) {
-        try {
-            var f1 = UserInstrumentKey.class.getDeclaredField("userId");
-            var f2 = UserInstrumentKey.class.getDeclaredField("instrumentId");
-            f1.setAccessible(true); f2.setAccessible(true);
-            f1.set(key, userId); f2.set(key, instrumentId);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static City randomCity(Random rnd) {
-        City[] values = City.values();
-        return values[rnd.nextInt(values.length)];
     }
 
     private static Set<Integer> pickDistinct(List<Integer> pool, int k, Random rnd) {

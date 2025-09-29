@@ -1,12 +1,10 @@
 package com.teambind.profileserver.entity;
 
 
-import com.teambind.profileserver.enums.City;
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name ="user_info")
@@ -30,8 +28,7 @@ public class UserInfo {
     private String nickname;
 
     @Column(name="city")
-    @Enumerated(EnumType.STRING)
-    private City city;
+    private String city;
     @Version
     @Column(name="version")
     private int version;

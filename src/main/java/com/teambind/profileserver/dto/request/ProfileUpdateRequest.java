@@ -1,9 +1,7 @@
 package com.teambind.profileserver.dto.request;
 
-import com.teambind.profileserver.enums.City;
-import lombok.*;
-
 import java.util.Map;
+import lombok.*;
 
 @Data
 @Getter
@@ -13,10 +11,11 @@ import java.util.Map;
 @Builder
 public class ProfileUpdateRequest {
     private String nickname;
-    private City city;
+    private String city;
 
     private boolean chattable;
     private boolean publicProfile;
+    private Character sex;
 
     private Map<Integer,String> genres;
     private Map<Integer,String> instruments;

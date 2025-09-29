@@ -226,9 +226,13 @@ public class ProfileUpdateService {
 
     @Transactional
     public UserInfo updateProfileImage(String userId, String imageUrl)  {
-        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
+                () -> new ProfileException(ErrorCode.USER_NOT_FOUND)
+        );
         userInfo.setProfileImageUrl(imageUrl);
         userInfoRepository.save(userInfo);
+
+
         if (!historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
                 HistoryUpdateRequest.builder()
                         .columnName("profileImageUrl")

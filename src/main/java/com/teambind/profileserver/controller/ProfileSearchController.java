@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/profiles")
+@RequestMapping("/api/profiles/profiles")
 public class ProfileSearchController {
 
     private final ProfileSearchService profileSearchService;

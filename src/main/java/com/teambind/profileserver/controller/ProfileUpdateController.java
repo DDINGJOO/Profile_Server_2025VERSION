@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/profiles")
+@RequestMapping("/api/profiles/profiles")
 @RequiredArgsConstructor
 public class ProfileUpdateController {
     private final ProfileUpdateService profileUpdateService;

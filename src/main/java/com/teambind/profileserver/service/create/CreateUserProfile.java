@@ -7,6 +7,7 @@ import com.teambind.profileserver.utils.generator.NicknameGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public class CreateUserProfile {
 
 
 
+    @Transactional
     public String createUserProfile(String userId, String provider) {
         UserInfo userInfo = UserInfo.builder()
                 .userId(userId)

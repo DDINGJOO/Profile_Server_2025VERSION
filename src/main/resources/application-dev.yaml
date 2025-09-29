@@ -16,6 +16,8 @@ spring:
 
     listener:
       ack-mode: record
+
+
   datasource:
     url: jdbc:mariadb://${DATABASE_HOST}:${DATABASE_PORT}/profiles
     username: ${DATABASE_USER_NAME}

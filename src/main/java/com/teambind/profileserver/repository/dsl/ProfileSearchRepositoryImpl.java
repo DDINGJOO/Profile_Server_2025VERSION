@@ -10,13 +10,12 @@ import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.repository.ProfileSearchRepository;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import jakarta.persistence.EntityManager;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -127,6 +126,7 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
                             .exists()
             );
         }
+
         return where;
     }
 

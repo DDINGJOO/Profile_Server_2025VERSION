@@ -11,14 +11,13 @@ import com.teambind.profileserver.exceptions.ErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.*;
 import com.teambind.profileserver.service.history.UserProfileHistoryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -219,9 +218,13 @@ public class ProfileUpdateService {
 
     @Transactional
     public UserInfo updateProfileImage(String userId, String imageUrl)  {
-        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow();
+        UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
+                () -> new ProfileException(ErrorCode.USER_NOT_FOUND)
+        );
         userInfo.setProfileImageUrl(imageUrl);
         userInfoRepository.save(userInfo);
+
+
         if (!historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
                 HistoryUpdateRequest.builder()
                         .columnName("profileImageUrl")

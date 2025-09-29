@@ -13,25 +13,37 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ProfileException.class)
-    public ResponseEntity<ErrorResponse> handleProfileException(ProfileException ex, HttpServletRequest request) {
-        ErrorCode errorCode = ex.getErrorCode();
-        HttpStatus status = errorCode.getStatus();
-        ErrorResponse body = ErrorResponse.of(status.value(), errorCode.getErrCode(), errorCode.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(body);
-    }
+  @ExceptionHandler(ProfileException.class)
+  public ResponseEntity<ErrorResponse> handleProfileException(
+      ProfileException ex, HttpServletRequest request) {
+    ErrorCode errorCode = ex.getErrorCode();
+    HttpStatus status = errorCode.getStatus();
+    ErrorResponse body =
+        ErrorResponse.of(
+            status.value(),
+            errorCode.getErrCode(),
+            errorCode.getMessage(),
+            request.getRequestURI());
+    return ResponseEntity.status(status).body(body);
+  }
 
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  org.springframework.http.HttpStatusCode status,
-                                                                  WebRequest request) {
-        String message = ex.getBindingResult().getFieldErrors().stream()
-                .findFirst()
-                .map(err -> err.getField() + ": " + err.getDefaultMessage())
-                .orElse("Validation failed");
-        ErrorResponse body = ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), "VALIDATION_ERROR", message, request.getDescription(false));
-        return ResponseEntity.badRequest().body(body);
-    }
+  @Override
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      org.springframework.http.HttpStatusCode status,
+      WebRequest request) {
+    String message =
+        ex.getBindingResult().getFieldErrors().stream()
+            .findFirst()
+            .map(err -> err.getField() + ": " + err.getDefaultMessage())
+            .orElse("Validation failed");
+    ErrorResponse body =
+        ErrorResponse.of(
+            HttpStatus.BAD_REQUEST.value(),
+            "VALIDATION_ERROR",
+            message,
+            request.getDescription(false));
+    return ResponseEntity.badRequest().body(body);
+  }
 }

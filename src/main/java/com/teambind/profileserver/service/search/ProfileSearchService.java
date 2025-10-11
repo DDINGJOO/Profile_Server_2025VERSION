@@ -1,11 +1,13 @@
 package com.teambind.profileserver.service.search;
 
+import com.teambind.profileserver.dto.response.BatchUserSummaryResponse;
 import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.exceptions.ErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.ProfileSearchRepository;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,5 +39,11 @@ public class ProfileSearchService {
     public Slice<UserResponse> searchProfilesByCursor(ProfileSearchCriteria criteria, String cursor, int size) {
         var result = repository.searchByCursor(criteria, cursor, size);
         return result.map(UserResponse::fromEntity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BatchUserSummaryResponse> searchProfilesByIds(List<String> userIds) {
+        var users = repository.searchByUserIds(userIds);
+        return users.stream().map(BatchUserSummaryResponse::fromEntity).toList();
     }
 }

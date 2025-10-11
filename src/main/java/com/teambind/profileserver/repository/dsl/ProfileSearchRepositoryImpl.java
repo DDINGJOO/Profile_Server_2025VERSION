@@ -95,6 +95,17 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
         return new SliceImpl<>(content, PageRequest.of(0, size), hasNext);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserInfo> searchByUserIds(List<String> userIds) {
+        if (userIds == null || userIds.isEmpty()) return List.of();
+        // 단순 요약 필드만 필요하므로 컬렉션 초기화는 생략
+        return queryFactory
+                .selectFrom(ui)
+                .where(ui.userId.in(userIds))
+                .fetch();
+    }
+
     private BooleanBuilder buildWhere(ProfileSearchCriteria criteria) {
         BooleanBuilder where = new BooleanBuilder();
         if (criteria == null) return where;

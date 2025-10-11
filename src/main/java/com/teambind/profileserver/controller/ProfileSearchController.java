@@ -1,6 +1,7 @@
 package com.teambind.profileserver.controller;
 
 
+import com.teambind.profileserver.dto.response.BatchUserSummaryResponse;
 import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import com.teambind.profileserver.service.search.ProfileSearchService;
@@ -48,4 +49,10 @@ public class ProfileSearchController {
 		Slice<UserResponse> result = profileSearchService.searchProfilesByCursor(criteria, cursor, size);
 		return ResponseEntity.ok(result);
 	}
+
+    @PostMapping("/batch")
+    public ResponseEntity<List<BatchUserSummaryResponse>> getProfilesBatch(@RequestBody List<String> userIds) {
+        var result = profileSearchService.searchProfilesByIds(userIds);
+        return ResponseEntity.ok(result);
+    }
 }

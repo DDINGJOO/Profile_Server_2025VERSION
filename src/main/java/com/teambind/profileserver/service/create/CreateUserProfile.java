@@ -4,12 +4,11 @@ package com.teambind.profileserver.service.create;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.utils.generator.NicknameGenerator;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +26,7 @@ public class CreateUserProfile {
                 .city(null)
                 .isChatable(false)
                 .isPublic(false)
+		        .introduction(null)
                 .sex(null)
                 .profileImageUrl(null)
                 .createdAt(LocalDateTime.now())

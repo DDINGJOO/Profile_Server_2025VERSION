@@ -110,7 +110,7 @@ public class ProfileSearchRepositoryImpl implements ProfileSearchRepository {
         BooleanBuilder where = new BooleanBuilder();
         if (criteria == null) return where;
 
-        if (criteria.getCity() != null) {
+        if (criteria.getCity() != null && !criteria.getCity().isBlank()) {
             where.and(ui.city.eq(criteria.getCity()));
         }
         if (criteria.getSex() != null) {

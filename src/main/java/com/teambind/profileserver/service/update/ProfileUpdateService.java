@@ -39,7 +39,7 @@ public class ProfileUpdateService {
         userInfo.setProfileImageUrl(imageUrl);
     }
     @Transactional
-    public UserInfo updateProfile(String userId, String nickname,List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile,Character sex, String city) {
+    public UserInfo updateProfile(String userId, String nickname,List<Integer> instruments, List<Integer> genres, boolean isChattable, boolean isPublicProfile,Character sex, String city,String introduction) {
 
         UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
                 () -> new ProfileException(ErrorCode.USER_NOT_FOUND)
@@ -54,6 +54,7 @@ public class ProfileUpdateService {
         }
 
         userInfo.setIsChatable(isChattable);
+		userInfo.setIntroduction(introduction);
         userInfo.setIsPublic(isPublicProfile);
         userInfo.setSex(sex);
         userInfo.setCity(city);

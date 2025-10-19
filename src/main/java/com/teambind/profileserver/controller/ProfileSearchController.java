@@ -34,6 +34,8 @@ public class ProfileSearchController {
 			@RequestParam(required = false) String cursor,
 			@RequestParam(required = false, defaultValue = "10") int size) {
 		
+		if (city != null && city.isBlank()) city = null;
+		if (nickName != null && nickName.isBlank()) nickName = null;
 		if (cursor != null && cursor.isBlank()) cursor = null;
 		if (size <= 0) size = 10;
 		if (size > 100) size = 100;

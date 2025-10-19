@@ -20,7 +20,7 @@ public class ProfileUpdateController {
     public ResponseEntity<Boolean> updateProfile(@PathVariable String userId, @RequestBody ProfileUpdateRequest request)  {
 
         profileUpdateValidator.validateProfileUpdateRequest(request.getNickname(), request.getInstruments(), request.getGenres());
-        profileUpdateService.updateProfile(userId, request.getNickname(), request.getInstruments().keySet().stream().toList(),request.getGenres().keySet().stream().toList(),request.isChattable(),request.isPublicProfile(),request.getSex(),request.getCity());
+        profileUpdateService.updateProfile(userId, request.getNickname(), request.getInstruments().keySet().stream().toList(),request.getGenres().keySet().stream().toList(),request.isChattable(),request.isPublicProfile(),request.getSex(),request.getCity(),request.getIntroduction());
         return ResponseEntity.ok(true);
     }
 

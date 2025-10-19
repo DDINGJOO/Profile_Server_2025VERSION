@@ -12,7 +12,7 @@ import lombok.*;
 public class ProfileUpdateRequest {
     private String nickname;
     private String city;
-
+	private String introduction;
     private boolean chattable;
     private boolean publicProfile;
     private Character sex;

@@ -32,7 +32,7 @@ public class KafkaConsumer {
         }
     }
 
-    @KafkaListener(topics = "profile-create-request" , groupId = "profile-consumer-group")
+    @KafkaListener(topics = "user-created" , groupId = "profile-consumer-group")
     public void createUserProfile(String message) {
         try {
             ProfileCreateRequest request = objectMapper.readValue(message, ProfileCreateRequest.class);

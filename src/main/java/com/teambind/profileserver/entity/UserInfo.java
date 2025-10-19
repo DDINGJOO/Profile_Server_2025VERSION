@@ -32,6 +32,9 @@ public class UserInfo {
     @Version
     @Column(name="version")
     private int version;
+	
+	@Column(name="introduction")
+	private String introduction;
 
     @Column(name="created_at")
     private LocalDateTime createdAt;

@@ -16,6 +16,7 @@ public class UserResponse {
     private String profileImageUrl;
     private List<String> genres;
     private List<String> instruments;
+	private String introduction;
     private String city;
     private String nickname;
     private Boolean isChattable;
@@ -25,6 +26,7 @@ public class UserResponse {
         return UserResponse.builder()
                 .userId(userInfo.getUserId())
                 .city(userInfo.getCity())
+		        .introduction(userInfo.getIntroduction())
                 .nickname(userInfo.getNickname())
                 .isChattable(userInfo.getIsChatable())
                 .isPublic(userInfo.getIsPublic())

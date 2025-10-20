@@ -2,24 +2,32 @@ package com.teambind.profileserver.controller;
 
 
 import com.teambind.profileserver.utils.InitTableMapper;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
-
 
 @RestController
 @RequestMapping("/api/profiles/enums")
 public class EnumsController {
 
+	//TEST Required
     @GetMapping("/genres")
     public Map<Integer, String> getGenres() {
-        return InitTableMapper.genreNameTable;
+		Map<Integer, String> result = new HashMap<>();
+		InitTableMapper.genreNameTable.entrySet().stream().forEach(entry -> {
+			result.put(entry.getKey(), entry.getValue().getGenreName());
+		});
+		return result;
     }
     @GetMapping("/instruments")
     public Map<Integer, String> getInstruments() {
-        return InitTableMapper.instrumentNameTable;
+		Map<Integer, String> result = new HashMap<>();
+		InitTableMapper.instrumentNameTable.entrySet().stream().forEach(entry -> {
+			result.put(entry.getKey(), entry.getValue().getInstrumentName());
+		});
+		return result;
     }
     @GetMapping("/locations")
     public Map<String, String> getLocations() {

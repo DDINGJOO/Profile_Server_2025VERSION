@@ -1,6 +1,6 @@
 package com.teambind.profileserver.config;
 
-import com.teambind.profileserver.utils.generator.PKeyGenerator;
+import com.teambind.profileserver.utils.generator.PrimaryKeyGenerator;
 import com.teambind.profileserver.utils.generator.impl.Snowflake;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class GenerateKeyConfig {
 
     @Bean
-    public PKeyGenerator PkeyGenerator() {
+    public PrimaryKeyGenerator PkeyGenerator() {
         return new Snowflake();
     }
 }

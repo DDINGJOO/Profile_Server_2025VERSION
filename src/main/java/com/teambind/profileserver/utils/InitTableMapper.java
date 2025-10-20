@@ -8,7 +8,6 @@ import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.LocationNameTableRepository;
 import jakarta.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,8 @@ public class InitTableMapper {
     private final GenreNameTableRepository genreNameTableRepository;
     private final InstrumentNameTableRepository instrumentNameTableRepository;
     private final LocationNameTableRepository locationNameTableRepository;
-    public static HashMap<Integer, String> genreNameTable = new HashMap<>();
-    public static HashMap<Integer, String> instrumentNameTable = new HashMap<>();
+    public static HashMap<Integer, GenreNameTable> genreNameTable = new HashMap<>();
+    public static HashMap<Integer, InstrumentNameTable> instrumentNameTable = new HashMap<>();
     public static HashMap<String, String> locationNamesTable = new HashMap<>();
 
     @PostConstruct
@@ -48,31 +47,10 @@ public class InitTableMapper {
         instrumentNameTable= new HashMap<>();
 
         genreNameTables.forEach(genreNameTable -> {
-            InitTableMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable.getGenreName());
+            InitTableMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable);
         });
         instrumentNameTables.forEach(instrumentNameTable -> {
-            InitTableMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
+            InitTableMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable);
         });
     }
-
-
-    public List<GenreNameTable> convertGenreNameTable(List<Integer> names) {
-        List<GenreNameTable> convertedNames = new ArrayList<>();
-        names.forEach(name -> {
-            if( !InitTableMapper.genreNameTable.containsKey(name)){
-                convertedNames.add(genreNameTableRepository.findById(name).get());}
-        });
-        return convertedNames;
-    }
-
-    public List<InstrumentNameTable> convertInstrumentNameTable(List<Integer> names) {
-        List<InstrumentNameTable> convertedNames = new ArrayList<>();
-        names.forEach(name -> {
-            if( !InitTableMapper.instrumentNameTable.containsKey(name)){
-                convertedNames.add(instrumentNameTableRepository.findById(name).get());}
-        });
-        return convertedNames;
-    }
-
-
 }

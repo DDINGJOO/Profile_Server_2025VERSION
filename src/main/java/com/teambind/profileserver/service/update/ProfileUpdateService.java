@@ -65,6 +65,10 @@ public class ProfileUpdateService {
         return userInfo;
     }
 	
+	public boolean isNickNameExist(String nickname) {
+		return userInfoRepository.existsByNickname(nickname);
+	}
+	
 	
 	
 	private UserInfo getUserInfo(String userId){

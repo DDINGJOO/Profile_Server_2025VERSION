@@ -12,18 +12,19 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserGenresRepository extends JpaRepository<UserGenres, UserGenreKey> {
+public interface UserGenresRepository extends JpaRepository<UserGenres, UserGenreKey>,
+        UserAttributeRepository<UserGenres, UserGenreKey> {
 
     @Query("select ug.id.genreId from UserGenres ug where ug.id.userId = :userId")
-    List<Integer> findGenreIdsById(@Param("userId") String userId);
+    List<Integer> findAttributeIdsByUserId(@Param("userId") String userId);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("delete from UserGenres ug where ug.id.userId = :userId and ug.id.genreId in :genreIds")
-    int deleteByIdAndGenreIdsIn(@Param("userId") String userId, @Param("genreIds") Collection<Integer> genreIds);
+    @Query("delete from UserGenres ug where ug.id.userId = :userId and ug.id.genreId in :attributeIds")
+    int deleteByUserIdAndAttributeIdsIn(@Param("userId") String userId, @Param("attributeIds") Collection<Integer> attributeIds);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from UserGenres ug where ug.id.userId = :userId")
-    int deleteById(@Param("userId") String userId);
+    int deleteByUserId(@Param("userId") String userId);
 
 
 }

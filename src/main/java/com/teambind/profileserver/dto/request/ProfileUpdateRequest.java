@@ -1,5 +1,7 @@
 package com.teambind.profileserver.dto.request;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import lombok.*;
 
@@ -17,6 +19,7 @@ public class ProfileUpdateRequest {
     private boolean publicProfile;
     private Character sex;
 
-    private Map<Integer,String> genres;
-    private Map<Integer,String> instruments;
+    private List<Integer> genres;
+    private List<Integer> instruments;
+	
 }

@@ -233,13 +233,13 @@ public class UserInstruments extends UserAttributeBase<UserInstrumentKey, Instru
 - ✅ 네이밍 혼선 해소 (userId → id)
 
 #### 작업 체크리스트
-- [ ] `UserAttributeBase` 추상 클래스 생성
-- [ ] `UserGenres` 리팩토링
-- [ ] `UserInstruments` 리팩토링
-- [ ] 관련 Repository 메서드 수정 (userId → id)
-- [ ] Service 계층 코드 수정
-- [ ] 기존 테스트 수정 및 통과 확인
-- [ ] 새로운 단위 테스트 작성
+- [x] `UserAttributeBase` 추상 클래스 생성
+- [x] `UserGenres` 리팩토링
+- [x] `UserInstruments` 리팩토링
+- [x] 관련 Repository 메서드 수정 (userId → id)
+- [x] Service 계층 코드 수정
+- [x] 기존 테스트 수정 및 통과 확인
+- [x] 새로운 단위 테스트 작성
 
 ### 1.2 연관관계 편의 메서드 추가
 
@@ -393,7 +393,7 @@ public UserInfo updateProfile(...) {
 - ✅ 테스트 용이성 향상
 
 #### 작업 체크리스트
-- [ ] `UserInfo`에 연관관계 편의 메서드 추가
+- [x] `UserInfo`에 연관관계 편의 메서드 추가
 - [ ] `ProfileUpdateService.updateProfile()` 리팩토링
 - [ ] `ProfileUpdateService.updateProfileAll()` 리팩토링
 - [ ] 편의 메서드 단위 테스트 작성

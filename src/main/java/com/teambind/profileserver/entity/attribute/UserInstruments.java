@@ -1,6 +1,7 @@
 package com.teambind.profileserver.entity.attribute;
 
 import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.entity.attribute.base.UserAttributeBase;
 import com.teambind.profileserver.entity.attribute.key.UserInstrumentKey;
 import com.teambind.profileserver.entity.attribute.nameTable.InstrumentNameTable;
 import jakarta.persistence.*;
@@ -13,13 +14,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserInstruments {
+public class UserInstruments extends UserAttributeBase<UserInstrumentKey, InstrumentNameTable> {
 
     @EmbeddedId
-    @AttributeOverrides({
-            @AttributeOverride(name = "userId", column = @Column(name = "user_id")),
-            @AttributeOverride(name = "instrumentId", column = @Column(name = "instrument_id"))
-    })
     private UserInstrumentKey id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,8 +33,14 @@ public class UserInstruments {
     @EqualsAndHashCode.Exclude
     private InstrumentNameTable instrument;
 
-    @Version
-    @Column(name = "version")
-    private int version;
+    @Override
+    public InstrumentNameTable getAttribute() {
+        return instrument;
+    }
+
+    @Override
+    public void setAttribute(InstrumentNameTable instrument) {
+        this.instrument = instrument;
+    }
 
 }

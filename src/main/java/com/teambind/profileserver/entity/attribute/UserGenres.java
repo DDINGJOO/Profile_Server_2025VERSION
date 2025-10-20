@@ -1,6 +1,7 @@
 package com.teambind.profileserver.entity.attribute;
 
 import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.entity.attribute.base.UserAttributeBase;
 import com.teambind.profileserver.entity.attribute.key.UserGenreKey;
 import com.teambind.profileserver.entity.attribute.nameTable.GenreNameTable;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class UserGenres {
+public class UserGenres extends UserAttributeBase<UserGenreKey, GenreNameTable> {
 
     @EmbeddedId
     private UserGenreKey id;
@@ -32,8 +33,14 @@ public class UserGenres {
     @EqualsAndHashCode.Exclude
     private GenreNameTable genre;
 
-    @Version
-    @Column(name = "version")
-    private int version;
+    @Override
+    public GenreNameTable getAttribute() {
+        return genre;
+    }
+
+    @Override
+    public void setAttribute(GenreNameTable genre) {
+        this.genre = genre;
+    }
 
 }

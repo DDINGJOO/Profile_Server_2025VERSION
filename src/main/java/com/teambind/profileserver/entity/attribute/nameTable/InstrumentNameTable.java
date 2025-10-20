@@ -1,4 +1,4 @@
-package com.teambind.profileserver.entity.nameTable;
+package com.teambind.profileserver.entity.attribute.nameTable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

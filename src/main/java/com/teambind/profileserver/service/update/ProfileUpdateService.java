@@ -2,11 +2,11 @@ package com.teambind.profileserver.service.update;
 
 
 import com.teambind.profileserver.dto.request.HistoryUpdateRequest;
-import com.teambind.profileserver.entity.UserGenres;
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.entity.UserInstruments;
-import com.teambind.profileserver.entity.key.UserGenreKey;
-import com.teambind.profileserver.entity.key.UserInstrumentKey;
+import com.teambind.profileserver.entity.attribute.UserGenres;
+import com.teambind.profileserver.entity.attribute.UserInstruments;
+import com.teambind.profileserver.entity.attribute.key.UserGenreKey;
+import com.teambind.profileserver.entity.attribute.key.UserInstrumentKey;
 import com.teambind.profileserver.exceptions.ErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.*;

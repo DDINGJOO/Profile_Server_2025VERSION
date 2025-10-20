@@ -1,7 +1,8 @@
-package com.teambind.profileserver.entity;
+package com.teambind.profileserver.entity.attribute;
 
-import com.teambind.profileserver.entity.key.UserGenreKey;
-import com.teambind.profileserver.entity.nameTable.GenreNameTable;
+import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.entity.attribute.key.UserGenreKey;
+import com.teambind.profileserver.entity.attribute.nameTable.GenreNameTable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ import lombok.*;
 public class UserGenres {
 
     @EmbeddedId
-    private UserGenreKey userId;
+    private UserGenreKey id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")

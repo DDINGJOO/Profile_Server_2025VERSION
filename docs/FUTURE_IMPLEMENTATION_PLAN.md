@@ -130,8 +130,8 @@ public abstract class UserAttributeBase<K, T> {
 package com.teambind.profileserver.entity;
 
 import com.teambind.profileserver.entity.base.UserAttributeBase;
-import com.teambind.profileserver.entity.key.UserGenreKey;
-import com.teambind.profileserver.entity.nameTable.GenreNameTable;
+import com.teambind.profileserver.entity.attribute.key.UserGenreKey;
+import com.teambind.profileserver.entity.attribute.nameTable.GenreNameTable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -143,33 +143,33 @@ import lombok.*;
 @Setter
 @Builder
 public class UserGenres extends UserAttributeBase<UserGenreKey, GenreNameTable> {
-
-    @EmbeddedId
-    private UserGenreKey id;  // ✅ userId → id로 변경
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private UserInfo userInfo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("genreId")
-    @JoinColumn(name = "genre_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private GenreNameTable genre;
-
-    @Override
-    public GenreNameTable getAttribute() {
-        return genre;
-    }
-
-    @Override
-    public void setAttribute(GenreNameTable genre) {
-        this.genre = genre;
-    }
+	
+	@EmbeddedId
+	private UserGenreKey id;  // ✅ userId → id로 변경
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@MapsId("userId")
+	@JoinColumn(name = "user_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	private UserInfo userInfo;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@MapsId("genreId")
+	@JoinColumn(name = "genre_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	private GenreNameTable genre;
+	
+	@Override
+	public GenreNameTable getAttribute() {
+		return genre;
+	}
+	
+	@Override
+	public void setAttribute(GenreNameTable genre) {
+		this.genre = genre;
+	}
 }
 ```
 
@@ -179,8 +179,8 @@ public class UserGenres extends UserAttributeBase<UserGenreKey, GenreNameTable> 
 package com.teambind.profileserver.entity;
 
 import com.teambind.profileserver.entity.base.UserAttributeBase;
-import com.teambind.profileserver.entity.key.UserInstrumentKey;
-import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
+import com.teambind.profileserver.entity.attribute.key.UserInstrumentKey;
+import com.teambind.profileserver.entity.attribute.nameTable.InstrumentNameTable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -192,37 +192,37 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserInstruments extends UserAttributeBase<UserInstrumentKey, InstrumentNameTable> {
-
-    @EmbeddedId
-    @AttributeOverrides({
-        @AttributeOverride(name = "userId", column = @Column(name = "user_id")),
-        @AttributeOverride(name = "instrumentId", column = @Column(name = "instrument_id"))
-    })
-    private UserInstrumentKey id;  // ✅ userId → id로 변경
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private UserInfo userInfo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("instrumentId")
-    @JoinColumn(name = "instrument_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private InstrumentNameTable instrument;
-
-    @Override
-    public InstrumentNameTable getAttribute() {
-        return instrument;
-    }
-
-    @Override
-    public void setAttribute(InstrumentNameTable instrument) {
-        this.instrument = instrument;
-    }
+	
+	@EmbeddedId
+	@AttributeOverrides({
+			@AttributeOverride(name = "userId", column = @Column(name = "user_id")),
+			@AttributeOverride(name = "instrumentId", column = @Column(name = "instrument_id"))
+	})
+	private UserInstrumentKey id;  // ✅ userId → id로 변경
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@MapsId("userId")
+	@JoinColumn(name = "user_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	private UserInfo userInfo;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@MapsId("instrumentId")
+	@JoinColumn(name = "instrument_id")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	private InstrumentNameTable instrument;
+	
+	@Override
+	public InstrumentNameTable getAttribute() {
+		return instrument;
+	}
+	
+	@Override
+	public void setAttribute(InstrumentNameTable instrument) {
+		this.instrument = instrument;
+	}
 }
 ```
 
@@ -1078,46 +1078,47 @@ public class AttributeUpdateTemplate {
 ```java
 package com.teambind.profileserver.service.strategy;
 
-import com.teambind.profileserver.entity.UserGenres;
+import com.teambind.profileserver.entity.attribute.UserGenres;
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.entity.key.UserGenreKey;
+import com.teambind.profileserver.entity.attribute.key.UserGenreKey;
 import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.UserGenresRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class GenreUpdateStrategy implements AttributeUpdateStrategy<UserGenres> {
-
-    private final UserGenresRepository userGenresRepository;
-    private final GenreNameTableRepository genreNameTableRepository;
-    private final UserInfoRepository userInfoRepository;
-
-    @Override
-    public List<Integer> findCurrentIds(String userId) {
-        return userGenresRepository.findGenreIdsByUserId(userId);
-    }
-
-    @Override
-    public void deleteByIds(String userId, Set<Integer> idsToRemove) {
-        userGenresRepository.deleteByUserIdAndGenreIdsIn(userId, idsToRemove);
-    }
-
-    @Override
-    public void addAttributes(UserInfo userInfo, Set<Integer> idsToAdd) {
-        List<UserGenres> newGenres = idsToAdd.stream()
-            .map(genreId -> UserGenres.builder()
-                .id(new UserGenreKey(userInfo.getUserId(), genreId))
-                .genre(genreNameTableRepository.getReferenceById(genreId))
-                .build())
-            .toList();
-
-        newGenres.forEach(userInfo::addGenre);  // 편의 메서드 사용
-    }
+	
+	private final UserGenresRepository userGenresRepository;
+	private final GenreNameTableRepository genreNameTableRepository;
+	private final UserInfoRepository userInfoRepository;
+	
+	@Override
+	public List<Integer> findCurrentIds(String userId) {
+		return userGenresRepository.findGenreIdsByUserId(userId);
+	}
+	
+	@Override
+	public void deleteByIds(String userId, Set<Integer> idsToRemove) {
+		userGenresRepository.deleteByUserIdAndGenreIdsIn(userId, idsToRemove);
+	}
+	
+	@Override
+	public void addAttributes(UserInfo userInfo, Set<Integer> idsToAdd) {
+		List<UserGenres> newGenres = idsToAdd.stream()
+				.map(genreId -> UserGenres.builder()
+						.id(new UserGenreKey(userInfo.getUserId(), genreId))
+						.genre(genreNameTableRepository.getReferenceById(genreId))
+						.build())
+				.toList();
+		
+		newGenres.forEach(userInfo::addGenre);  // 편의 메서드 사용
+	}
 }
 ```
 
@@ -1126,46 +1127,47 @@ public class GenreUpdateStrategy implements AttributeUpdateStrategy<UserGenres> 
 ```java
 package com.teambind.profileserver.service.strategy;
 
-import com.teambind.profileserver.entity.UserInstruments;
+import com.teambind.profileserver.entity.attribute.UserInstruments;
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.entity.key.UserInstrumentKey;
+import com.teambind.profileserver.entity.attribute.key.UserInstrumentKey;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.repository.UserInstrumentsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class InstrumentUpdateStrategy implements AttributeUpdateStrategy<UserInstruments> {
-
-    private final UserInstrumentsRepository userInstrumentsRepository;
-    private final InstrumentNameTableRepository instrumentNameTableRepository;
-    private final UserInfoRepository userInfoRepository;
-
-    @Override
-    public List<Integer> findCurrentIds(String userId) {
-        return userInstrumentsRepository.findInstrumentIdsByUserId(userId);
-    }
-
-    @Override
-    public void deleteByIds(String userId, Set<Integer> idsToRemove) {
-        userInstrumentsRepository.deleteByUserIdAndInstrumentIdsIn(userId, idsToRemove);
-    }
-
-    @Override
-    public void addAttributes(UserInfo userInfo, Set<Integer> idsToAdd) {
-        List<UserInstruments> newInstruments = idsToAdd.stream()
-            .map(instrumentId -> UserInstruments.builder()
-                .id(new UserInstrumentKey(userInfo.getUserId(), instrumentId))
-                .instrument(instrumentNameTableRepository.getReferenceById(instrumentId))
-                .build())
-            .toList();
-
-        newInstruments.forEach(userInfo::addInstrument);  // 편의 메서드 사용
-    }
+	
+	private final UserInstrumentsRepository userInstrumentsRepository;
+	private final InstrumentNameTableRepository instrumentNameTableRepository;
+	private final UserInfoRepository userInfoRepository;
+	
+	@Override
+	public List<Integer> findCurrentIds(String userId) {
+		return userInstrumentsRepository.findInstrumentIdsByUserId(userId);
+	}
+	
+	@Override
+	public void deleteByIds(String userId, Set<Integer> idsToRemove) {
+		userInstrumentsRepository.deleteByUserIdAndInstrumentIdsIn(userId, idsToRemove);
+	}
+	
+	@Override
+	public void addAttributes(UserInfo userInfo, Set<Integer> idsToAdd) {
+		List<UserInstruments> newInstruments = idsToAdd.stream()
+				.map(instrumentId -> UserInstruments.builder()
+						.id(new UserInstrumentKey(userInfo.getUserId(), instrumentId))
+						.instrument(instrumentNameTableRepository.getReferenceById(instrumentId))
+						.build())
+				.toList();
+		
+		newInstruments.forEach(userInfo::addInstrument);  // 편의 메서드 사용
+	}
 }
 ```
 

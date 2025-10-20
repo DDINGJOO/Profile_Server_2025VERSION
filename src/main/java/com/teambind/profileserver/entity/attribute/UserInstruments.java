@@ -1,7 +1,8 @@
-package com.teambind.profileserver.entity;
+package com.teambind.profileserver.entity.attribute;
 
-import com.teambind.profileserver.entity.key.UserInstrumentKey;
-import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
+import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.entity.attribute.key.UserInstrumentKey;
+import com.teambind.profileserver.entity.attribute.nameTable.InstrumentNameTable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class UserInstruments {
             @AttributeOverride(name = "userId", column = @Column(name = "user_id")),
             @AttributeOverride(name = "instrumentId", column = @Column(name = "instrument_id"))
     })
-    private UserInstrumentKey userId;
+    private UserInstrumentKey id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")

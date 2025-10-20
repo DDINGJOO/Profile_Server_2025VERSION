@@ -1,20 +1,19 @@
 package com.teambind.profileserver.utils;
 
 
-import com.teambind.profileserver.entity.nameTable.GenreNameTable;
-import com.teambind.profileserver.entity.nameTable.InstrumentNameTable;
-import com.teambind.profileserver.entity.nameTable.LocationNameTable;
+import com.teambind.profileserver.entity.attribute.nameTable.GenreNameTable;
+import com.teambind.profileserver.entity.attribute.nameTable.InstrumentNameTable;
+import com.teambind.profileserver.entity.attribute.nameTable.LocationNameTable;
 import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.LocationNameTableRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j

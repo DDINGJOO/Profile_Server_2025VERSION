@@ -1,6 +1,8 @@
 package com.teambind.profileserver.entity;
 
 
+import com.teambind.profileserver.entity.attribute.UserGenres;
+import com.teambind.profileserver.entity.attribute.UserInstruments;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

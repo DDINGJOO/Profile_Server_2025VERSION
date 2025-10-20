@@ -6,7 +6,7 @@ import com.teambind.profileserver.utils.validator.GenreValidator;
 import com.teambind.profileserver.utils.validator.InstrumentsValidator;
 import com.teambind.profileserver.utils.validator.NickNameValidator;
 import com.teambind.profileserver.utils.validator.ProfileUpdateValidator;
-import java.util.Map;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +19,10 @@ public class ProfileUpdateValidatorImpl implements ProfileUpdateValidator {
 
   @Override
   public void validateProfileUpdateRequest(
-      String Nickname, Map<Integer, String> genreMap, Map<Integer, String> instrumentMap) {
+      String Nickname, List<Integer> genreIds, List<Integer> instrumentIds) {
     if (!NicknameValidation(Nickname)) throw new ProfileException(ErrorCode.NICKNAME_INVALID);
-    if (!isGenreValidByIds(genreMap)) throw new ProfileException(ErrorCode.GENRE_INVALID);
-    isInstrumentValidByIds(instrumentMap);
+    if (!isGenreValidByIds(genreIds)) throw new ProfileException(ErrorCode.GENRE_INVALID);
+    isInstrumentValidByIds(instrumentIds);
   }
 
   @Override
@@ -31,12 +31,12 @@ public class ProfileUpdateValidatorImpl implements ProfileUpdateValidator {
   }
 
   @Override
-  public boolean isGenreValidByIds(Map<Integer, String> genreMaps) {
-    return genreValidator.isValidGenreByIds(genreMaps);
+  public boolean isGenreValidByIds(List<Integer> genreIds) {
+    return genreValidator.isValidGenreByIds(genreIds);
   }
 
   @Override
-  public void isInstrumentValidByIds(Map<Integer, String> instrumentMaps) {
-    instrumentValidator.isValidInstrumentByIds(instrumentMaps);
+  public void isInstrumentValidByIds(List<Integer> instrumentIds) {
+    instrumentValidator.isValidInstrumentByIds(instrumentIds);
   }
 }

@@ -1,10 +1,9 @@
-package com.teambind.profileserver.entity.key;
+package com.teambind.profileserver.entity.attribute.key;
 
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode

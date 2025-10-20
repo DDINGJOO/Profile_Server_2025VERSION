@@ -1,8 +1,8 @@
 package com.teambind.profileserver.dto.request;
 
-import java.util.Collections;
+import com.teambind.profileserver.validator.Attribute;
+import com.teambind.profileserver.validator.NickName;
 import java.util.List;
-import java.util.Map;
 import lombok.*;
 
 @Data
@@ -12,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ProfileUpdateRequest {
+	@NickName
     private String nickname;
     private String city;
 	private String introduction;
@@ -19,7 +20,9 @@ public class ProfileUpdateRequest {
     private boolean publicProfile;
     private Character sex;
 
+	@Attribute(value = "GENRE")
     private List<Integer> genres;
+	@Attribute(value = "INTEREST")
     private List<Integer> instruments;
 	
 }

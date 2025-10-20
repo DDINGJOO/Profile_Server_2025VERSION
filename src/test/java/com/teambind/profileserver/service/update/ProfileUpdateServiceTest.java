@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import com.teambind.profileserver.dto.request.HistoryUpdateRequest;
 import com.teambind.profileserver.dto.request.ProfileUpdateRequest;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.entity.attribute.nameTable.GenreNameTable;
@@ -14,7 +13,6 @@ import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
-import com.teambind.profileserver.service.history.UserProfileHistoryService;
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;

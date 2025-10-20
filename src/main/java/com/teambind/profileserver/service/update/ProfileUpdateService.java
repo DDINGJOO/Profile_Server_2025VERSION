@@ -1,16 +1,16 @@
 package com.teambind.profileserver.service.update;
 
 
-import com.teambind.profileserver.dto.request.HistoryUpdateRequest;
 import com.teambind.profileserver.dto.request.ProfileUpdateRequest;
+import com.teambind.profileserver.entity.History;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.exceptions.ErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
-import com.teambind.profileserver.service.history.UserProfileHistoryService;
 import com.teambind.profileserver.utils.InitTableMapper;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,6 @@ public class ProfileUpdateService {
     private final UserInfoRepository userInfoRepository;
     private final InstrumentNameTableRepository instrumentNameTableRepository;
     private final GenreNameTableRepository genreNameTableRepository;
-    private final UserProfileHistoryService historyService;
 	private final InitTableMapper initTableMapper;
 	
 	
@@ -53,14 +52,14 @@ public class ProfileUpdateService {
     public UserInfo updateProfileImage(String userId, String imageUrl)  {
 	    UserInfo userInfo = getUserInfo(userId);
         userInfo.setProfileImageUrl(imageUrl);
-        
-		historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
-                HistoryUpdateRequest.builder()
-                        .columnName("profileImageUrl")
-                        .oldValue(userInfo.getProfileImageUrl())
-                        .newValue(imageUrl)
-                        .build()
-        });
+	    
+		userInfo.getUserHistory().add( History.builder()
+				.userInfo(userInfo)
+				.fieldName("profileImageUrl")
+				.oldVal(userInfo.getProfileImageUrl())
+				.newVal(imageUrl)
+				.updatedAt(LocalDateTime.now())
+				.build());
 
         return userInfo;
     }
@@ -83,13 +82,15 @@ public class ProfileUpdateService {
 				throw new ProfileException(ErrorCode.NICKNAME_ALREADY_EXISTS);
 			}
 			
-			historyService.saveAllHistory(userInfo, new HistoryUpdateRequest[]{
-					HistoryUpdateRequest.builder()
-							.columnName("nickname")
-							.oldValue(userInfo.getNickname())
-							.newValue(nickname)
+			userInfo.getUserHistory().add(
+					History.builder()
+							.userInfo(userInfo)
+							.fieldName("nickname")
+							.oldVal(userInfo.getNickname())
+							.newVal(nickname)
+							.updatedAt(LocalDateTime.now())
 							.build()
-			});
+			);
 			userInfo.setNickname(nickname);
 		}
 	}

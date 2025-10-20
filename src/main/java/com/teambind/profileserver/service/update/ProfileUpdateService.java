@@ -11,7 +11,6 @@ import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.service.history.UserProfileHistoryService;
 import com.teambind.profileserver.utils.InitTableMapper;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,14 +42,11 @@ public class ProfileUpdateService {
     @Transactional
     public UserInfo updateProfile(String userId, ProfileUpdateRequest request) {
 	    UserInfo userInfo = getUserInfo(userId);
-		setNickname(userInfo, request.getNickname());
-		setCommonAttribute(userInfo,request);
-		setGenres(userInfo, request.getGenres());
-		setInstruments(userInfo, request.getInstruments());
-		userInfoRepository.save(userInfo);
-
-        // 추가 조회와 불필요한 지연 로딩을 피하기 위해 영속 엔티티 반환
-        return userInfo;
+	    
+	    applyPatch(userInfo, request);
+	    
+	    userInfoRepository.save(userInfo);
+	    return userInfo;
     }
 	
     @Transactional
@@ -93,33 +89,29 @@ public class ProfileUpdateService {
 			userInfo.setNickname(nickname);
 		}
 	}
-	private void setCommonAttribute(UserInfo userInfo,ProfileUpdateRequest request) {
-		// 기타 필드 업데이트 (null이 아닌 경우)
-		if (request.getIntroduction() != null) {
-			userInfo.setIntroduction(request.getIntroduction());
+	private void applyPatch(UserInfo userInfo, ProfileUpdateRequest req) {
+		// 닉네임
+		setNickname(userInfo, req.getNickname());
+		
+		// 공통 스칼라 속성
+		if (req.getIntroduction() != null) userInfo.setIntroduction(req.getIntroduction());
+		if (req.getCity() != null) userInfo.setCity(req.getCity());
+		if (req.getSex() != null) userInfo.setSex(req.getSex());
+		userInfo.setIsChatable(req.isChattable());
+		userInfo.setIsPublic(req.isPublicProfile());
+		
+		// 컬렉션 속성
+		if (req.getGenres() != null) {
+			userInfo.clearGenres();
+			for (Integer id : req.getGenres()) {
+				userInfo.addGenre(InitTableMapper.genreNameTable.get(id));
+			}
 		}
-		if (request.getCity() != null) {
-			userInfo.setCity(request.getCity());
-		}
-		if (request.getSex() != null) {
-			userInfo.setSex(request.getSex());
-		}
-		userInfo.setIsChatable(request.isChattable());
-		userInfo.setIsPublic(request.isPublicProfile());
-	}
-	
-	private void setGenres(UserInfo userInfo, List<Integer> genreIds) {
-		if (genreIds == null) return;
-		userInfo.clearGenres();
-		for(Integer id : genreIds) {
-			userInfo.addGenre(InitTableMapper.genreNameTable.get(id));
-		}
-	}
-	private void setInstruments(UserInfo userInfo, List<Integer> instrumentIds) {
-		if (instrumentIds == null) return;
-		userInfo.clearInstruments();
-		for(Integer id : instrumentIds) {
-			userInfo.addInstrument(InitTableMapper.instrumentNameTable.get(id));
+		if (req.getInstruments() != null) {
+			userInfo.clearInstruments();
+			for (Integer id : req.getInstruments()) {
+				userInfo.addInstrument(InitTableMapper.instrumentNameTable.get(id));
+			}
 		}
 	}
 }

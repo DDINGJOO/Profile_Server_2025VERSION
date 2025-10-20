@@ -3,7 +3,6 @@ package com.teambind.profileserver.controller;
 
 import com.teambind.profileserver.dto.request.ProfileUpdateRequest;
 import com.teambind.profileserver.service.update.ProfileUpdateService;
-import com.teambind.profileserver.utils.validator.ProfileUpdateValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -8,7 +8,6 @@ import com.teambind.profileserver.repository.GenreNameTableRepository;
 import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.LocationNameTableRepository;
 import jakarta.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -54,25 +53,4 @@ public class InitTableMapper {
             InitTableMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
         });
     }
-
-
-    public List<GenreNameTable> convertGenreNameTable(List<Integer> names) {
-        List<GenreNameTable> convertedNames = new ArrayList<>();
-        names.forEach(name -> {
-            if( !InitTableMapper.genreNameTable.containsKey(name)){
-                convertedNames.add(genreNameTableRepository.findById(name).get());}
-        });
-        return convertedNames;
-    }
-
-    public List<InstrumentNameTable> convertInstrumentNameTable(List<Integer> names) {
-        List<InstrumentNameTable> convertedNames = new ArrayList<>();
-        names.forEach(name -> {
-            if( !InitTableMapper.instrumentNameTable.containsKey(name)){
-                convertedNames.add(instrumentNameTableRepository.findById(name).get());}
-        });
-        return convertedNames;
-    }
-
-
 }

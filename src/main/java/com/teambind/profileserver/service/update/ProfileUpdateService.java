@@ -214,6 +214,13 @@ public class ProfileUpdateService {
 
         return userInfo;
     }
+	
+	private UserInfo getUserInfo(String userId){
+		
+		return userInfoRepository.findById(userId).orElseThrow(
+				() -> new ProfileException(ErrorCode.USER_NOT_FOUND)
+		);
+	}
 
     /**
      * 사용자 속성을 부분 업데이트 (연관관계 편의 메소드 활용)

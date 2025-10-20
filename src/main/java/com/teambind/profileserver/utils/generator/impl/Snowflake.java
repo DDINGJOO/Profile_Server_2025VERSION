@@ -1,12 +1,11 @@
 package com.teambind.profileserver.utils.generator.impl;
 
 
-import com.teambind.profileserver.utils.generator.PKeyGenerator;
+import com.teambind.profileserver.utils.generator.PrimaryKeyGenerator;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Snowflake ID Generator
@@ -20,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Component
 @Primary
 @RequiredArgsConstructor
-public class Snowflake  implements PKeyGenerator {
+public class Snowflake  implements PrimaryKeyGenerator {
 
     // ===== Bit Allocation =====
     private static final int NODE_ID_BITS = 10;

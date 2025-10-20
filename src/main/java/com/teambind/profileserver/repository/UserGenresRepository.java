@@ -15,15 +15,15 @@ import org.springframework.stereotype.Repository;
 public interface UserGenresRepository extends JpaRepository<UserGenres, UserGenreKey> {
 
     @Query("select ug.id.genreId from UserGenres ug where ug.id.userId = :userId")
-    List<Integer> findGenreIdsByUserId(@Param("userId") String userId);
+    List<Integer> findGenreIdsById(@Param("userId") String userId);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from UserGenres ug where ug.id.userId = :userId and ug.id.genreId in :genreIds")
-    int deleteByUserIdAndGenreIdsIn(@Param("userId") String userId, @Param("genreIds") Collection<Integer> genreIds);
+    int deleteByIdAndGenreIdsIn(@Param("userId") String userId, @Param("genreIds") Collection<Integer> genreIds);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from UserGenres ug where ug.id.userId = :userId")
-    int deleteByUserId(@Param("userId") String userId);
+    int deleteById(@Param("userId") String userId);
 
 
 }

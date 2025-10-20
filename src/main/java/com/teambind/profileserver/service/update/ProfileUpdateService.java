@@ -99,7 +99,7 @@ public class ProfileUpdateService {
         // 장르 목록이 제공된 경우에만 업데이트 (null이면 변경 없음, 빈 리스트면 전체 삭제)
         if (genres != null) {
             Set<Integer> desiredGenres = new HashSet<>(genres);
-            List<Integer> currentGenreList = userGenresRepository.findGenreIdsByUserId(userId);
+            List<Integer> currentGenreList = userGenresRepository.findGenreIdsById(userId);
             Set<Integer> currentGenres = new HashSet<>(currentGenreList);
 
             // 변경해야 할 항목 계산
@@ -110,10 +110,10 @@ public class ProfileUpdateService {
             toAdd.removeAll(currentGenres);
 
             if (!toRemove.isEmpty()) {
-                userGenresRepository.deleteByUserIdAndGenreIdsIn(userId, toRemove);
+                userGenresRepository.deleteByIdAndGenreIdsIn(userId, toRemove);
             } else if (desiredGenres.isEmpty() && !currentGenres.isEmpty()) {
                 // 원하는 값이 비어 있으면 전체 삭제
-                userGenresRepository.deleteByUserId(userId);
+                userGenresRepository.deleteById(userId);
             }
 
             if (!toAdd.isEmpty()) {
@@ -174,7 +174,7 @@ public class ProfileUpdateService {
         // 2) 악기/장르 모두 전체 갱신: 기존 것을 모두 삭제하고, 전달된 전체 목록을 넣는다
         //    repositories에 있는 bulk delete를 사용해 효율적으로 삭제
         userInstrumentsRepository.deleteByUserId(userId);
-        userGenresRepository.deleteByUserId(userId);
+        userGenresRepository.deleteById(userId);
 
         // 3) 전달된 전체 목록을 일괄 저장 (null은 빈 목록으로 간주)
         if (instruments != null && !instruments.isEmpty()) {

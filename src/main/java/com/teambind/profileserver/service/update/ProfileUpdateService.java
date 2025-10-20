@@ -86,7 +86,7 @@ public class ProfileUpdateService {
                 UserInfo userRef = userInfoRepository.getReferenceById(userId);
                 for (Integer instId : toAdd) {
                     uiBatch.add(UserInstruments.builder()
-                            .userId(new UserInstrumentKey(userId, instId))
+                            .id(new UserInstrumentKey(userId, instId))
                             .userInfo(userRef)
                             .instrument(instrumentNameTableRepository.getReferenceById(instId))
                             .build());
@@ -121,7 +121,7 @@ public class ProfileUpdateService {
                 UserInfo userRef = userInfoRepository.getReferenceById(userId);
                 for (Integer genreId : toAdd) {
                     ugBatch.add(UserGenres.builder()
-                            .userId(new UserGenreKey(userId, genreId))
+                            .id(new UserGenreKey(userId, genreId))
                             .userInfo(userRef)
                             .genre(genreNameTableRepository.getReferenceById(genreId))
                             .build());
@@ -182,7 +182,7 @@ public class ProfileUpdateService {
             UserInfo userRef = userInfoRepository.getReferenceById(userId);
             for (Integer instId : instruments) {
                 uiBatch.add(UserInstruments.builder()
-                        .userId(new UserInstrumentKey(userId, instId))
+                        .id(new UserInstrumentKey(userId, instId))
                         .userInfo(userRef)
                         .instrument(instrumentNameTableRepository.getReferenceById(instId))
                         .build());
@@ -201,7 +201,7 @@ public class ProfileUpdateService {
             UserInfo userRef = userInfoRepository.getReferenceById(userId);
             for (Integer genreId : genres) {
                 ugBatch.add(UserGenres.builder()
-                        .userId(new UserGenreKey(userId, genreId))
+                        .id(new UserGenreKey(userId, genreId))
                         .userInfo(userRef)
                         .genre(genreNameTableRepository.getReferenceById(genreId))
                         .build());

@@ -23,8 +23,8 @@ public class InitTableMapper {
     private final GenreNameTableRepository genreNameTableRepository;
     private final InstrumentNameTableRepository instrumentNameTableRepository;
     private final LocationNameTableRepository locationNameTableRepository;
-    public static HashMap<Integer, String> genreNameTable = new HashMap<>();
-    public static HashMap<Integer, String> instrumentNameTable = new HashMap<>();
+    public static HashMap<Integer, GenreNameTable> genreNameTable = new HashMap<>();
+    public static HashMap<Integer, InstrumentNameTable> instrumentNameTable = new HashMap<>();
     public static HashMap<String, String> locationNamesTable = new HashMap<>();
 
     @PostConstruct
@@ -47,10 +47,10 @@ public class InitTableMapper {
         instrumentNameTable= new HashMap<>();
 
         genreNameTables.forEach(genreNameTable -> {
-            InitTableMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable.getGenreName());
+            InitTableMapper.genreNameTable.put(genreNameTable.getGenreId(), genreNameTable);
         });
         instrumentNameTables.forEach(instrumentNameTable -> {
-            InitTableMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable.getInstrumentName());
+            InitTableMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable);
         });
     }
 }

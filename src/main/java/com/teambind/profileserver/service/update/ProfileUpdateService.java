@@ -33,21 +33,20 @@ public class ProfileUpdateService {
    * @return 업데이트된 UserInfo
    */
   @Transactional
-  public UserInfo updateProfile(String userId, ProfileUpdateRequest request) {
+  public void updateProfile(String userId, ProfileUpdateRequest request) {
     UserInfo userInfo = getUserInfo(userId);
 
     applyPatch(userInfo, request);
 
+	//명시적 표기
     userInfoRepository.save(userInfo);
-    return userInfo;
   }
 
   @Transactional
-  public UserInfo updateProfileImage(String userId, String imageUrl) {
+  public void updateProfileImage(String userId, String imageUrl) {
     UserInfo userInfo = getUserInfo(userId);
     userInfo.setProfileImageUrl(imageUrl);
     userInfo.addHistory(new History("profileImageUrl", userInfo.getProfileImageUrl(), imageUrl));
-    return userInfo;
   }
 
   public boolean isNickNameExist(String nickname) {

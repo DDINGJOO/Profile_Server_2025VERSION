@@ -29,6 +29,8 @@ public class ProfileSearchService {
         return UserResponse.fromEntity(userInfo);
     }
 
+	
+	// 페이징 처리 서능 테스트용 메서드
     @Transactional(readOnly = true)
     public Page<UserResponse> searchProfiles(ProfileSearchCriteria criteria, Pageable pageable) {
         var result = repository.search(criteria, pageable);

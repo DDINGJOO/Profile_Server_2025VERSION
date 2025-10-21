@@ -2,6 +2,8 @@ package com.teambind.profileserver.service.create;
 
 
 import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.utils.generator.NicknameGenerator;
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CreateUserProfile {
+public class UserInfoLifeCycleService {
     private final UserInfoRepository userInfoRepository;
 
 
@@ -35,4 +37,12 @@ public class CreateUserProfile {
         userInfoRepository.save(userInfo);
         return userInfo.getUserId();
     };
+	
+	@Transactional
+	public void deleteUserProfile(String userId) {
+		UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
+				() -> new ProfileException(ErrorCode.USER_NOT_FOUND)
+		);
+		userInfoRepository.delete(userInfo);
+	}
 }

@@ -6,11 +6,8 @@ import com.teambind.profileserver.entity.History;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.exceptions.ErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
-import com.teambind.profileserver.repository.GenreNameTableRepository;
-import com.teambind.profileserver.repository.InstrumentNameTableRepository;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.utils.InitTableMapper;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProfileUpdateService {
     private final UserInfoRepository userInfoRepository;
-    private final InstrumentNameTableRepository instrumentNameTableRepository;
-    private final GenreNameTableRepository genreNameTableRepository;
-	private final InitTableMapper initTableMapper;
 	
 	
 	@Transactional
@@ -52,15 +46,7 @@ public class ProfileUpdateService {
     public UserInfo updateProfileImage(String userId, String imageUrl)  {
 	    UserInfo userInfo = getUserInfo(userId);
         userInfo.setProfileImageUrl(imageUrl);
-	    
-		userInfo.getUserHistory().add( History.builder()
-				.userInfo(userInfo)
-				.fieldName("profileImageUrl")
-				.oldVal(userInfo.getProfileImageUrl())
-				.newVal(imageUrl)
-				.updatedAt(LocalDateTime.now())
-				.build());
-
+		userInfo.addHistory(new History("profileImageUrl", userInfo.getProfileImageUrl(), imageUrl));
         return userInfo;
     }
 	
@@ -83,13 +69,7 @@ public class ProfileUpdateService {
 			}
 			
 			userInfo.getUserHistory().add(
-					History.builder()
-							.userInfo(userInfo)
-							.fieldName("nickname")
-							.oldVal(userInfo.getNickname())
-							.newVal(nickname)
-							.updatedAt(LocalDateTime.now())
-							.build()
+					new History("nickname", userInfo.getNickname(), nickname)
 			);
 			userInfo.setNickname(nickname);
 		}

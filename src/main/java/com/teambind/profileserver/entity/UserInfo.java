@@ -99,7 +99,7 @@ public class UserInfo {
 		if (history == null) return;
 		if (this.userHistory == null) this.userHistory = new ArrayList<>();
 		this.userHistory.add(history);
-		// 필요시 history.setUserInfo(this);
+		 history.setUserInfo(this);
 	}
 	public void removeGenre(GenreNameTable genre) {
 		if (genre == null || this.userGenres == null) return;

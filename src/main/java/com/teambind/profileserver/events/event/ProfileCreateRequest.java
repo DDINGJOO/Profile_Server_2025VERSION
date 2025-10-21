@@ -12,5 +12,4 @@ import lombok.Setter;
 public class ProfileCreateRequest {
     private String userId;
     private String provider;
-
 }

@@ -21,7 +21,7 @@ public class UserInfoLifeCycleService {
 
 
     @Transactional
-    public String createUserProfile(String userId, String provider) {
+    public void createUserProfile(String userId, String provider) {
         UserInfo userInfo = UserInfo.builder()
                 .userId(userId)
                 .nickname(NicknameGenerator.generateNickname(provider))
@@ -35,7 +35,6 @@ public class UserInfoLifeCycleService {
                 .updatedAt(LocalDateTime.now())
                 .build();
         userInfoRepository.save(userInfo);
-        return userInfo.getUserId();
     };
 	
 	@Transactional

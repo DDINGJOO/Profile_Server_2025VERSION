@@ -1,9 +1,15 @@
 package com.teambind.profileserver.events.event;
 
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class UserDeletedEvent {
+@Getter
+@Setter
+public class UserDeletedEvent extends Event{
 	String userId;
+	public UserDeletedEvent(String userId) {
+		super("user-deleted");
+		this.userId = userId;
+	}
 }

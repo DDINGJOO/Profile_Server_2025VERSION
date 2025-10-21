@@ -1,7 +1,11 @@
 package com.teambind.profileserver.events.event;
 
+
+
 public abstract class Event {
 	String topic;
+	public Event() {
+	}
 	
 	public Event(String topic) {
 		this.topic = topic;

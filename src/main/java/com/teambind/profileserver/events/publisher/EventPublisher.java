@@ -2,6 +2,7 @@ package com.teambind.profileserver.events.publisher;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.teambind.profileserver.events.event.UserNickNameChangedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,10 @@ public class EventPublisher {
 			// 역직렬화 실패 시 적절한 로깅/예외 처리
 			throw new RuntimeException("Failed to serialize message to JSON", e);
 		}
+	}
+	
+	public void publish(UserNickNameChangedEvent message) {
+		String topic = "user-nickname-changed";
+		this.publish(topic, message);
 	}
 }

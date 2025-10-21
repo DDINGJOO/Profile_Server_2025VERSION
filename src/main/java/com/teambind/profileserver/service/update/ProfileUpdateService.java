@@ -4,7 +4,7 @@ import com.teambind.profileserver.dto.request.ProfileUpdateRequest;
 import com.teambind.profileserver.entity.History;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.events.event.UserNickNameChangedEvent;
-import com.teambind.profileserver.events.publisher.NickNameChangeEventPublish;
+import com.teambind.profileserver.events.publisher.EventPublisher;
 import com.teambind.profileserver.exceptions.ErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.UserInfoRepository;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProfileUpdateService {
   private final UserInfoRepository userInfoRepository;
-  private final NickNameChangeEventPublish nickNameChangeEventPublish;
+  private final EventPublisher eventPublisher;
 
   @Transactional
   public void UserProfileImageUpdate(String userId, String imageUrl) {
@@ -69,7 +69,7 @@ public class ProfileUpdateService {
 
       userInfo.getUserHistory().add(new History("nickname", userInfo.getNickname(), nickname));
       userInfo.setNickname(nickname);
-      nickNameChangeEventPublish.publish(
+	    eventPublisher.publish(
           new UserNickNameChangedEvent(userInfo.getUserId(), userInfo.getNickname()));
     }
   }

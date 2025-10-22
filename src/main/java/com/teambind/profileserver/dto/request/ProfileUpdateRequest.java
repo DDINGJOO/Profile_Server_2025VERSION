@@ -1,6 +1,7 @@
 package com.teambind.profileserver.dto.request;
 
 import com.teambind.profileserver.validator.Attribute;
+import com.teambind.profileserver.validator.Location;
 import com.teambind.profileserver.validator.NickName;
 import java.util.List;
 import lombok.*;
@@ -14,6 +15,7 @@ import lombok.*;
 public class ProfileUpdateRequest {
 	@NickName
     private String nickname;
+	@Location
     private String city;
 	private String introduction;
     private boolean chattable;

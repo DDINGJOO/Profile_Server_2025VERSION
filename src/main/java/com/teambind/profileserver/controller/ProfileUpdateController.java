@@ -16,20 +16,13 @@ public class ProfileUpdateController {
 
 
 
-    @PutMapping("/{userId}/ver1")
+    @PutMapping("/{userId}")
     public ResponseEntity<Boolean> updateProfile(@PathVariable String userId,
                                                  @Valid @RequestBody ProfileUpdateRequest request)  {
         profileUpdateService.updateProfile(userId, request);
         return ResponseEntity.ok(true);
     }
-
-	// need Old Api Address
-    @PutMapping("/{userId}/ver2")
-    public ResponseEntity<Boolean> updateProfileAll(@PathVariable String userId,
-                                                    @Valid @RequestBody ProfileUpdateRequest request)  {
-        profileUpdateService.updateProfile(userId, request);
-        return ResponseEntity.ok(true);
-    }
+	
 }
 
 

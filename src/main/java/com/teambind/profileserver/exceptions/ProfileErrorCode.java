@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum ErrorCode {
+public enum ProfileErrorCode {
   NICKNAME_ALREADY_EXISTS("PROFILE_001", "Nickname already exists", HttpStatus.CONFLICT),
   HISTORY_UPDATE_FAILED(
       "PROFILE_002", "Failed to update history", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -22,7 +22,7 @@ public enum ErrorCode {
   private final String message;
   private final HttpStatus status;
 
-  ErrorCode(String errCode, String message, HttpStatus status) {
+  ProfileErrorCode(String errCode, String message, HttpStatus status) {
 
     this.status = status;
     this.errCode = errCode;

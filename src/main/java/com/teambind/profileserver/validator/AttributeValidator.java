@@ -1,12 +1,11 @@
 package com.teambind.profileserver.validator;
 
 
-import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.utils.InitTableMapper;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.lang.annotation.*;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -31,7 +30,7 @@ public class AttributeValidator implements ConstraintValidator<Attribute, List<I
 			case "GENRE":
 				return isLessThanMaxSize(value) && isValidGenreIds(value);
 			case "INTEREST":
-				return isValidInterestIds(value);
+				return isLessThanMaxSize(value) &&isValidInterestIds(value);
 			default:
 				return false;
 		}
@@ -45,7 +44,7 @@ public class AttributeValidator implements ConstraintValidator<Attribute, List<I
 		for (Integer id : attributeIds) {
 			if (id == null) continue;
 			if (!InitTableMapper.genreNameTable.containsKey(id)) {
-				throw new ProfileException(ErrorCode.NOT_ALLOWED_INSTRUMENTS_ID_AND_NAME);
+				throw new ProfileException(ProfileErrorCode.NOT_ALLOWED_INSTRUMENTS_ID_AND_NAME);
 			}
 		}
 		return true;
@@ -55,7 +54,7 @@ public class AttributeValidator implements ConstraintValidator<Attribute, List<I
 		for (Integer id : attributeIds) {
 			if (id == null) continue;
 			if (!InitTableMapper.instrumentNameTable.containsKey(id)) {
-				throw new ProfileException(ErrorCode.NOT_ALLOWED_INSTRUMENTS_ID_AND_NAME);
+				throw new ProfileException(ProfileErrorCode.NOT_ALLOWED_INSTRUMENTS_ID_AND_NAME);
 			}
 		}
 		return true;

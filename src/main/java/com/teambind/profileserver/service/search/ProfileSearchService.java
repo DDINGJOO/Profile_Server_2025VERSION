@@ -3,7 +3,7 @@ package com.teambind.profileserver.service.search;
 import com.teambind.profileserver.dto.response.BatchUserSummaryResponse;
 import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.ProfileSearchRepository;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
@@ -25,10 +25,12 @@ public class ProfileSearchService {
     public UserResponse searchProfileById(String userId) {
         UserInfo userInfo = repository.search(userId);
         if(userInfo == null)
-            throw new ProfileException(ErrorCode.USER_NOT_FOUND);
+            throw new ProfileException(ProfileErrorCode.USER_NOT_FOUND);
         return UserResponse.fromEntity(userInfo);
     }
 
+	
+	// 페이징 처리 서능 테스트용 메서드
     @Transactional(readOnly = true)
     public Page<UserResponse> searchProfiles(ProfileSearchCriteria criteria, Pageable pageable) {
         var result = repository.search(criteria, pageable);

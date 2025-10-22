@@ -1,6 +1,7 @@
 package com.teambind.profileserver.dto.response;
 
 import com.teambind.profileserver.entity.UserInfo;
+import com.teambind.profileserver.utils.InitTableMapper;
 import java.util.List;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class UserResponse {
     public static UserResponse fromEntity(UserInfo userInfo){
         return UserResponse.builder()
                 .userId(userInfo.getUserId())
-                .city(userInfo.getCity())
+                .city(InitTableMapper.locationNamesTable.get(userInfo.getCity()))
 		        .introduction(userInfo.getIntroduction())
                 .nickname(userInfo.getNickname())
                 .isChattable(userInfo.getIsChatable())

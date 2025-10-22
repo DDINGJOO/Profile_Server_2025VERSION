@@ -67,6 +67,12 @@ class ProfileUpdateControllerTest {
         // InitTableMapper를 수동으로 초기화하여 Validator가 사용할 수 있도록 함
         initTableMapper.initializeTables();
 
+        // 테스트용 지역 데이터 추가
+        com.teambind.profileserver.utils.InitTableMapper.locationNamesTable.put("SEOUL", "서울");
+        com.teambind.profileserver.utils.InitTableMapper.locationNamesTable.put("BUSAN", "부산");
+        com.teambind.profileserver.utils.InitTableMapper.locationNamesTable.put("DAEGU", "대구");
+        com.teambind.profileserver.utils.InitTableMapper.locationNamesTable.put("INCHEON", "인천");
+
         // Service는 기본적으로 정상 동작한다고 가정
         doNothing().when(profileUpdateService).updateProfile(any(), any());
     }
@@ -101,7 +107,7 @@ class ProfileUpdateControllerTest {
             // given
             ProfileUpdateRequest request = ProfileUpdateRequest.builder()
                     .nickname("completeNick")
-                    .city("서울")
+                    .city("SEOUL")
                     .introduction("자기소개")
                     .sex('M')
                     .chattable(true)
@@ -206,6 +212,118 @@ class ProfileUpdateControllerTest {
                     .andExpect(status().isUnsupportedMediaType());
 
             verify(profileUpdateService, never()).updateProfile(any(), any());
+        }
+
+        @Test
+        @DisplayName("성공 - 유효한 지역(city)으로 업데이트")
+        void updateProfile_ValidCity_Success() throws Exception {
+            // given
+            ProfileUpdateRequest request = ProfileUpdateRequest.builder()
+                    .nickname("testuser")
+                    .city("SEOUL")  // 유효한 지역
+                    .chattable(true)
+                    .publicProfile(true)
+                    .build();
+
+            // when & then
+            mockMvc.perform(put(BASE_URL + "/{userId}", TEST_USER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$").value(true));
+
+            verify(profileUpdateService).updateProfile(eq(TEST_USER_ID), any(ProfileUpdateRequest.class));
+        }
+
+        @Test
+        @DisplayName("실패 - 잘못된 지역(city)으로 업데이트")
+        void updateProfile_InvalidCity_Fail() throws Exception {
+            // given
+            ProfileUpdateRequest request = ProfileUpdateRequest.builder()
+                    .nickname("testuser")
+                    .city("INVALID_CITY")  // 잘못된 지역
+                    .chattable(true)
+                    .publicProfile(true)
+                    .build();
+
+            // when & then
+            mockMvc.perform(put(BASE_URL + "/{userId}", TEST_USER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+
+            verify(profileUpdateService, never()).updateProfile(any(), any());
+        }
+
+        @Test
+        @DisplayName("성공 - 지역(city) 변경")
+        void updateProfile_ChangeCity_Success() throws Exception {
+            // given
+            ProfileUpdateRequest request = ProfileUpdateRequest.builder()
+                    .nickname("testuser")
+                    .city("BUSAN")  // 부산으로 변경
+                    .introduction("부산 사는 뮤지션입니다")
+                    .chattable(true)
+                    .publicProfile(true)
+                    .build();
+
+            // when & then
+            mockMvc.perform(put(BASE_URL + "/{userId}", TEST_USER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$").value(true));
+
+            verify(profileUpdateService).updateProfile(eq(TEST_USER_ID), any(ProfileUpdateRequest.class));
+        }
+
+        @Test
+        @DisplayName("성공 - 지역(city) null (변경하지 않음)")
+        void updateProfile_NullCity_Success() throws Exception {
+            // given
+            ProfileUpdateRequest request = ProfileUpdateRequest.builder()
+                    .nickname("testuser")
+                    .city(null)  // null은 변경하지 않음
+                    .chattable(true)
+                    .publicProfile(true)
+                    .build();
+
+            // when & then
+            mockMvc.perform(put(BASE_URL + "/{userId}", TEST_USER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$").value(true));
+
+            verify(profileUpdateService).updateProfile(eq(TEST_USER_ID), any(ProfileUpdateRequest.class));
+        }
+
+        @Test
+        @DisplayName("성공 - 모든 필드 변경 (지역 포함)")
+        void updateProfile_AllFieldsWithCity_Success() throws Exception {
+            // given
+            ProfileUpdateRequest request = ProfileUpdateRequest.builder()
+                    .nickname("completeUser")
+                    .city("DAEGU")  // 대구
+                    .introduction("대구 뮤지션")
+                    .sex('F')
+                    .chattable(true)
+                    .publicProfile(true)
+                    .build();
+
+            // when & then
+            mockMvc.perform(put(BASE_URL + "/{userId}", TEST_USER_ID)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$").value(true));
+
+            verify(profileUpdateService).updateProfile(eq(TEST_USER_ID), any(ProfileUpdateRequest.class));
         }
     }
 

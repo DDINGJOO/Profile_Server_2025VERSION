@@ -14,6 +14,10 @@ public class LocationValidator implements ConstraintValidator<Location, String> 
 	}
 	
 	private boolean isValidLocation(String location) {
+		// null은 허용 (PATCH 요청에서 null은 변경하지 않음을 의미)
+		if (location == null) {
+			return true;
+		}
 		if(InitTableMapper.locationNamesTable.containsKey(location)){
 			return true;
 		};

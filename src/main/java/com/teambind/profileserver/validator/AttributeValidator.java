@@ -41,6 +41,7 @@ public class AttributeValidator implements ConstraintValidator<Attribute, List<I
 	}
 	
 	private boolean isValidGenreIds(List<Integer> attributeIds) {
+		if(attributeIds.isEmpty()) return true;
 		for (Integer id : attributeIds) {
 			if (id == null) continue;
 			if (!InitTableMapper.genreNameTable.containsKey(id)) {
@@ -51,6 +52,7 @@ public class AttributeValidator implements ConstraintValidator<Attribute, List<I
 	}
 	
 	private boolean isValidInterestIds(List<Integer> attributeIds) {
+		if(attributeIds.isEmpty()) return true;
 		for (Integer id : attributeIds) {
 			if (id == null) continue;
 			if (!InitTableMapper.instrumentNameTable.containsKey(id)) {

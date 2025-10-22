@@ -30,7 +30,7 @@ public class AttributeValidator implements ConstraintValidator<Attribute, List<I
 			case "GENRE":
 				return isLessThanMaxSize(value) && isValidGenreIds(value);
 			case "INTEREST":
-				return isValidInterestIds(value);
+				return isLessThanMaxSize(value) &&isValidInterestIds(value);
 			default:
 				return false;
 		}

@@ -32,6 +32,8 @@ public class UserInfo {
 	@Column(name="nickname", unique = true, nullable = false)
 	private String nickname;
 	
+	
+	// 논리적으로 NameTable 과 1:1 매핑
 	@Column(name="city")
 	private String city;
 	@Version

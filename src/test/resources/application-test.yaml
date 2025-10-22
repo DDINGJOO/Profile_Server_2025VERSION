@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MariaDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: false
+
+  # Kafka 비활성화 (테스트 환경)
+  kafka:
+    enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
+  # Redis 비활성화 (테스트 환경)
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+
+# 닉네임 생성 설정 (필요 시)
+nickname:
+  adjective: "테스트"
+  animal: "동물"

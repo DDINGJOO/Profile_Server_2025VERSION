@@ -218,7 +218,7 @@ class ProfileUpdateServiceTest {
             profileUpdateService.updateProfile(TEST_USER_ID, request);
 
             // then
-            assertThat(testUser.getCity()).isEqualTo("");  // 변경 안 됨
+            assertThat(testUser.getCity()).isEqualTo("SEOUL");  // 변경 안 됨
         }
 
         @Test

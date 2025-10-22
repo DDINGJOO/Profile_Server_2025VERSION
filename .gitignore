@@ -44,5 +44,9 @@ out/
 
 nginx/logs
 
+# macOS
+.DS_Store
+**/.DS_Store
+
 
 

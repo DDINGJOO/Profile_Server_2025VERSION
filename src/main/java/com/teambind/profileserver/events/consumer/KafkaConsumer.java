@@ -6,7 +6,7 @@ import com.teambind.profileserver.events.event.ProfileImageChanged;
 import com.teambind.profileserver.events.event.UserDeletedEvent;
 import com.teambind.profileserver.service.create.UserInfoLifeCycleService;
 import com.teambind.profileserver.service.update.ProfileUpdateService;
-import com.teambind.profileserver.utils.JsonUtil;
+import com.teambind.profileserver.utils.json.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

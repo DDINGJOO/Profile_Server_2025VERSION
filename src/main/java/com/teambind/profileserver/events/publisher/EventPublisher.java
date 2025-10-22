@@ -1,7 +1,7 @@
 package com.teambind.profileserver.events.publisher;
 
 import com.teambind.profileserver.events.event.Event;
-import com.teambind.profileserver.utils.JsonUtil;
+import com.teambind.profileserver.utils.json.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

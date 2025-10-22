@@ -79,8 +79,12 @@ public class ProfileUpdateService {
 
     // 공통 스칼라 속성
     if (req.getIntroduction() != null) userInfo.setIntroduction(req.getIntroduction());
-    if (req.getCity() != null) userInfo.setCity(req.getCity());
-    if (req.getSex() != null) userInfo.setSex(req.getSex());
+	if (req.getCity() == null) {
+		  userInfo.setCity("");
+	  } else {
+		  userInfo.setCity(req.getCity());
+	  }
+	  if (req.getSex() != null) userInfo.setSex(req.getSex());
     userInfo.setIsChatable(req.isChattable());
     userInfo.setIsPublic(req.isPublicProfile());
 

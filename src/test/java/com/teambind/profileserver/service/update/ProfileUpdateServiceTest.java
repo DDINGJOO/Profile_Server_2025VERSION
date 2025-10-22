@@ -49,14 +49,21 @@ class ProfileUpdateServiceTest {
 
     @BeforeEach
     void setUp() {
-        // 테스트용 장르/악기 데이터 초기화 (static Map 사용)
+        // 테스트용 장르/악기/지역 데이터 초기화 (static Map 사용)
         InitTableMapper.genreNameTable = new java.util.HashMap<>();
         InitTableMapper.instrumentNameTable = new java.util.HashMap<>();
+        InitTableMapper.locationNamesTable = new java.util.HashMap<>();
 
         createGenres().forEach(genre ->
                 InitTableMapper.genreNameTable.put(genre.getGenreId(), genre));
         createInstruments().forEach(instrument ->
                 InitTableMapper.instrumentNameTable.put(instrument.getInstrumentId(), instrument));
+
+        // 테스트용 지역 데이터 초기화
+        InitTableMapper.locationNamesTable.put("SEOUL", "서울");
+        InitTableMapper.locationNamesTable.put("BUSAN", "부산");
+        InitTableMapper.locationNamesTable.put("DAEGU", "대구");
+        InitTableMapper.locationNamesTable.put("INCHEON", "인천");
 
         // 기본 테스트 사용자 생성
         testUser = createDefaultUserInfo(TEST_USER_ID);
@@ -132,7 +139,7 @@ class ProfileUpdateServiceTest {
             // given
             ProfileUpdateRequest request = updateRequest()
                     .nickname("newNick")
-                    .city("부산")
+                    .city("BUSAN")
                     .introduction("새로운 소개")
                     .sex('F')
                     .chattable(true)
@@ -147,7 +154,7 @@ class ProfileUpdateServiceTest {
 
             // then
             assertThat(testUser.getNickname()).isEqualTo("newNick");
-            assertThat(testUser.getCity()).isEqualTo("부산");
+            assertThat(testUser.getCity()).isEqualTo("BUSAN");
             assertThat(testUser.getIntroduction()).isEqualTo("새로운 소개");
             assertThat(testUser.getSex()).isEqualTo('F');
             assertThat(testUser.getIsChatable()).isTrue();
@@ -158,12 +165,11 @@ class ProfileUpdateServiceTest {
         @DisplayName("null 필드는 변경하지 않음 (PATCH 동작)")
         void updateWithNullFields_NoChange() {
             // given
-            testUser.setCity("서울");
+            testUser.setCity("SEOUL");
             testUser.setIntroduction("기존 소개");
 
             ProfileUpdateRequest request = updateRequest()
                     .nickname("newNick")
-                    .city(null)  // null은 변경하지 않음
                     .introduction(null)  // null은 변경하지 않음
                     .build();
 
@@ -175,8 +181,62 @@ class ProfileUpdateServiceTest {
 
             // then
             assertThat(testUser.getNickname()).isEqualTo("newNick");
-            assertThat(testUser.getCity()).isEqualTo("서울");  // 변경 안 됨
             assertThat(testUser.getIntroduction()).isEqualTo("기존 소개");  // 변경 안 됨
+        }
+
+        @Test
+        @DisplayName("지역(city) 변경 성공")
+        void updateCity_Success() {
+            // given
+            testUser.setCity("SEOUL");
+            ProfileUpdateRequest request = updateRequest()
+                    .city("BUSAN")
+                    .build();
+
+            when(userInfoRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
+
+            // when
+            profileUpdateService.updateProfile(TEST_USER_ID, request);
+
+            // then
+            assertThat(testUser.getCity()).isEqualTo("BUSAN");
+            verify(userInfoRepository).save(testUser);
+        }
+
+        @Test
+        @DisplayName("지역(city)을 null로 설정하면 변경하지 않음")
+        void updateCity_NullDoesNotChange() {
+            // given
+            testUser.setCity("SEOUL");
+            ProfileUpdateRequest request = updateRequest()
+                    .city(null)
+                    .build();
+
+            when(userInfoRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
+
+            // when
+            profileUpdateService.updateProfile(TEST_USER_ID, request);
+
+            // then
+            assertThat(testUser.getCity()).isEqualTo("");  // 변경 안 됨
+        }
+
+        @Test
+        @DisplayName("지역(city)을 다른 지역으로 변경 성공")
+        void updateCity_ChangeToAnotherCity_Success() {
+            // given
+            testUser.setCity("SEOUL");
+            ProfileUpdateRequest request = updateRequest()
+                    .city("DAEGU")
+                    .build();
+
+            when(userInfoRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
+
+            // when
+            profileUpdateService.updateProfile(TEST_USER_ID, request);
+
+            // then
+            assertThat(testUser.getCity()).isEqualTo("DAEGU");
         }
     }
 
@@ -401,7 +461,7 @@ class ProfileUpdateServiceTest {
 
             ProfileUpdateRequest request = ProfileUpdateRequest.builder()
                     .nickname("brandNewNick")
-                    .city("대구")
+                    .city("DAEGU")
                     .introduction("완전히 새로운 소개")
                     .sex('M')
                     .chattable(true)
@@ -419,7 +479,7 @@ class ProfileUpdateServiceTest {
             // then
             // 스칼라 필드 검증
             assertThat(testUser.getNickname()).isEqualTo("brandNewNick");
-            assertThat(testUser.getCity()).isEqualTo("대구");
+            assertThat(testUser.getCity()).isEqualTo("DAEGU");
             assertThat(testUser.getIntroduction()).isEqualTo("완전히 새로운 소개");
             assertThat(testUser.getSex()).isEqualTo('M');
             assertThat(testUser.getIsChatable()).isTrue();

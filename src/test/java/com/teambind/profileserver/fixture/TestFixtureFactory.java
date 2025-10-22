@@ -59,7 +59,7 @@ public class TestFixtureFactory {
                 .nickname("completeUser_" + userId)
                 .profileImageUrl("https://example.com/profile.jpg")
                 .sex('M')
-                .city("서울")
+                .city("SEOUL")
                 .introduction("안녕하세요!")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -147,7 +147,7 @@ public class TestFixtureFactory {
     public static ProfileUpdateRequest createCompleteUpdateRequest() {
         return ProfileUpdateRequest.builder()
                 .nickname("completeNickname")
-                .city("부산")
+                .city("BUSAN")
                 .introduction("새로운 자기소개")
                 .chattable(true)
                 .publicProfile(true)

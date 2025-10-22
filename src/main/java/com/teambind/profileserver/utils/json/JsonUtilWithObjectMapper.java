@@ -3,7 +3,7 @@ package com.teambind.profileserver.utils.json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component( "jsonUtilWithObjectMapper")
 public class JsonUtilWithObjectMapper implements JsonUtil {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	public  String toJson(Object object) {
@@ -20,5 +20,4 @@ public class JsonUtilWithObjectMapper implements JsonUtil {
 			throw new RuntimeException(e);
 		}
 	}
-	
 }

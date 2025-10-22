@@ -5,6 +5,10 @@ import java.lang.annotation.*;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = NickNameValidator.class)
+@Constraint(validatedBy = LocationValidator.class)
 @Documented
-public @interface Location {}
+public @interface Location {
+    String message() default "Invalid location";
+    Class<?>[] groups() default {};
+    Class<?>[] payload() default {};
+}

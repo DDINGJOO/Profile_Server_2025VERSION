@@ -52,9 +52,14 @@ public class ProfileSearchController {
 		return ResponseEntity.ok(result);
 	}
 
-    @PostMapping("/batch")
+    @PostMapping("/simple/batch")
     public ResponseEntity<List<BatchUserSummaryResponse>> getProfilesBatch(@RequestBody List<String> userIds) {
         var result = profileSearchService.searchProfilesByIds(userIds);
         return ResponseEntity.ok(result);
     }
+	@GetMapping("/detail/batch")
+	public ResponseEntity<List<UserResponse>> getDetailProfilesBatch(@RequestParam List<String> userIds) {
+		var result = profileSearchService.searchDetailProfilesByIds(userIds);
+		return ResponseEntity.ok(result);
+	}
 }

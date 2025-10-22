@@ -48,4 +48,10 @@ public class ProfileSearchService {
         var users = repository.searchByUserIds(userIds);
         return users.stream().map(BatchUserSummaryResponse::fromEntity).toList();
     }
+	
+	@Transactional(readOnly = true)
+	public List<UserResponse> searchDetailProfilesByIds(List<String> userIds) {
+		var users = repository.searchByUserIds(userIds);
+		return users.stream().map(UserResponse::fromEntity).toList();
+	}
 }

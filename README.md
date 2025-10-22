@@ -1,216 +1,833 @@
-## 와방 쩌는 스프링부트 프로필 서버 만들기
+# Profile Server
+
+사용자 프로필 생성, 조회, 수정 및 검색을 관리하는 Spring Boot 마이크로서비스입니다.
+
+## 목차
+
+1. [프로젝트 개요](#프로젝트-개요)
+2. [주요 기능](#주요-기능)
+3. [아키텍처](#아키텍처)
+4. [데이터베이스 스키마](#데이터베이스-스키마)
+5. [API 엔드포인트](#api-엔드포인트)
+6. [기술 스택](#기술-스택)
+7. [설정 및 실행](#설정-및-실행)
+8. [배포](#배포)
 
 ---
 
-### 기존 인프라 상황 :
-- Auth-server: 에서 이메일 인증이 된 유저면, 이벤트를통해 새로운 유저가 만들어졌다고, 통보를 받는다. 
-- 회원 정보 삭제(탈퇴후 3년뒤) 유저가 삭제 되면, 이벤트를 통해 유저의 정보를 삭제하라고 통보를 받는다. 
+## 프로젝트 개요
 
+### 기본 정보
 
+- **프로젝트명**: Profile Server
+- **타입**: Spring Boot REST API 마이크로서비스
+- **Java**: 21
+- **빌드**: Gradle 8.x
+- **버전**: 1.0.0-SNAPSHOT
 
-### 인프라 구축 예정 상황 :
-- 프로필 수정 요청이 들어오면, 이미지 서버에 최신의 프로필 이미지를 받아 와야한다.
+### 핵심 목적
 
-
-
----
-### 요구사항 정리 
-- [x] 닉네임, 장르, 악기로 필터링이 가능해야함
-- [x] 유저는 언제든 프로필을 수정 할 수 있어야함 
-- [ ] 이메일 인증을 한 유저는 하나의 프로필을 갖고 있어야함.
-- [x] 한 유저는 여러 장르, 악기를 선택 할 수 있어야 함 
-- [x] 닉네임이 같은 여러명의 유저는 존재 하지 않음 
-- [x] 한 유저는 하나의 프로필 이미지를 갖고 있어야 함
-- [x] 프로필 서버는 3대의 스케일 아웃을 고려중이며, 1대의 높은 하드웨어 서버와 2대의 예비서버로 구성됨 
-- [ ] 유저는 오직 개인의 프로필만 수정 할 수있음
-- [ ] 유저의 프로필 뷰 요청과 프로필 수정 뷰가 다름 (IssuesNo10-2)
-- [ ] 프로필 카드뷰를 따로 DTO로 전달 가능 해야함 (IssuesNo10-2)
-- [x ] 악기와 장르는 최대 3가지씩만 고를 수 있음 (IssuesNo10-1)
+마이크로서비스 아키텍처 환경에서 사용자 프로필을 전담 관리하는 서버입니다.
+- 사용자 프로필 생성 및 수정
+- 다양한 조건의 프로필 검색 (지역, 장르, 악기, 닉네임 등)
+- 배치 프로필 조회 (단순/상세)
+- 변경 이력 추적
+- 이벤트 기반 통합 (Kafka)
 
 ---
+
+## 주요 기능
+
+### 1. 프로필 관리
+- 사용자 프로필 생성 (Kafka 이벤트 기반)
+- 프로필 정보 수정 (닉네임, 소개, 지역, 성별 등)
+- 닉네임 중복 검증
+- 낙관적 락 (@Version)을 통한 동시성 제어
+
+### 2. 사용자 속성 관리
+- 장르(Genre) 다중 선택 및 관리
+- 악기(Instrument) 다중 선택 및 관리
+- 지역(Location) 설정
+- 프로필 공개 여부 설정
+- 채팅 가능 여부 설정
+
+### 3. 프로필 검색 기능
+- **단일 조회**: userId 기반 상세 프로필 조회
+- **복합 검색**: 지역, 닉네임, 장르, 악기, 성별 조합 검색
+- **커서 기반 페이징**: 무한 스크롤 지원 (Slice)
+- **배치 조회**:
+  - 단순 조회 (POST /simple/batch): userId, nickname, profileImageUrl만 반환
+  - 상세 조회 (GET /detail/batch): 전체 프로필 정보 반환
+
+### 4. QueryDSL 기반 동적 쿼리
+- 복잡한 검색 조건을 동적으로 구성
+- 인덱스 최적화를 통한 성능 향상
+- 커서 기반 페이징으로 효율적인 대용량 데이터 처리
+
+### 5. 이벤트 기반 통합
+- Kafka 컨슈머를 통한 프로필 생성 요청 수신
+- 프로필 변경 이벤트 발행:
+  - `profile-image-changed`: 프로필 이미지 변경 시
+  - `user-nickname-changed`: 닉네임 변경 시
+  - `user-deleted`: 사용자 삭제 시
+- 느슨한 결합 (Loose Coupling)을 통한 확장 가능한 구조
+
+### 6. 변경 이력 추적
+- 모든 프로필 변경사항을 History 테이블에 자동 기록
+- 변경 필드, 이전 값, 새 값, 변경 시각 추적
+- 감사(Audit) 및 디버깅 용도
+
+### 7. 성능 최적화
+- 복합 인덱스를 통한 검색 쿼리 최적화
+- 커서 기반 페이징 (Slice)
+- N+1 문제 방지 (Fetch Join)
+- QueryDSL을 통한 쿼리 최적화
+
+---
+
+## 아키텍처
+
+### 계층 구조
+
+```
+┌─────────────────────────────────────────┐
+│         Controller Layer                │
+│  (ProfileSearch, ProfileUpdate...)       │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│         Service Layer                   │
+│  (ProfileSearchService, ProfileUpdate...)│
+│  (UserInfoLifeCycleService)              │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│      Event Layer (Kafka)                │
+│  (ProfileCreateRequest, ImageChanged...) │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│      Repository Layer (JPA+QueryDSL)    │
+│  (UserInfoRepository, ProfileSearch...)  │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│         Entity Layer                    │
+│  (UserInfo, UserGenres, UserInstruments) │
+└─────────────────────────────────────────┘
+```
+
+### 디자인 패턴
+
+#### 1. 이벤트 기반 아키텍처
+- Kafka를 통한 비동기 이벤트 처리
+- 프로필 생성 요청 수신 (Consumer)
+- 프로필 변경 이벤트 발행 (Producer)
+- 느슨한 결합 및 확장 가능한 구조
+
+#### 2. Repository 패턴
+- JPA Repository를 통한 기본 CRUD
+- Custom Repository (QueryDSL)를 통한 복잡한 검색
+- 계층 간 명확한 책임 분리
+
+#### 3. DTO 패턴
+- 요청/응답 객체 분리
+- Entity와 API 계층 간 결합도 감소
+- Mapper를 통한 변환 로직 캡슐화
+
+#### 4. Builder 패턴
+- Entity 및 DTO 생성 시 가독성 향상
+- Lombok @Builder 활용
+
+#### 5. 낙관적 락 (Optimistic Locking)
+- @Version을 통한 동시성 제어
+- 충돌 감지 및 재시도 메커니즘
+
+---
+
+## 데이터베이스 스키마
+
+### 핵심 엔티티
+
+#### 1. user_info (사용자 정보)
+```sql
+user_id             VARCHAR(255) PRIMARY KEY  -- 사용자 고유 ID
+profile_image_url   VARCHAR(500)              -- 프로필 이미지 URL
+sex                 CHAR(1)                   -- 성별 (M/F/O)
+nickname            VARCHAR(100) UNIQUE       -- 닉네임 (중복 불가)
+city                VARCHAR(100)              -- 지역
+introduction        TEXT                      -- 자기소개
+version             INT DEFAULT 0             -- 낙관적 락 버전
+created_at          TIMESTAMP                 -- 생성일
+last_updated_at     TIMESTAMP                 -- 수정일
+is_public           BOOLEAN DEFAULT TRUE      -- 공개 여부
+is_chatable         BOOLEAN DEFAULT TRUE      -- 채팅 가능 여부
+```
+
+#### 2. location_names (지역 명칭)
+```sql
+city_id     VARCHAR(50) PRIMARY KEY   -- 지역 코드 (SEOUL, BUSAN 등)
+city_name   VARCHAR(100)              -- 지역 한글명
+```
+
+#### 3. genre_name (장르 명칭)
+```sql
+genre_id    INT PRIMARY KEY   -- 장르 ID
+genre_name  VARCHAR(100)      -- 장르명 (ROCK, JAZZ 등)
+version     INT DEFAULT 0     -- 낙관적 락 버전
+```
+
+#### 4. instrument_name (악기 명칭)
+```sql
+instrument_id    INT PRIMARY KEY   -- 악기 ID
+instrument_name  VARCHAR(100)      -- 악기명 (GUITAR, DRUM 등)
+version          INT DEFAULT 0     -- 낙관적 락 버전
+```
+
+#### 5. user_genres (사용자-장르 매핑)
+```sql
+user_id     VARCHAR(255)  -- FK to user_info
+genre_id    INT           -- FK to genre_name
+version     INT DEFAULT 0
+PRIMARY KEY (user_id, genre_id)
+```
+
+#### 6. user_instruments (사용자-악기 매핑)
+```sql
+user_id         VARCHAR(255)  -- FK to user_info
+instrument_id   INT           -- FK to instrument_name
+version         INT DEFAULT 0
+PRIMARY KEY (user_id, instrument_id)
+```
+
+#### 7. profile_update_history (프로필 변경 이력)
+```sql
+history_id   BIGINT AUTO_INCREMENT PRIMARY KEY
+user_id      VARCHAR(255)  -- FK to user_info
+field_name   VARCHAR(100)  -- 변경된 필드명
+old_val      TEXT          -- 변경 전 값
+new_val      TEXT          -- 변경 후 값
+updated_at   TIMESTAMP     -- 변경 시각
+```
 
 ### ERD
-![erd3.png](readMe_images/erd3.png)
-- 장르와 , 선호악기는 프로필과 M:N 매핑 관계
-- 조회 및 필터 기능에서 성능 최적화가 수준 높게 요구됨
-- [x] 장르, 악기 종류가 추가 되어도 서버는 지속적으로 운영되어야 함.
-- [x] 서버가 처음 켜질때 데이터 베이스의 이름 목록을 조회 해야됨.
----
 
-### 요구사항 명세 프로필
+```
+┌──────────────────┐
+│  location_names  │
+│──────────────────│
+│ city_id (PK)     │
+│ city_name        │
+└──────────────────┘
 
--[x] 유저는 프로필 이미지, 닛네임, 성별, 지역, 선호 장르, 선호 악기, 자기소개 항목을 갖는다. 
--[x] 유저는 프로필을 비공개, 공개를 선택할 수 있다. 
--[x] 유저는 채팅 수발신을 선택 할 수 있다.
--[x] 이메일 인증이 되지 않은 유저는 프로필을 가질 수 없다. 
--[x] 유저 프로필 업데이트시에 변화만 주는게 아니라 모든 데이터를 다시 준다.
--[x] dsl 을 이용해 모든 협의된 카테고리에 대한 프로필 조회가 가능해야한다.
-  - [x] N+1 문제 해결
- 
---- 
+┌──────────────────┐
+│   genre_name     │
+│──────────────────│
+│ genre_id (PK)    │──┐
+│ genre_name       │  │
+└──────────────────┘  │
+                      │
+┌──────────────────┐  │
+│ instrument_name  │  │
+│──────────────────│  │
+│ instrument_id(PK)│──┼┐
+│ instrument_name  │  ││
+└──────────────────┘  ││
+                      ││
+┌──────────────────┐  ││
+│    user_info     │  ││
+│──────────────────│  ││
+│ user_id (PK)     │◄─┼┼┐
+│ nickname         │  │││
+│ city             │  │││
+│ sex              │  │││
+│ version          │  │││
+└─────┬────────────┘  │││
+      │ 1:N           │││
+      ▼               │││
+┌──────────────────┐  │││
+│  user_genres     │  │││
+│──────────────────│  │││
+│ user_id (PK/FK)  │──┘││
+│ genre_id (PK/FK) │◄──┘│
+└──────────────────┘    │
+                        │
+      │ 1:N             │
+      ▼                 │
+┌──────────────────┐    │
+│ user_instruments │    │
+│──────────────────│    │
+│ user_id (PK/FK)  │────┘
+│ instrument_id(PK)│◄───┘
+└──────────────────┘
 
-### 페이징 처리기법 성능 비교 테스트
-![페이징 성능비교.png](readMe_images/%E1%84%91%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8C%E1%85%B5%E1%86%BC%20%E1%84%89%E1%85%A5%E1%86%BC%E1%84%82%E1%85%B3%E1%86%BC%E1%84%87%E1%85%B5%E1%84%80%E1%85%AD.png)
----
-- 장르 목록
-  ROCK,
-  POP,
-  JAZZ,
-  CLASSICAL,
-  HIP_HOP,
-  ELECTRONIC,
-  FOLK,
-  BLUES,
-  REGGAE,
-  METAL,
-  COUNTRY,
-  LATIN,
-  RNB,
-  SOUL,
-  FUNK,
-  PUNK,
-  ALTERNATIVE,
-  INDIE,
-  GOSPEL,
-  OPERA,
-  SOUNDTRACK,
-  WORLD_MUSIC,
-  OTHER // 기타
+      │ 1:N
+      ▼
+┌──────────────────────┐
+│ profile_update_      │
+│ history              │
+│──────────────────────│
+│ history_id (PK)      │
+│ user_id (FK)         │
+│ field_name           │
+│ old_val              │
+│ new_val              │
+└──────────────────────┘
+```
 
-- 악기 목록 
-    VOCAL,
-  GUITAR,
-  BASS,
-  DRUM,
-  KEYBOARD,
-  PERCUSSION,
-  SAXOPHONE,
-  VIOLIN,
-  CELLO,
-  TRUMPET,
-  FLUTE,
-  DJ,
-  PRODUCER,
-  ETC // 기타
+### 인덱스 전략
 
-- 지역 목록  
-  서울,
-  부산,
-  대구,
-  인천,
-  광주,
-  대전,
-  울산,
-  경기,
-  강원,
-  충북,
-  충남,
-  전북,
-  전남,
-  경북,
-  경남,
-  제주,
-  ETC
----
-# TEST 
-- 2025-09-14
+**user_info 테이블:**
+- `idx_user_info_nickname`: 닉네임 검색
+- `idx_user_info_city`: 지역 필터링
+- `idx_user_info_is_public`: 공개 여부 필터링
+- `idx_user_info_composite_search`: 복합 검색 (city, sex, is_public)
 
+**profile_update_history 테이블:**
+- `idx_history_user_id`: 사용자별 이력 조회
+- `idx_history_composite`: (user_id, updated_at DESC) 복합 인덱스
 
-![test1.png](readMe_images/test1.png)
-![test2.png](readMe_images/test2.png)
-![test3.png](readMe_images/test3.png)
-![test4.png](readMe_images/test4.png)
-![test5.png](readMe_images/test5.png)
-![test6.png](readMe_images/test6.png)
-![스크린샷 2025-09-23 오후 10.23.37.png](readMe_images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-09-23%20%EC%98%A4%ED%9B%84%2010.23.37.png)
----
-### 예시 프로필 등록 사진
-![UserProfile.png](readMe_images/UserProfile.png)
-
+**user_genres / user_instruments:**
+- 역방향 조회 인덱스 (장르→사용자, 악기→사용자)
 
 ---
-## 배포 가이드: docker-compose + .env 만으로 실행 (Ubuntu 22.04)
 
-이 서버는 사전 빌드된 Docker Hub 이미지를 사용하므로, 운영 서버에는 소스코드가 없어도 됩니다. 아래 2개 파일만 서버에 복사하세요.
-- docker-compose.yml
-- .env.prod (환경변수 파일)
+## API 엔드포인트
 
-사전 준비
-- 서버에 Docker와 Docker Compose(Plugin)가 설치되어 있어야 합니다.
-- Docker Hub에 로그인되어 있어야 사설 이미지 접근 시 문제가 없습니다.
+### 프로필 조회
 
-필수 명령어 예시
-1) Docker Hub 로그인
-- docker login
+#### GET /api/profiles/profiles/{userId}
+**단일 프로필 상세 조회**
 
-2) (선택) 외부 네트워크 준비: infra-network
-- 이 Compose는 데이터베이스 등 인프라 컨테이너와 연결하기 위해 외부 네트워크(infra-network)를 사용합니다.
-- 서버에 해당 네트워크가 없다면 아래 명령으로 먼저 생성하세요.
-- docker network create infra-network
+```http
+Response:
+{
+  "userId": "user123",
+  "nickname": "음악인",
+  "profileImageUrl": "https://example.com/profile.jpg",
+  "sex": "M",
+  "city": "서울",
+  "introduction": "안녕하세요",
+  "isPublic": true,
+  "isChatable": true,
+  "genres": [
+    {"genreId": 1, "genreName": "ROCK"},
+    {"genreId": 2, "genreName": "JAZZ"}
+  ],
+  "instruments": [
+    {"instrumentId": 1, "instrumentName": "GUITAR"}
+  ],
+  "createdAt": "2025-10-22T10:00:00",
+  "updatedAt": "2025-10-22T12:00:00"
+}
+```
 
-3) 파일 배치
-- 서버의 원하는 디렉터리(예: ~/apps/profile-server)로 이동 후, 로컬에서 준비한 파일 2개를 업로드합니다.
-  - docker-compose.yml
-  - .env.prod
+#### GET /api/profiles/profiles
+**복합 조건 프로필 검색 (커서 기반 페이징)**
 
-4) 컨테이너 실행
-- docker compose pull
-- docker compose up -d
+```http
+Query Parameters:
+- city: String (옵션) - 지역 필터
+- nickName: String (옵션) - 닉네임 부분 매칭
+- genres: List<Integer> (옵션) - 장르 ID 리스트
+- instruments: List<Integer> (옵션) - 악기 ID 리스트
+- sex: Character (옵션) - 성별 (M/F/O)
+- cursor: String (옵션) - 페이징 커서
+- size: int (기본값: 10, 최대: 100)
 
-5) 상태 확인
-- docker compose ps
-- docker logs -f profile-server-1
+Response:
+{
+  "content": [...],
+  "hasNext": true,
+  "size": 10,
+  "number": 0,
+  "numberOfElements": 10
+}
+```
 
-접속 방법
-- Nginx가 9100 포트로 노출되며, 내부에서 profile-server-1~3으로 라운드 로빈 프록시합니다.
-- http://<서버IP>:9100 으로 접속합니다.
+#### POST /api/profiles/profiles/simple/batch
+**배치 단순 프로필 조회**
 
-구성 설명
-- 애플리케이션 컨테이너: ddingsh9/profile-server:1.7 이미지를 사용합니다. 최신 이미지를 받도록 pull_policy: always가 설정되어 있습니다.
-- Nginx 컨테이너: 컨테이너 시작 시 내부에서 프록시 설정 파일을 생성하므로, 별도의 nginx 폴더나 로컬 마운트가 필요 없습니다.
-- 스케일 아웃: profile-server-1, 2, 3 세 대로 구성되어 있고 Nginx가 라운드로빈으로 트래픽을 분산합니다.
-- 네트워크: profile-network(내부 브리지)와 외부 인프라 네트워크(infra-network)를 사용합니다. 외부 네트워크가 없으면 직접 생성해야 합니다.
+```http
+Content-Type: application/json
 
-환경변수(.env.prod) 안내
-- 기존에 사용하던 .env.prod 형식을 그대로 사용하세요. Compose는 각 profile-server 인스턴스에 동일하게 주입합니다.
+Request Body:
+["user123", "user456", "user789"]
 
-문제 해결 팁
-- docker compose up 시 infra-network 가 없다는 오류가 나면, 먼저 docker network create infra-network 를 실행하세요.
-- 이미지 풀 실패 시 docker login 으로 인증 후 다시 시도하세요.
-- 포트 충돌 시 docker-compose.yml의 nginx -> ports 설정(왼쪽 호스트 포트 9100)을 변경하세요.
+Response:
+[
+  {
+    "userId": "user123",
+    "nickname": "음악인",
+    "profileImageUrl": "https://example.com/profile.jpg"
+  },
+  ...
+]
+```
+
+#### GET /api/profiles/profiles/detail/batch
+**배치 상세 프로필 조회**
+
+```http
+Query Parameters:
+- userIds: List<String> (필수)
+
+Response: List<UserResponse> (전체 프로필 정보)
+```
+
+### 프로필 수정
+
+#### PUT /api/profiles/profiles/{userId}
+**프로필 정보 수정**
+
+```http
+Content-Type: application/json
+
+Request Body:
+{
+  "nickname": "새닉네임",
+  "introduction": "새로운 소개",
+  "city": "부산",
+  "sex": "M",
+  "isPublic": true,
+  "isChatable": true,
+  "genres": [1, 2, 3],
+  "instruments": [1, 2]
+}
+
+Response:
+{
+  "success": true
+}
+```
+
+### 닉네임 검증
+
+#### GET /api/profiles/nickname/check
+**닉네임 중복 확인**
+
+```http
+Query Parameters:
+- nickname: String (필수)
+
+Response:
+{
+  "available": true,
+  "message": "사용 가능한 닉네임입니다"
+}
+```
+
+### Enums 조회
+
+#### GET /api/profiles/enums/genres
+**장르 목록 조회**
+
+```json
+{
+  "1": "ROCK",
+  "2": "JAZZ",
+  "3": "CLASSICAL"
+}
+```
+
+#### GET /api/profiles/enums/instruments
+**악기 목록 조회**
+
+```json
+{
+  "1": "GUITAR",
+  "2": "PIANO",
+  "3": "DRUM"
+}
+```
+
+#### GET /api/profiles/enums/locations
+**지역 목록 조회**
+
+```json
+{
+  "SEOUL": "서울",
+  "BUSAN": "부산"
+}
+```
+
+### 헬스 체크
+
+#### GET /health
+```
+200 OK
+"Server is up"
+```
 
 ---
-## 로컬에서 Docker 이미지 빌드/푸시하는 방법 (개발 PC)
-- 목적: 서버에서는 이미지를 빌드하지 않고, 미리 빌드/푸시된 이미지를 pull 해서만 실행합니다. 서버에서 `build`를 시도하면 `COPY gradlew` 같은 에러가 납니다(빌드 컨텍스트에 파일이 없기 때문).
 
-사전 준비
-- Docker Hub 계정: ddingsh9
-- 로컬 프로젝트 루트에서 실행하세요(여기에 Dockerfile, gradlew 등이 존재함).
+## 기술 스택
 
-1) 로그인
-- docker login
+### Core
+- **Spring Boot**: 3.5.5
+- **Java**: 21 (Eclipse Temurin)
+- **Gradle**: 8.x
 
-2) 멀티플랫폼(선택) 설정: buildx 사용 예시
-- docker buildx create --use --name profile-builder || true
-- docker buildx use profile-builder
+### Database
+- **Production**: MariaDB 10.11
+- **Test**: H2 (in-memory)
+- **JPA**: Hibernate
+- **QueryDSL**: 5.0.0 (동적 쿼리)
 
-3) 이미지 빌드 및 태깅 예시
-- 버전을 정합니다: 예) 1.7 또는 1.8 등
-- docker buildx build -t ddingsh9/profile-server:1.7 --platform linux/amd64 .
-  - 멀티플랫폼 푸시까지 한 번에 하고 싶다면: 
-  - docker buildx build -t ddingsh9/profile-server:1.7 --platform linux/amd64,linux/arm64 --push .
+### Messaging
+- **Kafka**: spring-kafka
+- **이벤트 처리**: Consumer/Producer
 
-4) 푸시(멀티플랫폼으로 바로 push 안했다면)
-- docker push ddingsh9/profile-server:1.7
+### Development
+- **Lombok**: 코드 간소화
+- **Validation**: Jakarta Validation
+- **Slf4j**: 로깅
 
-5) docker-compose.yml 이미지 태그 업데이트(필요 시)
-- image: ddingsh9/profile-server:<원하는_버전>
+### Testing
+- **JUnit 5**
+- **Spring Boot Test**
+- **@DataJpaTest**
 
-6) 서버에서는 빌드 금지, pull + up만 실행
-- docker compose pull
-- docker compose up -d
+---
 
-왜 서버에서 `COPY gradlew` 에러가 나나요?
-- 서버에는 소스가 없고 docker-compose.yml만 있으므로, 빌드 컨텍스트에 gradlew/Dockerfile 등이 존재하지 않습니다.
-- 따라서 Compose가 `build:`를 수행하면 Docker는 필요한 파일을 찾지 못해 실패합니다.
-- 본 저장소의 docker-compose.yml은 `build:`를 제거하고 `image:`만 사용하도록 설정되어 있으므로, 서버에서는 오직 pull/up만 하면 됩니다.
+## 설정 및 실행
+
+### 로컬 실행 (dev 프로파일)
+
+```bash
+# 1. 환경 변수 설정
+export SPRING_PROFILES_ACTIVE=dev
+
+# 2. 데이터베이스 준비
+mysql -u root -p < src/main/resources/sql/schema.sql
+mysql -u root -p < src/main/resources/sql/Data.sql
+
+# 3. Docker Compose로 인프라 시작 (Kafka, MariaDB, Redis)
+docker-compose up -d
+
+# 4. 실행
+./gradlew bootRun
+```
+
+### 설정 파일
+
+#### application.yaml
+```yaml
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+```
+
+#### application-dev.yaml
+```yaml
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:4000/profile
+    username: root
+    password: password
+
+  kafka:
+    bootstrap-servers: localhost:29091,localhost:29092,localhost:29093
+    consumer:
+      group-id: profile-service-group
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+```
+
+#### application-prod.yaml
+```yaml
+spring:
+  datasource:
+    url: jdbc:mariadb://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USER_NAME}
+    password: ${DATABASE_PASSWORD}
+
+  kafka:
+    bootstrap-servers:
+      - ${KAFKA_URL1}
+      - ${KAFKA_URL2}
+      - ${KAFKA_URL3}
+```
+
+---
+
+## 배포
+
+### Docker Compose
+
+#### 아키텍처
+```
+┌─────────────────┐
+│ Profile Server  │
+└────────┬────────┘
+         │
+    ┌────┴────┬────────┐
+    │         │        │
+┌───▼──┐  ┌───▼──┐  ┌──▼───┐
+│Kafka │  │Kafka │  │Kafka │
+│  1   │  │  2   │  │  3   │
+└──────┘  └──────┘  └──────┘
+    │         │        │
+    └─────────┼────────┘
+              │
+    ┌─────────▼─────────┐
+    │   Zookeeper       │
+    └───────────────────┘
+              │
+    ┌─────────▼─────────┐
+    │   MariaDB         │
+    │   Redis           │
+    └───────────────────┘
+```
+
+#### docker-compose.yml
+```yaml
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka-1:
+    image: confluentinc/cp-kafka:7.5.0
+    ports:
+      - "29091:29091"
+      - "9091:9091"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+
+  mariadb:
+    image: mariadb:10.11
+    ports:
+      - "4000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mariadb-data:
+  redis-data:
+```
+
+#### Dockerfile
+```dockerfile
+FROM eclipse-temurin:21-jdk AS build
+WORKDIR /app
+
+COPY gradlew .
+COPY gradle ./gradle
+COPY build.gradle settings.gradle ./
+COPY src ./src
+
+RUN chmod +x ./gradlew && ./gradlew clean bootJar
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+
+COPY --from=build /app/build/libs/*.jar /app/app.jar
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+```
+
+### 배포 단계
+
+```bash
+# 1. 빌드
+./gradlew clean build
+
+# 2. Docker 이미지 생성
+docker build -t profile-server:1.0.0 .
+
+# 3. 인프라 시작
+docker-compose up -d
+
+# 4. 애플리케이션 실행
+docker run -d \
+  -e SPRING_PROFILES_ACTIVE=prod \
+  -e DATABASE_HOST=mariadb \
+  -e KAFKA_URL1=kafka-1:9091 \
+  --network profile-network \
+  profile-server:1.0.0
+```
+
+---
+
+## 프로젝트 구조
+
+```
+src/main/java/com/teambind/profileserver/
+├── controller/
+│   ├── ProfileSearchController.java
+│   ├── ProfileUpdateController.java
+│   ├── NicknameValidator.java
+│   ├── EnumsController.java
+│   └── HealthCheckController.java
+│
+├── service/
+│   ├── create/
+│   │   └── UserInfoLifeCycleService.java
+│   ├── search/
+│   │   └── ProfileSearchService.java
+│   └── update/
+│       └── ProfileUpdateService.java
+│
+├── repository/
+│   ├── UserInfoRepository.java
+│   ├── ProfileSearchRepository.java
+│   ├── GenreNameTableRepository.java
+│   ├── InstrumentNameTableRepository.java
+│   ├── LocationNameTableRepository.java
+│   ├── HistoryRepository.java
+│   └── dsl/
+│       └── ProfileSearchRepositoryImpl.java
+│
+├── entity/
+│   ├── UserInfo.java
+│   ├── History.java
+│   ├── attribute/
+│   │   ├── UserGenres.java
+│   │   ├── UserInstruments.java
+│   │   ├── key/
+│   │   │   ├── UserGenreKey.java
+│   │   │   └── UserInstrumentKey.java
+│   │   └── nameTable/
+│   │       ├── GenreNameTable.java
+│   │       ├── InstrumentNameTable.java
+│   │       └── LocationNameTable.java
+│   └── ...
+│
+├── events/
+│   ├── event/
+│   │   ├── Event.java
+│   │   ├── ProfileCreateRequest.java
+│   │   ├── ProfileImageChanged.java
+│   │   ├── UserDeletedEvent.java
+│   │   └── UserNickNameChangedEvent.java
+│   ├── consumer/
+│   │   └── KafkaConsumer.java
+│   └── producer/
+│       └── KafkaProducer.java
+│
+├── dto/
+│   ├── request/
+│   │   └── ProfileUpdateRequest.java
+│   └── response/
+│       ├── UserResponse.java
+│       └── BatchUserSummaryResponse.java
+│
+└── config/
+    ├── QuerydslConfig.java
+    └── GenerateKeyConfig.java
+
+src/main/resources/
+├── application*.yaml
+└── sql/
+    ├── schema.sql
+    ├── Data.sql
+    ├── migration.sql
+    └── sample-data.sql
+```
+
+---
+
+## 주요 기능 상세
+
+### 1. 프로필 생성 (이벤트 기반)
+
+```
+┌────────────┐      profile-create-request      ┌─────────────┐
+│Auth Server │──────────────────────────────────>│   Kafka     │
+└────────────┘                                   └──────┬──────┘
+                                                        │
+                                                        │ consume
+                                                        │
+                                                 ┌──────▼──────┐
+                                                 │   Profile   │
+                                                 │   Server    │
+                                                 └─────────────┘
+```
+
+### 2. 프로필 검색 (QueryDSL)
+
+- **동적 쿼리 생성**: 검색 조건에 따라 쿼리 동적 구성
+- **커서 기반 페이징**: 대용량 데이터 효율적 처리
+- **인덱스 최적화**: 복합 인덱스를 통한 성능 향상
+
+### 3. 변경 이력 추적
+
+```java
+@Transactional
+public void updateProfile(String userId, ProfileUpdateRequest request) {
+    UserInfo userInfo = findUser(userId);
+
+    // 변경 전 값 저장
+    History history = History.builder()
+        .userInfo(userInfo)
+        .fieldName("nickname")
+        .oldValue(userInfo.getNickname())
+        .newValue(request.getNickname())
+        .build();
+
+    // 업데이트 및 이력 저장
+    userInfo.setNickname(request.getNickname());
+    historyRepository.save(history);
+}
+```
+
+### 4. 이벤트 발행
+
+```java
+// 닉네임 변경 시
+UserNickNameChangedEvent event = UserNickNameChangedEvent.builder()
+    .userId(userId)
+    .oldNickname(oldNickname)
+    .newNickname(newNickname)
+    .build();
+
+kafkaProducer.send("user-nickname-changed", event);
+```
+
+---
+
+## 성능 최적화
+
+### 1. 인덱스 전략
+- 복합 인덱스: (city, sex, is_public)
+- 커버링 인덱스 활용
+- 정렬 인덱스 (updated_at DESC)
+
+### 2. QueryDSL 최적화
+- Fetch Join으로 N+1 방지
+- 동적 쿼리로 불필요한 조건 제거
+- 프로젝션을 통한 필요 컬럼만 조회
+
+### 3. 캐싱 전략
+- Redis를 통한 자주 조회되는 데이터 캐싱
+- NameTable (장르, 악기, 지역) 캐싱
+
+### 4. 배치 처리
+- 단순 배치 조회: 최소 정보만 반환
+- IN 쿼리를 통한 효율적 조회
+
+---
+
+## 문서
+
+- **작성일**: 2025-10-23
+- **버전**: 1.0.0-SNAPSHOT
+- **저자**: DDING

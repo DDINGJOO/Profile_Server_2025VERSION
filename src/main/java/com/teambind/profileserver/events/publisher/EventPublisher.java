@@ -1,8 +1,7 @@
 package com.teambind.profileserver.events.publisher;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teambind.profileserver.events.event.Event;
+import com.teambind.profileserver.utils.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -11,16 +10,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EventPublisher {
 	private final KafkaTemplate<String, Object> kafkaTemplate;
-	private final ObjectMapper objectMapper;
-	
+	private final JsonUtil jsonUtil;
 	public void publish(Event event) {
-		try {
-			String json = objectMapper.writeValueAsString(event);
-			// KafkaTemplate의 제네릭은 Object로 되어 있어도 String을 보낼 수 있음.
+			String json = jsonUtil.toJson(event);
 			kafkaTemplate.send(event.getTopic(), json);
-		} catch (JsonProcessingException e) {
-			// 역직렬화 실패 시 적절한 로깅/예외 처리
-			throw new RuntimeException("Failed to serialize message to JSON", e);
-		}
 	}
 }

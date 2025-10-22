@@ -5,7 +5,7 @@ import com.teambind.profileserver.entity.History;
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.events.event.UserNickNameChangedEvent;
 import com.teambind.profileserver.events.publisher.EventPublisher;
-import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.utils.InitTableMapper;
@@ -57,13 +57,13 @@ public class ProfileUpdateService {
 
     return userInfoRepository
         .findById(userId)
-        .orElseThrow(() -> new ProfileException(ErrorCode.USER_NOT_FOUND));
+        .orElseThrow(() -> new ProfileException(ProfileErrorCode.USER_NOT_FOUND));
   }
 
   private void setNickname(UserInfo userInfo, String nickname) {
     if (nickname != null && !nickname.equals(userInfo.getNickname())) {
       if (userInfoRepository.existsByNickname(nickname)) {
-        throw new ProfileException(ErrorCode.NICKNAME_ALREADY_EXISTS);
+        throw new ProfileException(ProfileErrorCode.NICKNAME_ALREADY_EXISTS);
       }
 
       userInfo.getUserHistory().add(new History("nickname", userInfo.getNickname(), nickname));
@@ -91,6 +91,7 @@ public class ProfileUpdateService {
         userInfo.addGenre(InitTableMapper.genreNameTable.get(id));
       }
     }
+	
     if (req.getInstruments() != null) {
       userInfo.clearInstruments();
       for (Integer id : req.getInstruments()) {

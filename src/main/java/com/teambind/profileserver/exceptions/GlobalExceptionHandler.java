@@ -16,13 +16,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ProfileException.class)
   public ResponseEntity<ErrorResponse> handleProfileException(
       ProfileException ex, HttpServletRequest request) {
-    ErrorCode errorCode = ex.getErrorCode();
-    HttpStatus status = errorCode.getStatus();
+    ProfileErrorCode profileErrorCode = ex.getErrorCode();
+    HttpStatus status = profileErrorCode.getStatus();
     ErrorResponse body =
         ErrorResponse.of(
             status.value(),
-            errorCode.getErrCode(),
-            errorCode.getMessage(),
+            profileErrorCode.getErrCode(),
+            profileErrorCode.getMessage(),
             request.getRequestURI());
     return ResponseEntity.status(status).body(body);
   }

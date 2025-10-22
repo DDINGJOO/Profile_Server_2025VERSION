@@ -2,7 +2,7 @@ package com.teambind.profileserver.service.create;
 
 
 import com.teambind.profileserver.entity.UserInfo;
-import com.teambind.profileserver.exceptions.ErrorCode;
+import com.teambind.profileserver.exceptions.ProfileErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
 import com.teambind.profileserver.repository.UserInfoRepository;
 import com.teambind.profileserver.utils.generator.NicknameGenerator;
@@ -40,7 +40,7 @@ public class UserInfoLifeCycleService {
 	@Transactional
 	public void deleteUserProfile(String userId) {
 		UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
-				() -> new ProfileException(ErrorCode.USER_NOT_FOUND)
+				() -> new ProfileException(ProfileErrorCode.USER_NOT_FOUND)
 		);
 		userInfoRepository.delete(userInfo);
 	}

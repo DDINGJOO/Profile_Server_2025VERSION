@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -33,7 +34,12 @@ public class InitTableMapper {
     }
 
 
+	@Scheduled(cron = "0 0 6 * * *")
     public void initializeTables() {
+		genreNameTable.clear();
+		instrumentNameTable.clear();
+		locationNamesTable.clear();
+		
         List<GenreNameTable> genreNameTables = genreNameTableRepository.findAll();
         List<InstrumentNameTable> instrumentNameTables = instrumentNameTableRepository.findAll();
         List<LocationNameTable> locationNameTables = locationNameTableRepository.findAll();
@@ -53,4 +59,6 @@ public class InitTableMapper {
             InitTableMapper.instrumentNameTable.put(instrumentNameTable.getInstrumentId(), instrumentNameTable);
         });
     }
+	
+	
 }

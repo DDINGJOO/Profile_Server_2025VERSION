@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/profiles")
+@RequestMapping("/api/v1/profiles")
 public class NicknameValidator {
 	private final ProfileUpdateService profileUpdateService;
 

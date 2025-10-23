@@ -1,7 +1,6 @@
 package com.teambind.profileserver.controller;
 
 
-import com.teambind.profileserver.dto.response.BatchUserSummaryResponse;
 import com.teambind.profileserver.dto.response.UserResponse;
 import com.teambind.profileserver.repository.search.ProfileSearchCriteria;
 import com.teambind.profileserver.service.search.ProfileSearchService;
@@ -13,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/profiles/profiles")
+@RequestMapping("/api/v1/profiles")
 public class ProfileSearchController {
 
     private final ProfileSearchService profileSearchService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> getProfiles(@PathVariable("userId") String userId) {
+    public ResponseEntity<UserResponse> getProfile(@PathVariable("userId") String userId) {
         var response = profileSearchService.searchProfileById(userId);
         return ResponseEntity.ok(response);
     }
@@ -52,14 +51,16 @@ public class ProfileSearchController {
 		return ResponseEntity.ok(result);
 	}
 
-    @PostMapping("/simple/batch")
-    public ResponseEntity<List<BatchUserSummaryResponse>> getProfilesBatch(@RequestBody List<String> userIds) {
-        var result = profileSearchService.searchProfilesByIds(userIds);
-        return ResponseEntity.ok(result);
+    @PostMapping("/batch")
+    public ResponseEntity<?> getProfilesBatch(
+            @RequestBody List<String> userIds,
+            @RequestParam(required = false, defaultValue = "false") boolean detail) {
+        if (detail) {
+            var result = profileSearchService.searchDetailProfilesByIds(userIds);
+            return ResponseEntity.ok(result);
+        } else {
+            var result = profileSearchService.searchProfilesByIds(userIds);
+            return ResponseEntity.ok(result);
+        }
     }
-	@GetMapping("/detail/batch")
-	public ResponseEntity<List<UserResponse>> getDetailProfilesBatch(@RequestParam List<String> userIds) {
-		var result = profileSearchService.searchDetailProfilesByIds(userIds);
-		return ResponseEntity.ok(result);
-	}
 }

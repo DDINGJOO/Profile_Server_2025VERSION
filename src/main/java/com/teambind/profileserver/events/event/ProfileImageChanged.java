@@ -10,6 +10,7 @@ import lombok.Setter;
 public class ProfileImageChanged extends Event{
     private String referenceId;
     private String imageUrl;
+	private String imageId;
 	
 	public ProfileImageChanged(String referenceId, String imageUrl) {
 		super("profile-image-changed");

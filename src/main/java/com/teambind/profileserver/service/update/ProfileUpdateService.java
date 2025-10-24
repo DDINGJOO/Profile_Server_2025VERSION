@@ -66,7 +66,7 @@ public class ProfileUpdateService {
         throw new ProfileException(ProfileErrorCode.NICKNAME_ALREADY_EXISTS);
       }
 
-      userInfo.getUserHistory().add(new History("nickname", userInfo.getNickname(), nickname));
+      userInfo.addHistory(new History("nickname", userInfo.getNickname(), nickname));
       userInfo.setNickname(nickname);
 	    eventPublisher.publish(
           new UserNickNameChangedEvent(userInfo.getUserId(), userInfo.getNickname()));

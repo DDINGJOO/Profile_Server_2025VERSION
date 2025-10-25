@@ -16,31 +16,29 @@ import lombok.*;
 @Builder
 public class UserInstruments extends UserAttributeBase<UserInstrumentKey, InstrumentNameTable> {
 
-    @EmbeddedId
-    private UserInstrumentKey id;
+  @EmbeddedId private UserInstrumentKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private UserInfo userInfo;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @MapsId("userId")
+  @JoinColumn(name = "user_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private UserInfo userInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("instrumentId")
-    @JoinColumn(name = "instrument_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private InstrumentNameTable instrument;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @MapsId("instrumentId")
+  @JoinColumn(name = "instrument_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private InstrumentNameTable instrument;
 
-    @Override
-    public InstrumentNameTable getAttribute() {
-        return instrument;
-    }
+  @Override
+  public InstrumentNameTable getAttribute() {
+    return instrument;
+  }
 
-    @Override
-    public void setAttribute(InstrumentNameTable instrument) {
-        this.instrument = instrument;
-    }
-
+  @Override
+  public void setAttribute(InstrumentNameTable instrument) {
+    this.instrument = instrument;
+  }
 }

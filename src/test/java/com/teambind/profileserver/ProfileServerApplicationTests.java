@@ -11,9 +11,8 @@ import org.springframework.test.context.ActiveProfiles;
 @Import(TestConfig.class)
 class ProfileServerApplicationTests {
 
-    @Test
-    void contextLoads() {
-        // Application context가 정상적으로 로드되는지 확인
-    }
-
+  @Test
+  void contextLoads() {
+    // Application context가 정상적으로 로드되는지 확인
+  }
 }

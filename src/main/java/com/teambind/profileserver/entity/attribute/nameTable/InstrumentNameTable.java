@@ -14,11 +14,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class InstrumentNameTable {
-    @Id
-    @Column(name = "instrument_id")
-    private int instrumentId;
+  @Id
+  @Column(name = "instrument_id")
+  private int instrumentId;
 
-    @Column(name = "instrument_name")
-    private String instrumentName;
-
+  @Column(name = "instrument_name")
+  private String instrumentName;
 }

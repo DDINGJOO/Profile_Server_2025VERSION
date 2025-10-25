@@ -21,12 +21,12 @@ import org.springframework.stereotype.Component;
 public class InitTableMapper {
 
 
-    private final GenreNameTableRepository genreNameTableRepository;
-    private final InstrumentNameTableRepository instrumentNameTableRepository;
-    private final LocationNameTableRepository locationNameTableRepository;
     public static HashMap<Integer, GenreNameTable> genreNameTable = new HashMap<>();
     public static HashMap<Integer, InstrumentNameTable> instrumentNameTable = new HashMap<>();
     public static HashMap<String, String> locationNamesTable = new HashMap<>();
+    private final GenreNameTableRepository genreNameTableRepository;
+    private final InstrumentNameTableRepository instrumentNameTableRepository;
+    private final LocationNameTableRepository locationNameTableRepository;
 
     @PostConstruct
     public void initOnStartup() {

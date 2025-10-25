@@ -1,6 +1,5 @@
 package com.teambind.profileserver.entity.attribute.nameTable;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,10 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationNameTable {
-    @Id
-    @Column(name = "city_id")
-    private String id;
+  @Id
+  @Column(name = "city_id")
+  private String id;
 
-    @Column(name ="city_name")
-    private String city;
+  @Column(name = "city_name")
+  private String city;
 }

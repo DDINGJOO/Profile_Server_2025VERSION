@@ -86,18 +86,21 @@ docker-compose ps --services
 ## 🔌 서비스 접속 정보
 
 ### Kafka
+
 - **Broker 1**: `localhost:29091`
 - **Broker 2**: `localhost:29092`
 - **Broker 3**: `localhost:29093`
 - **Kafka UI**: http://localhost:8989
 
 ### Database
+
 - **MariaDB**: `localhost:4000`
-  - User: `root`
-  - Password: `pass123#`
-  - Database: `profiles`
+	- User: `root`
+	- Password: `pass123#`
+	- Database: `profiles`
 
 ### Cache
+
 - **Redis**: `localhost:6379`
 
 ## 📊 Kafka UI 사용법
@@ -105,14 +108,15 @@ docker-compose ps --services
 1. 브라우저에서 http://localhost:8989 접속
 2. 클러스터 이름: `local-cluster`
 3. 다음 기능 사용 가능:
-   - 토픽 생성/삭제/조회
-   - 메시지 발행/소비
-   - Consumer Group 모니터링
-   - 브로커 상태 확인
+	- 토픽 생성/삭제/조회
+	- 메시지 발행/소비
+	- Consumer Group 모니터링
+	- 브로커 상태 확인
 
 ## 🛠 유용한 명령어
 
 ### 로그 확인
+
 ```bash
 # 특정 서비스 로그
 docker-compose logs -f kafka-1
@@ -125,6 +129,7 @@ docker-compose logs --tail=100 kafka-1
 ```
 
 ### 토픽 관리
+
 ```bash
 # 토픽 목록 조회
 docker exec -it kafka-1 kafka-topics --list --bootstrap-server localhost:9091
@@ -147,6 +152,7 @@ docker exec -it kafka-1 kafka-console-consumer \
 ```
 
 ### Consumer Group 관리
+
 ```bash
 # Consumer Group 목록
 docker exec -it kafka-1 kafka-consumer-groups \
@@ -161,6 +167,7 @@ docker exec -it kafka-1 kafka-consumer-groups \
 ```
 
 ### 데이터베이스 접속
+
 ```bash
 # MariaDB 접속
 docker exec -it mariadb mysql -uroot -p"pass123#" profiles
@@ -198,6 +205,7 @@ docker-compose down --rmi all
 ## ⚠️ 문제 해결
 
 ### Kafka 연결 실패
+
 ```bash
 # Kafka 브로커 상태 확인
 docker-compose ps kafka-1 kafka-2 kafka-3
@@ -210,6 +218,7 @@ docker-compose logs kafka-1 kafka-2 kafka-3
 ```
 
 ### 포트 충돌
+
 ```bash
 # 포트 사용 확인
 lsof -i :29091
@@ -222,6 +231,7 @@ docker-compose up -d
 ```
 
 ### 디스크 공간 부족
+
 ```bash
 # 사용하지 않는 컨테이너/이미지 정리
 docker system prune -a
@@ -233,11 +243,13 @@ docker volume prune
 ## 🔧 macOS 특화 설정
 
 ### Docker Desktop 메모리 설정
+
 1. Docker Desktop 열기
 2. Settings → Resources → Memory
 3. 최소 4GB 이상 할당 권장 (Kafka 클러스터용)
 
 ### 파일 공유 설정
+
 1. Docker Desktop 열기
 2. Settings → Resources → File Sharing
 3. 프로젝트 디렉토리 경로 추가

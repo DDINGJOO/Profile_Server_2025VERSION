@@ -1,6 +1,5 @@
 package com.teambind.profileserver.controller;
 
-
 import com.teambind.profileserver.service.update.ProfileUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profiles")
 public class NicknameValidator {
-	private final ProfileUpdateService profileUpdateService;
+  private final ProfileUpdateService profileUpdateService;
 
-
-    @GetMapping("/validate")
-    public ResponseEntity<Boolean> validateNickname(@RequestParam("type") String type , @RequestParam("value") String value) {
-        if(type.equals("nickname")){return ResponseEntity.ok(profileUpdateService.isNickNameExist(value));}
-        return ResponseEntity.ok(false);
+  @GetMapping("/validate")
+  public ResponseEntity<Boolean> validateNickname(
+      @RequestParam("type") String type, @RequestParam("value") String value) {
+    if (type.equals("nickname")) {
+      return ResponseEntity.ok(profileUpdateService.isNickNameExist(value));
     }
+    return ResponseEntity.ok(false);
+  }
 }
-

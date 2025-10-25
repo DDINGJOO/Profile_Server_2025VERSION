@@ -12,29 +12,32 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserResponse {
-    private String userId;
-    private Character sex;
-    private String profileImageUrl;
-    private List<String> genres;
-    private List<String> instruments;
-	private String introduction;
-    private String city;
-    private String nickname;
-    private Boolean isChattable;
-    private Boolean isPublic;
+  private String userId;
+  private Character sex;
+  private String profileImageUrl;
+  private List<String> genres;
+  private List<String> instruments;
+  private String introduction;
+  private String city;
+  private String nickname;
+  private Boolean isChattable;
+  private Boolean isPublic;
 
-    public static UserResponse fromEntity(UserInfo userInfo){
-        return UserResponse.builder()
-                .userId(userInfo.getUserId())
-                .city(InitTableMapper.locationNamesTable.get(userInfo.getCity()))
-		        .introduction(userInfo.getIntroduction())
-                .nickname(userInfo.getNickname())
-                .isChattable(userInfo.getIsChatable())
-                .isPublic(userInfo.getIsPublic())
-                .profileImageUrl(userInfo.getProfileImageUrl())
-                .sex(userInfo.getSex())
-                .instruments(userInfo.getUserInstruments().stream().map(ui -> ui.getInstrument().getInstrumentName()).toList())
-                .genres(userInfo.getUserGenres().stream().map(ug -> ug.getGenre().getGenreName()).toList())
-                .build();
-    }
+  public static UserResponse fromEntity(UserInfo userInfo) {
+    return UserResponse.builder()
+        .userId(userInfo.getUserId())
+        .city(InitTableMapper.locationNamesTable.get(userInfo.getCity()))
+        .introduction(userInfo.getIntroduction())
+        .nickname(userInfo.getNickname())
+        .isChattable(userInfo.getIsChatable())
+        .isPublic(userInfo.getIsPublic())
+        .profileImageUrl(userInfo.getProfileImageUrl())
+        .sex(userInfo.getSex())
+        .instruments(
+            userInfo.getUserInstruments().stream()
+                .map(ui -> ui.getInstrument().getInstrumentName())
+                .toList())
+        .genres(userInfo.getUserGenres().stream().map(ug -> ug.getGenre().getGenreName()).toList())
+        .build();
+  }
 }

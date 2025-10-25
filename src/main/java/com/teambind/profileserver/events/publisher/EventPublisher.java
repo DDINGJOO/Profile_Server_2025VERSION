@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EventPublisher {
-	private final KafkaTemplate<String, Object> kafkaTemplate;
-	private final JsonUtil jsonUtil;
-	public void publish(Event event) {
-			String json = jsonUtil.toJson(event);
-			kafkaTemplate.send(event.getTopic(), json);
-	}
+  private final KafkaTemplate<String, Object> kafkaTemplate;
+  private final JsonUtil jsonUtil;
+
+  public void publish(Event event) {
+    String json = jsonUtil.toJson(event);
+    kafkaTemplate.send(event.getTopic(), json);
+  }
 }

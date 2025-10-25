@@ -38,7 +38,7 @@ public class ProfileUpdateService {
 
     applyPatch(userInfo, request);
 
-	//명시적 표기
+    // 명시적 표기
     userInfoRepository.save(userInfo);
   }
 
@@ -68,7 +68,7 @@ public class ProfileUpdateService {
 
       userInfo.addHistory(new History("nickname", userInfo.getNickname(), nickname));
       userInfo.setNickname(nickname);
-	    eventPublisher.publish(
+      eventPublisher.publish(
           new UserNickNameChangedEvent(userInfo.getUserId(), userInfo.getNickname()));
     }
   }
@@ -91,7 +91,7 @@ public class ProfileUpdateService {
         userInfo.addGenre(InitTableMapper.genreNameTable.get(id));
       }
     }
-	
+
     if (req.getInstruments() != null) {
       userInfo.clearInstruments();
       for (Integer id : req.getInstruments()) {

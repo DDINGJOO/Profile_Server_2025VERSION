@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GenerateKeyConfig {
 
-    @Bean
-    public PrimaryKeyGenerator PkeyGenerator() {
-        return new Snowflake();
-    }
+  @Bean
+  public PrimaryKeyGenerator PkeyGenerator() {
+    return new Snowflake();
+  }
 }

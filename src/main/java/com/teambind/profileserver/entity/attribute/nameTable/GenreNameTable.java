@@ -1,6 +1,5 @@
 package com.teambind.profileserver.entity.attribute.nameTable;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,11 +14,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class GenreNameTable {
-    @Id
-    @Column(name = "genre_id")
-    private int genreId;
+  @Id
+  @Column(name = "genre_id")
+  private int genreId;
 
-    @Column(name = "genre_name")
-    private String genreName;
-
+  @Column(name = "genre_name")
+  private String genreName;
 }

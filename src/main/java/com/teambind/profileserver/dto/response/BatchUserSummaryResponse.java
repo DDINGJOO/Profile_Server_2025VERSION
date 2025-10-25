@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class BatchUserSummaryResponse {
-    private String userId;
-    private String nickname;
-    private String profileImageUrl;
+  private String userId;
+  private String nickname;
+  private String profileImageUrl;
 
-    public static BatchUserSummaryResponse fromEntity(UserInfo userInfo) {
-        return BatchUserSummaryResponse.builder()
-                .userId(userInfo.getUserId())
-                .nickname(userInfo.getNickname())
-                .profileImageUrl(userInfo.getProfileImageUrl())
-                .build();
-    }
+  public static BatchUserSummaryResponse fromEntity(UserInfo userInfo) {
+    return BatchUserSummaryResponse.builder()
+        .userId(userInfo.getUserId())
+        .nickname(userInfo.getNickname())
+        .profileImageUrl(userInfo.getProfileImageUrl())
+        .build();
+  }
 }

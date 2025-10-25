@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor
 @EqualsAndHashCode
-public class UserInstrumentKey implements Serializable  {
+public class UserInstrumentKey implements Serializable {
 
-    private String userId;
-    private int instrumentId;
+  private String userId;
+  private int instrumentId;
 
-    public UserInstrumentKey(String userId, Integer name) {
-        this.userId = userId;
-        this.instrumentId = name;
-    }
+  public UserInstrumentKey(String userId, Integer name) {
+    this.userId = userId;
+    this.instrumentId = name;
+  }
 }

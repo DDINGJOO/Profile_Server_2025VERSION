@@ -17,7 +17,9 @@ public enum ProfileErrorCode {
   USER_NOT_FOUND("PROFILE_007", "User not found", HttpStatus.NOT_FOUND),
   NICKNAME_INVALID("PROFILE_008", "Nickname is invalid", HttpStatus.BAD_REQUEST),
   GENRE_INVALID("PROFILE_009", "GenreId and Name are invalid", HttpStatus.BAD_REQUEST),
-	NOT_ALLOWED_LOCATION_ID_AND_NAME("PROFILE_010", "LocationId and Name are not allowed", HttpStatus.BAD_REQUEST ),;
+  NOT_ALLOWED_LOCATION_ID_AND_NAME(
+      "PROFILE_010", "LocationId and Name are not allowed", HttpStatus.BAD_REQUEST),
+  ;
   private final String errCode;
   private final String message;
   private final HttpStatus status;

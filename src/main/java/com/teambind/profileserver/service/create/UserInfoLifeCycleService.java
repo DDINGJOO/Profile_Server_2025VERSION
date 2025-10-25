@@ -1,6 +1,5 @@
 package com.teambind.profileserver.service.create;
 
-
 import com.teambind.profileserver.entity.UserInfo;
 import com.teambind.profileserver.exceptions.ProfileErrorCode;
 import com.teambind.profileserver.exceptions.ProfileException;
@@ -16,32 +15,33 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class UserInfoLifeCycleService {
-    private final UserInfoRepository userInfoRepository;
+  private final UserInfoRepository userInfoRepository;
 
+  @Transactional
+  public void createUserProfile(String userId, String provider) {
+    UserInfo userInfo =
+        UserInfo.builder()
+            .userId(userId)
+            .nickname(NicknameGenerator.generateNickname(provider))
+            .city(null)
+            .isChatable(false)
+            .isPublic(false)
+            .introduction(null)
+            .sex(null)
+            .profileImageUrl(null)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .build();
+    userInfoRepository.save(userInfo);
+  }
+  ;
 
-
-    @Transactional
-    public void createUserProfile(String userId, String provider) {
-        UserInfo userInfo = UserInfo.builder()
-                .userId(userId)
-                .nickname(NicknameGenerator.generateNickname(provider))
-                .city(null)
-                .isChatable(false)
-                .isPublic(false)
-		        .introduction(null)
-                .sex(null)
-                .profileImageUrl(null)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
-        userInfoRepository.save(userInfo);
-    };
-	
-	@Transactional
-	public void deleteUserProfile(String userId) {
-		UserInfo userInfo = userInfoRepository.findById(userId).orElseThrow(
-				() -> new ProfileException(ProfileErrorCode.USER_NOT_FOUND)
-		);
-		userInfoRepository.delete(userInfo);
-	}
+  @Transactional
+  public void deleteUserProfile(String userId) {
+    UserInfo userInfo =
+        userInfoRepository
+            .findById(userId)
+            .orElseThrow(() -> new ProfileException(ProfileErrorCode.USER_NOT_FOUND));
+    userInfoRepository.delete(userInfo);
+  }
 }

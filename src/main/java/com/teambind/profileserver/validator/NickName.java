@@ -9,9 +9,9 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = NickNameValidator.class)
 @Documented
 public @interface NickName {
-	String message() default "적절하지 않은 닉네임 형식입니다.";
+  String message() default "적절하지 않은 닉네임 형식입니다.";
 
-	Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 }

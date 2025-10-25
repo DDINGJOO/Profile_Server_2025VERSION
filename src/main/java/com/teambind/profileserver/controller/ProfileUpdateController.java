@@ -1,6 +1,5 @@
 package com.teambind.profileserver.controller;
 
-
 import com.teambind.profileserver.dto.request.ProfileUpdateRequest;
 import com.teambind.profileserver.service.update.ProfileUpdateService;
 import jakarta.validation.Valid;
@@ -12,17 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/profiles")
 @RequiredArgsConstructor
 public class ProfileUpdateController {
-    private final ProfileUpdateService profileUpdateService;
+  private final ProfileUpdateService profileUpdateService;
 
-
-
-    @PutMapping("/{userId}")
-    public ResponseEntity<Boolean> updateProfile(@PathVariable String userId,
-                                                 @Valid @RequestBody ProfileUpdateRequest request)  {
-        profileUpdateService.updateProfile(userId, request);
-        return ResponseEntity.ok(true);
-    }
-	
+  @PutMapping("/{userId}")
+  public ResponseEntity<Boolean> updateProfile(
+      @PathVariable String userId, @Valid @RequestBody ProfileUpdateRequest request) {
+    profileUpdateService.updateProfile(userId, request);
+    return ResponseEntity.ok(true);
+  }
 }
-
-

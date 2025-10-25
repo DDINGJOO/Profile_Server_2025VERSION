@@ -7,69 +7,124 @@
 -- ====================================
 -- 1. 지역 데이터
 -- ====================================
-INSERT INTO location_names (city_id, city_name) VALUES ('SEOUL', '서울');
-INSERT INTO location_names (city_id, city_name) VALUES ('BUSAN', '부산');
-INSERT INTO location_names (city_id, city_name) VALUES ('DAEGU', '대구');
-INSERT INTO location_names (city_id, city_name) VALUES ('INCHEON', '인천');
-INSERT INTO location_names (city_id, city_name) VALUES ('GWANGJU', '광주');
-INSERT INTO location_names (city_id, city_name) VALUES ('DAEJEON', '대전');
-INSERT INTO location_names (city_id, city_name) VALUES ('ULSAN', '울산');
-INSERT INTO location_names (city_id, city_name) VALUES ('SEJONG', '세종');
-INSERT INTO location_names (city_id, city_name) VALUES ('GYEONGGI', '경기');
-INSERT INTO location_names (city_id, city_name) VALUES ('GANGWON', '강원');
-INSERT INTO location_names (city_id, city_name) VALUES ('CHUNGBUK', '충북');
-INSERT INTO location_names (city_id, city_name) VALUES ('CHUNGNAM', '충남');
-INSERT INTO location_names (city_id, city_name) VALUES ('JEONBUK', '전북');
-INSERT INTO location_names (city_id, city_name) VALUES ('JEONNAM', '전남');
-INSERT INTO location_names (city_id, city_name) VALUES ('GYEONGBUK', '경북');
-INSERT INTO location_names (city_id, city_name) VALUES ('GYEONGNAM', '경남');
-INSERT INTO location_names (city_id, city_name) VALUES ('JEJU', '제주');
-INSERT INTO location_names (city_id, city_name) VALUES ('ETC', '기타');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('SEOUL', '서울');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('BUSAN', '부산');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('DAEGU', '대구');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('INCHEON', '인천');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('GWANGJU', '광주');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('DAEJEON', '대전');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('ULSAN', '울산');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('SEJONG', '세종');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('GYEONGGI', '경기');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('GANGWON', '강원');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('CHUNGBUK', '충북');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('CHUNGNAM', '충남');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('JEONBUK', '전북');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('JEONNAM', '전남');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('GYEONGBUK', '경북');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('GYEONGNAM', '경남');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('JEJU', '제주');
+INSERT INTO location_names (city_id, city_name)
+VALUES ('ETC', '기타');
 
 -- ====================================
 -- 2. 장르 데이터 (23개)
 -- ====================================
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (1,  'ROCK', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (2,  'POP', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (3,  'JAZZ', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (4,  'CLASSICAL', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (5,  'HIP_HOP', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (6,  'ELECTRONIC', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (7,  'FOLK', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (8,  'BLUES', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (9,  'REGGAE', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (10, 'METAL', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (11, 'COUNTRY', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (12, 'LATIN', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (13, 'RNB', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (14, 'SOUL', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (15, 'FUNK', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (16, 'PUNK', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (17, 'ALTERNATIVE', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (18, 'INDIE', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (19, 'GOSPEL', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (20, 'OPERA', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (21, 'SOUNDTRACK', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (22, 'WORLD_MUSIC', 0);
-INSERT INTO genre_name (genre_id, genre_name, version) VALUES (23, 'OTHER', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (1, 'ROCK', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (2, 'POP', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (3, 'JAZZ', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (4, 'CLASSICAL', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (5, 'HIP_HOP', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (6, 'ELECTRONIC', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (7, 'FOLK', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (8, 'BLUES', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (9, 'REGGAE', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (10, 'METAL', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (11, 'COUNTRY', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (12, 'LATIN', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (13, 'RNB', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (14, 'SOUL', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (15, 'FUNK', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (16, 'PUNK', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (17, 'ALTERNATIVE', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (18, 'INDIE', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (19, 'GOSPEL', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (20, 'OPERA', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (21, 'SOUNDTRACK', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (22, 'WORLD_MUSIC', 0);
+INSERT INTO genre_name (genre_id, genre_name, version)
+VALUES (23, 'OTHER', 0);
 
 -- ====================================
 -- 3. 악기 데이터 (14개)
 -- ====================================
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (1,  'VOCAL', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (2,  'GUITAR', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (3,  'BASS', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (4,  'DRUM', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (5,  'KEYBOARD', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (6,  'PERCUSSION', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (7,  'SAXOPHONE', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (8,  'VIOLIN', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (9,  'CELLO', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (10, 'TRUMPET', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (11, 'FLUTE', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (12, 'DJ', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (13, 'PRODUCER', 0);
-INSERT INTO instrument_name (instrument_id, instrument_name, version) VALUES (14, 'ETC', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (1, 'VOCAL', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (2, 'GUITAR', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (3, 'BASS', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (4, 'DRUM', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (5, 'KEYBOARD', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (6, 'PERCUSSION', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (7, 'SAXOPHONE', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (8, 'VIOLIN', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (9, 'CELLO', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (10, 'TRUMPET', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (11, 'FLUTE', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (12, 'DJ', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (13, 'PRODUCER', 0);
+INSERT INTO instrument_name (instrument_id, instrument_name, version)
+VALUES (14, 'ETC', 0);
 
 -- ====================================
 -- 데이터 설명

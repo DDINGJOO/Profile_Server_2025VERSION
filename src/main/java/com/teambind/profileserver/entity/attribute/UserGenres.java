@@ -16,31 +16,29 @@ import lombok.*;
 @Builder
 public class UserGenres extends UserAttributeBase<UserGenreKey, GenreNameTable> {
 
-    @EmbeddedId
-    private UserGenreKey id;
+  @EmbeddedId private UserGenreKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private UserInfo userInfo;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @MapsId("userId")
+  @JoinColumn(name = "user_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private UserInfo userInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("genreId")
-    @JoinColumn(name = "genre_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private GenreNameTable genre;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @MapsId("genreId")
+  @JoinColumn(name = "genre_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private GenreNameTable genre;
 
-    @Override
-    public GenreNameTable getAttribute() {
-        return genre;
-    }
+  @Override
+  public GenreNameTable getAttribute() {
+    return genre;
+  }
 
-    @Override
-    public void setAttribute(GenreNameTable genre) {
-        this.genre = genre;
-    }
-
+  @Override
+  public void setAttribute(GenreNameTable genre) {
+    this.genre = genre;
+  }
 }

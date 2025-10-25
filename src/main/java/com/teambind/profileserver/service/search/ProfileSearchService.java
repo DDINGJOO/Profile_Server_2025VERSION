@@ -19,39 +19,38 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProfileSearchService {
 
-    private final ProfileSearchRepository repository;
+  private final ProfileSearchRepository repository;
 
-    @Transactional(readOnly = true)
-    public UserResponse searchProfileById(String userId) {
-        UserInfo userInfo = repository.search(userId);
-        if(userInfo == null)
-            throw new ProfileException(ProfileErrorCode.USER_NOT_FOUND);
-        return UserResponse.fromEntity(userInfo);
-    }
+  @Transactional(readOnly = true)
+  public UserResponse searchProfileById(String userId) {
+    UserInfo userInfo = repository.search(userId);
+    if (userInfo == null) throw new ProfileException(ProfileErrorCode.USER_NOT_FOUND);
+    return UserResponse.fromEntity(userInfo);
+  }
 
-	
-	// 페이징 처리 서능 테스트용 메서드
-    @Transactional(readOnly = true)
-    public Page<UserResponse> searchProfiles(ProfileSearchCriteria criteria, Pageable pageable) {
-        var result = repository.search(criteria, pageable);
-        return result.map(UserResponse::fromEntity);
-    }
+  // 페이징 처리 서능 테스트용 메서드
+  @Transactional(readOnly = true)
+  public Page<UserResponse> searchProfiles(ProfileSearchCriteria criteria, Pageable pageable) {
+    var result = repository.search(criteria, pageable);
+    return result.map(UserResponse::fromEntity);
+  }
 
-    @Transactional(readOnly = true)
-    public Slice<UserResponse> searchProfilesByCursor(ProfileSearchCriteria criteria, String cursor, int size) {
-        var result = repository.searchByCursor(criteria, cursor, size);
-        return result.map(UserResponse::fromEntity);
-    }
+  @Transactional(readOnly = true)
+  public Slice<UserResponse> searchProfilesByCursor(
+      ProfileSearchCriteria criteria, String cursor, int size) {
+    var result = repository.searchByCursor(criteria, cursor, size);
+    return result.map(UserResponse::fromEntity);
+  }
 
-    @Transactional(readOnly = true)
-    public List<BatchUserSummaryResponse> searchProfilesByIds(List<String> userIds) {
-        var users = repository.searchByUserIds(userIds);
-        return users.stream().map(BatchUserSummaryResponse::fromEntity).toList();
-    }
-	
-	@Transactional(readOnly = true)
-	public List<UserResponse> searchDetailProfilesByIds(List<String> userIds) {
-		var users = repository.searchByUserIds(userIds);
-		return users.stream().map(UserResponse::fromEntity).toList();
-	}
+  @Transactional(readOnly = true)
+  public List<BatchUserSummaryResponse> searchProfilesByIds(List<String> userIds) {
+    var users = repository.searchByUserIds(userIds);
+    return users.stream().map(BatchUserSummaryResponse::fromEntity).toList();
+  }
+
+  @Transactional(readOnly = true)
+  public List<UserResponse> searchDetailProfilesByIds(List<String> userIds) {
+    var users = repository.searchByUserIds(userIds);
+    return users.stream().map(UserResponse::fromEntity).toList();
+  }
 }

@@ -8,7 +8,9 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = LocationValidator.class)
 @Documented
 public @interface Location {
-    String message() default "Invalid location";
-    Class<?>[] groups() default {};
-    Class<?>[] payload() default {};
+  String message() default "Invalid location";
+
+  Class<?>[] groups() default {};
+
+  Class<?>[] payload() default {};
 }
